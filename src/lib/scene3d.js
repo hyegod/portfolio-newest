@@ -84,14 +84,27 @@ export function initKineticWaveBackground() {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
+  // Track window width to strictly ignore vertical-only resize events triggered by mobile/tablet address bar expand/collapse
+  let lastWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+  let width = (canvas.width = canvas.clientWidth || window.innerWidth);
+  let height = (canvas.height = canvas.clientHeight || window.innerHeight);
 
   const onResize = () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    // On touch/mobile browsers, address bar collapse/expand only alters height, not width.
+    // Guarding by width ensures the wave baseline never jumps or repositions when releasing scroll!
+    if (Math.abs(window.innerWidth - lastWidth) < 4) return;
+    lastWidth = window.innerWidth;
+    width = canvas.width = canvas.clientWidth || window.innerWidth;
+    height = canvas.height = canvas.clientHeight || window.innerHeight;
   };
   window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+      lastWidth = window.innerWidth;
+      width = canvas.width = canvas.clientWidth || window.innerWidth;
+      height = canvas.height = canvas.clientHeight || window.innerHeight;
+    }, 250);
+  }, { passive: true });
 
   let time = 0;
   const WAVES = [
