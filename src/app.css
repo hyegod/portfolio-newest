@@ -2710,13 +2710,13 @@ body.xray-active .cad-xray-layer,
   }
 }
 
-/* Mobile S — 480px down to 320px */
-@media (max-width: 540px) {
+/* Mobile S — 600px down to 320px */
+@media (max-width: 600px) {
   :root {
     --header-h: 112px;
   }
 
-  /* 3-Row Ultra-Clean Header for 320px */
+  /* 3-Row Ultra-Clean Header for Mobile */
   .editorial-header {
     padding: 6px 10px;
     gap: 5px;
@@ -2740,7 +2740,9 @@ body.xray-active .cad-xray-layer,
     gap: 4px;
   }
   .custom-dropdown-menu {
-    min-width: 120px;
+    left: 0;
+    right: auto;
+    min-width: 125px;
   }
   .custom-dropdown-item {
     font-size: 8.5px;
