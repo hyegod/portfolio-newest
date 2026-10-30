@@ -2707,8 +2707,25 @@ body.xray-active .cad-xray-layer,
     gap: 16px;
   }
   .cad-3d-lab-wrapper {
-    grid-template-columns: 1fr 280px;
-    gap: 16px;
+    grid-template-columns: clamp(260px, 30%, 310px) 1fr;
+    gap: 0;
+  }
+  .cad-control-sidebar {
+    padding: 18px 16px;
+  }
+  .cad-model-selector {
+    margin: 12px 0 16px;
+    gap: 6px;
+  }
+  .cad-model-btn {
+    padding: 8px 10px;
+    font-size: 10px;
+  }
+  .cad-param-group {
+    margin-bottom: 10px;
+  }
+  .cad-viewport-container {
+    height: clamp(520px, 62vh, 600px);
   }
   .collage-sandbox-grid,
   .iso-titleblock-wrapper {
