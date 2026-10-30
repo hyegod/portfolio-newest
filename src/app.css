@@ -3175,20 +3175,40 @@ body.xray-active .cad-xray-layer,
   pointer-events: none;
 }
 
-/* Precision Technical Viewport Corners */
-.loader-corner-bracket {
-  position: absolute;
+.loader-corner-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: rgba(242, 239, 233, 0.35);
+}
+
+.loader-btn-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sig-fs-btn {
+  background: rgba(212, 255, 0, 0.1);
+  border: 1px solid rgba(212, 255, 0, 0.35);
+  color: var(--acid-lime);
+  padding: 6px 12px;
   font-family: var(--font-mono);
   font-size: 9.5px;
-  letter-spacing: 0.16em;
-  color: rgba(242, 239, 233, 0.35);
-  z-index: 5;
-  pointer-events: none;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.loader-corner--tl { top: 14px; left: 20px; }
-.loader-corner--tr { top: 14px; right: 20px; }
-.loader-corner--bl { bottom: 14px; left: 20px; }
-.loader-corner--br { bottom: 14px; right: 20px; }
+
+.sig-fs-btn:hover {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  box-shadow: 0 0 12px rgba(212, 255, 0, 0.4);
+}
 
 /* Background Blueprint Technical Watermark (Static vector, zero GPU re-rasterization) */
 .loader-bg-blueprint {
@@ -4008,10 +4028,17 @@ body.xray-active .cad-xray-layer,
     gap: 8px;
     font-size: 9px;
   }
-  .sig-skip-btn {
+  .loader-btn-cluster {
     width: 100%;
+    display: flex;
+    gap: 6px;
+  }
+  .sig-fs-btn,
+  .sig-skip-btn {
+    flex: 1;
+    justify-content: center;
     text-align: center;
-    padding: 8px;
+    padding: 8px 6px;
   }
   .thread-synthesis-banner {
     padding: 14px 12px;

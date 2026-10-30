@@ -1476,8 +1476,72 @@ export function initSignatureIntroLoader() {
     });
   }
 
+  function enterFullscreen() {
+    try {
+      const el = document.documentElement;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+        if (rfs) {
+          const res = rfs.call(el);
+          if (res && res.catch) res.catch(() => {});
+        }
+      }
+    } catch (_) {}
+  }
+
+  function toggleFullscreen() {
+    try {
+      const el = document.documentElement;
+      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFs) {
+        const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+        if (rfs) {
+          const res = rfs.call(el);
+          if (res && res.catch) res.catch(() => {});
+        }
+      } else {
+        const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+        if (efs) {
+          const res = efs.call(document);
+          if (res && res.catch) res.catch(() => {});
+        }
+      }
+    } catch (_) {}
+  }
+
+  const fsTriggerBtn = document.getElementById('loader-fs-trigger');
+  if (fsTriggerBtn) {
+    fsTriggerBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFullscreen();
+    });
+  }
+
+  const updateFsBtnText = () => {
+    const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    if (fsTriggerBtn) {
+      fsTriggerBtn.innerHTML = isFs 
+        ? '<span>✕ EXIT FULLSCREEN</span>' 
+        : '<span>⛶ F11 FULLSCREEN</span>';
+    }
+  };
+  document.addEventListener('fullscreenchange', updateFsBtnText);
+  document.addEventListener('webkitfullscreenchange', updateFsBtnText);
+
+  // Touching or clicking on the loader backdrop also triggers F11 Fullscreen on user gesture
+  const onBackdropInteract = (e) => {
+    if (!e.target.closest('button') && !e.target.closest('a')) {
+      enterFullscreen();
+    }
+  };
+  loader.addEventListener('click', onBackdropInteract);
+  loader.addEventListener('touchend', onBackdropInteract, { passive: true });
+
   const onKey = (e) => {
-    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+    if (e.key === 'Enter' || e.key === ' ') {
+      enterFullscreen();
+      dismissLoader();
+    } else if (e.key === 'Escape') {
       dismissLoader();
     }
   };
@@ -1486,6 +1550,7 @@ export function initSignatureIntroLoader() {
   if (skipBtn) {
     skipBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      enterFullscreen();
       dismissLoader();
     });
   }

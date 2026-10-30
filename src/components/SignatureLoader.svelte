@@ -3,13 +3,7 @@
   Full-Screen Architectural CAD & Calligraphic Editorial Preloader
 -->
 <div class="signature-intro-loader" id="signature-intro-loader" aria-label="Studio Signature Intro">
-  <!-- Precision Technical Viewport Corners -->
-  <div class="loader-corner-bracket loader-corner--tl">[+ 0,0] // SYS.INIT</div>
-  <div class="loader-corner-bracket loader-corner--tr">[+ 1,0] // CIVIL ENG × DIGITAL</div>
-  <div class="loader-corner-bracket loader-corner--bl">[+ 0,1] // 6°12'S 106°50'E</div>
-  <div class="loader-corner-bracket loader-corner--br">[+ 1,1] // REV.2026</div>
-
-  <!-- Background Blueprint Technical Watermark & Compass Rings (Static high-precision vector, 0% GPU tile invalidation) -->
+  <!-- Background Blueprint Technical Watermark & Compass Rings -->
   <div class="loader-bg-blueprint" aria-hidden="true">
     <svg class="loader-compass-svg" viewBox="0 0 600 600" fill="none">
       <circle cx="300" cy="300" r="280" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1" />
@@ -23,16 +17,18 @@
   </div>
 
   <div class="signature-loader-inner">
-    <!-- Top Meta Telemetry -->
+    <!-- Top Meta Telemetry (Non-colliding, integrated corner reticles) -->
     <header class="signature-loader-top-meta">
       <div class="loader-meta-left">
+        <span class="loader-corner-tag">[+ 0,0]</span>
         <span class="loader-status-pulse"></span>
-        <span class="loader-meta-title">KINETIK.STRUCT // BOOT SEQUENCE</span>
-        <span class="loader-iso-badge">ISO-19650 VERIFIED</span>
+        <span class="loader-meta-title">KINETIK.STRUCT</span>
+        <span class="loader-iso-badge">ISO-19650</span>
       </div>
       <div class="loader-meta-right">
         <span class="loader-phase-tag" id="loader-phase-tag">PHASE 01 // CONTINUUM BOOT</span>
         <span class="loader-clock" id="loader-clock-display">00:00:00 LOCAL</span>
+        <span class="loader-corner-tag">[+ 1,0]</span>
       </div>
     </header>
 
@@ -85,15 +81,15 @@
       </div>
     </div>
 
-    <!-- Bottom Architectural Progress Track & Skip CTA -->
+    <!-- Bottom Architectural Progress Track & Actions -->
     <div class="signature-loader-bottom-bar">
       <div class="loader-progress-track-wrapper">
         <div class="loader-progress-scale">
-          <span>000</span>
+          <span>[+ 0,1] 000</span>
           <span>025</span>
           <span>050</span>
           <span>075</span>
-          <span>100 // TECTONIC LOCK</span>
+          <span>100 // TECTONIC LOCK [+ 1,1]</span>
         </div>
         <div class="loader-progress-track">
           <div class="loader-progress-fill" id="signature-progress-fill" style="width: 0%;"></div>
@@ -105,10 +101,15 @@
           <span class="sig-tagline">INTENT · INTERACTION · TECTONIC SYSTEM</span>
           <span class="loader-coord-pill">JAKARTA / STUTTGART CAD LAB</span>
         </div>
-        <button type="button" class="sig-skip-btn" id="signature-skip-btn">
-          <span>ENTER STUDIO</span>
-          <span class="key-hint">[↵]</span>
-        </button>
+        <div class="loader-btn-cluster">
+          <button type="button" class="sig-fs-btn" id="loader-fs-trigger" title="Launch F11 Fullscreen">
+            <span>⛶ F11 FULLSCREEN</span>
+          </button>
+          <button type="button" class="sig-skip-btn" id="signature-skip-btn">
+            <span>ENTER STUDIO</span>
+            <span class="key-hint">[↵]</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
