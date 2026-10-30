@@ -1426,10 +1426,15 @@ export function initSignatureIntroLoader() {
   const loader = document.getElementById('signature-intro-loader');
   const path = document.getElementById('signature-one-line-path');
   const pctEl = document.getElementById('signature-loader-pct');
+  const progressFill = document.getElementById('signature-progress-fill');
+  const phaseTagEl = document.getElementById('loader-phase-tag');
+  const consoleTextEl = document.getElementById('loader-console-text');
+  const clockEl = document.getElementById('loader-clock-display');
   const skipBtn = document.getElementById('signature-skip-btn');
 
   if (!loader) return;
 
+  let tl = null;
   let dismissedEmitted = false;
   function emitDismissed() {
     if (dismissedEmitted) return;
@@ -1437,23 +1442,38 @@ export function initSignatureIntroLoader() {
     window.dispatchEvent(new CustomEvent('signature-dismissed'));
   }
 
-  // Notify the rest of the app whenever the loader leaves, however it was dismissed
-  if (typeof MutationObserver !== 'undefined') {
-    const mo = new MutationObserver(() => {
-      if (loader.classList.contains('is-dismissed')) {
-        mo.disconnect();
-        emitDismissed();
-      }
-    });
-    mo.observe(loader, { attributes: true, attributeFilter: ['class'] });
+  // Live Clock updater (low frequency: 1s)
+  function updateClock() {
+    if (!clockEl) return;
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const s = String(d.getSeconds()).padStart(2, '0');
+    clockEl.textContent = `${h}:${m}:${s} LOCAL`;
   }
+  updateClock();
+  const clockTimer = setInterval(updateClock, 1000);
 
   function dismissLoader() {
     if (loader.classList.contains('is-dismissed')) return;
     loader.classList.add('is-dismissed');
+    if (tl) tl.kill();
+    clearInterval(clockTimer);
     window.removeEventListener('keydown', onKey);
-    playMechanicalTick(1280, 0.04);
+    playMechanicalTick(1280, 0.05);
+
+    // Notify the rest of the application so interactive systems mount
     emitDismissed();
+
+    // Cinematic editorial shutter slide-up with GSAP
+    gsap.to(loader, {
+      yPercent: -102,
+      duration: 0.85,
+      ease: 'power4.inOut',
+      onComplete: () => {
+        loader.style.display = 'none';
+      }
+    });
   }
 
   const onKey = (e) => {
@@ -1464,45 +1484,79 @@ export function initSignatureIntroLoader() {
   window.addEventListener('keydown', onKey);
 
   if (skipBtn) {
-    skipBtn.addEventListener('click', dismissLoader);
+    skipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dismissLoader();
+    });
   }
 
   if (prefersReducedMotion || !path) {
-    setTimeout(dismissLoader, 450);
+    setTimeout(dismissLoader, 600);
     return;
   }
 
-  const len = Math.ceil(path.getTotalLength ? path.getTotalLength() : 2200);
+  const len = Math.ceil(path.getTotalLength ? path.getTotalLength() : 2500);
   path.style.strokeDasharray = `${len}`;
   path.style.strokeDashoffset = `${len}`;
 
+  const PHASES = [
+    { threshold: 0, tag: 'PHASE 01 // CONTINUUM BOOT', msg: 'INITIALIZING CONTINUUM MECHANICS & TECTONIC SYSTEM...' },
+    { threshold: 22, tag: 'PHASE 02 // FINITE ELEMENT NODES', msg: 'SOLVING FINITE ELEMENT EQUILIBRIUM & STRAIN TENSORS...' },
+    { threshold: 48, tag: 'PHASE 03 // 3D CAD ENGINE', msg: 'COMPILING WEBGL 3D SHADERS & PARAMETRIC BUFFERS...' },
+    { threshold: 74, tag: 'PHASE 04 // EDITORIAL SYNTHESIS', msg: 'MOUNTING BRUTALIST SWISS GRID & KINETIC TYPOGRAPHY...' },
+    { threshold: 95, tag: 'PHASE 05 // TECTONIC LOCK', msg: 'TECTONIC LOCK ESTABLISHED // ALL CORES SYNCHRONIZED' }
+  ];
+
   const progressObj = { pct: 0 };
   let lastPct = -1;
+  let currentPhaseIndex = -1;
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const drawDuration = isMobile ? 2.3 : 2.7;
+  // Cinematic pacing: ~3.2s on desktop, ~2.8s on mobile/tablet (fluid, hardware-accelerated, zero lag)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1024;
+  const drawDuration = isMobile ? 2.8 : 3.2;
 
-  const tl = gsap.timeline({
+  tl = gsap.timeline({
     onComplete: () => {
-      setTimeout(dismissLoader, 240);
+      // Hold for 350ms at 100% so user sees the complete locked state
+      setTimeout(dismissLoader, 350);
     }
   });
 
   tl.to(path, {
     strokeDashoffset: 0,
     duration: drawDuration,
-    ease: 'power1.inOut'
+    ease: 'power2.inOut'
   }, 0);
 
   tl.to(progressObj, {
     pct: 100,
-    duration: drawDuration - 0.1,
-    ease: 'power1.inOut',
+    duration: drawDuration,
+    ease: 'power2.inOut',
     onUpdate: () => {
-      const current = Math.round(progressObj.pct);
-      if (current !== lastPct && pctEl) {
+      const current = Math.min(100, Math.round(progressObj.pct));
+      if (current !== lastPct) {
         lastPct = current;
-        pctEl.textContent = `${current.toString().padStart(2, '0')}%`;
+        if (pctEl) {
+          pctEl.textContent = `${current.toString().padStart(3, '0')}%`;
+        }
+        if (progressFill) {
+          progressFill.style.width = `${current}%`;
+        }
+
+        // Determine current phase
+        let pIndex = 0;
+        for (let i = PHASES.length - 1; i >= 0; i--) {
+          if (current >= PHASES[i].threshold) {
+            pIndex = i;
+            break;
+          }
+        }
+        if (pIndex !== currentPhaseIndex) {
+          currentPhaseIndex = pIndex;
+          if (phaseTagEl) phaseTagEl.textContent = PHASES[pIndex].tag;
+          if (consoleTextEl) consoleTextEl.textContent = PHASES[pIndex].msg;
+          playMechanicalTick(920 + pIndex * 100, 0.015);
+        }
       }
     }
   }, 0);

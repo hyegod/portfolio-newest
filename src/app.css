@@ -3148,93 +3148,280 @@ body.xray-active .cad-xray-layer,
    4. Live System Receipt / Telemetry Micro-Cards in Archive
    ========================================================================== */
 
-/* 1. One-Line Signature Intro Loader */
+/* 1. Full-Screen Architectural Signature Intro Loader (Glitch-Free & GPU Optimized) */
 .signature-intro-loader {
   position: fixed;
-  inset: 0;
-  background: #08080B;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background-color: #07070A;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 85, 255, 0.08) 0%, transparent 65%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
   color: #F2EFE9;
-  z-index: 9995;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1),
-              opacity 0.65s ease;
+  z-index: 999999;
+  overflow: hidden;
+  user-select: none;
+  box-sizing: border-box;
 }
 
 .signature-intro-loader.is-dismissed {
-  transform: translateY(-102%);
   pointer-events: none;
 }
 
+/* Precision Technical Viewport Corners */
+.loader-corner-bracket {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: rgba(242, 239, 233, 0.35);
+  z-index: 5;
+  pointer-events: none;
+}
+.loader-corner--tl { top: 14px; left: 20px; }
+.loader-corner--tr { top: 14px; right: 20px; }
+.loader-corner--bl { bottom: 14px; left: 20px; }
+.loader-corner--br { bottom: 14px; right: 20px; }
+
+/* Background Blueprint Technical Watermark (Static vector, zero GPU re-rasterization) */
+.loader-bg-blueprint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.65;
+}
+
+.loader-compass-svg {
+  width: min(70vw, 520px);
+  height: min(70vw, 520px);
+}
+
+/* Loader Inner - Edge to Edge Spanning */
 .signature-loader-inner {
+  position: relative;
+  z-index: 3;
   width: 100%;
-  max-width: 860px;
+  height: 100%;
+  padding: clamp(14px, 3vh, 32px) clamp(16px, 4vw, 48px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 28px;
-  position: relative;
+  box-sizing: border-box;
 }
 
-/* Hardware-accelerated GPU ambient glow behind the signature (eliminates per-frame CPU filter rasterization) */
-.signature-loader-inner::before {
-  content: '';
-  position: absolute;
-  inset: 15% 10%;
-  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(212, 255, 0, 0.12) 0%, rgba(0, 85, 255, 0.05) 50%, transparent 75%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(28px);
-  transform: translateZ(0);
-}
-
+/* Top Meta Telemetry */
 .signature-loader-top-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.14em;
-  color: #9496A1;
-  border-bottom: 1px solid rgba(242, 239, 233, 0.15);
-  padding-bottom: 12px;
+  color: #A0A3AF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+  min-height: 26px;
 }
 
-#signature-loader-pct {
+.loader-meta-left, .loader-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loader-status-pulse {
+  width: 7px;
+  height: 7px;
+  background: var(--acid-lime);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--acid-lime);
+}
+
+.loader-iso-badge {
+  background: rgba(0, 85, 255, 0.2);
+  border: 1px solid rgba(0, 85, 255, 0.5);
+  color: #4D8BFF;
+  font-size: 8.5px;
+  padding: 1px 6px;
+  letter-spacing: 0.1em;
+}
+
+.loader-phase-tag {
   color: var(--acid-lime);
-  font-weight: 800;
-  font-size: 13px;
+  font-weight: 700;
+}
+
+.loader-clock {
+  color: rgba(242, 239, 233, 0.5);
+}
+
+/* Center Hero Presentation */
+.loader-center-hero {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.loader-hero-watermark {
+  font-family: var(--font-grotesk);
+  font-size: clamp(38px, 8.5vh, 110px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+  user-select: none;
+  margin-bottom: 2px;
+}
+
+.loader-hero-sub {
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px, 1.3vh, 11.5px);
+  letter-spacing: 0.2em;
+  color: rgba(242, 239, 233, 0.6);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.loader-signature-stage {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: clamp(90px, 19vh, 190px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .signature-one-line-svg {
   width: 100%;
-  height: auto;
-  max-height: 240px;
+  height: 100%;
   overflow: visible;
-  transform: translateZ(0);
-  will-change: transform;
+}
+
+.sig-path-trace {
+  opacity: 0.22;
 }
 
 #signature-one-line-path {
   will-change: stroke-dashoffset;
 }
 
+/* Real-Time Telemetry Console */
+.loader-telemetry-console {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.loader-pct-huge {
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 4.5vh, 52px);
+  font-weight: 900;
+  color: var(--acid-lime);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(212, 255, 0, 0.4);
+}
+
+.loader-console-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1.2vh, 11px);
+  letter-spacing: 0.14em;
+  color: #C5C7D0;
+}
+
+.console-prefix {
+  color: var(--acid-lime);
+  font-weight: 800;
+}
+
+/* Bottom Progress Track & Actions */
 .signature-loader-bottom-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+}
+
+.loader-progress-track-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.loader-progress-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.15em;
+  color: rgba(242, 239, 233, 0.4);
+}
+
+.loader-progress-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loader-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0066FF 0%, var(--acid-lime) 80%, #FFFFFF 100%);
+  box-shadow: 0 0 10px var(--acid-lime);
+  will-change: width;
+}
+
+.loader-bottom-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(242, 239, 233, 0.15);
-  padding-top: 14px;
+}
+
+.loader-tagline-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
+  font-size: 10px;
+  letter-spacing: 0.12em;
 }
 
 .sig-tagline {
   color: #F2EFE9;
-  opacity: 0.8;
+  opacity: 0.85;
+}
+
+.loader-coord-pill {
+  color: rgba(242, 239, 233, 0.45);
 }
 
 .sig-skip-btn {
@@ -3246,12 +3433,62 @@ body.xray-active .cad-xray-layer,
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .sig-skip-btn:hover {
   background: #FFFFFF;
   transform: translateY(-2px);
+}
+
+.key-hint {
+  font-size: 8.5px;
+  opacity: 0.7;
+}
+
+/* Tablet & Compact Heights (e.g. Android tablet landscape, 1024x555) */
+@media (max-height: 760px), (max-width: 1024px) {
+  .signature-loader-inner {
+    padding: 12px 18px;
+  }
+  .loader-hero-watermark {
+    font-size: clamp(32px, 7vh, 56px);
+  }
+  .loader-signature-stage {
+    height: clamp(75px, 16vh, 120px);
+  }
+  .loader-pct-huge {
+    font-size: clamp(24px, 4vh, 34px);
+  }
+  .loader-console-line {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 600px) {
+  .loader-corner-bracket {
+    display: none;
+  }
+  .loader-meta-right,
+  .loader-coord-pill {
+    display: none;
+  }
+  .loader-hero-watermark {
+    font-size: 42px;
+  }
+  .loader-bottom-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sig-skip-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* 2. Full-Stage Organic Content-Weaving Thread SVG Overlay (Daksh Gajjar Homage)
