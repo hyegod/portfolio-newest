@@ -576,6 +576,7 @@ img {
   display: flex;
   align-items: center;
   gap: 14px;
+  margin: auto 0;
 }
 
 .spine-rotated-text .dot-sep {
@@ -585,7 +586,8 @@ img {
 
 .spine-scale-ruler {
   width: 14px;
-  height: 120px;
+  height: clamp(32px, 6vh, 60px);
+  flex-shrink: 0;
   background-image: repeating-linear-gradient(
     to bottom,
     var(--ink-black) 0,
