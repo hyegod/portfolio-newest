@@ -2,20 +2,29 @@
   GlobalOverlays.svelte
   Tactile Brutalist Industrial Paper, Halftone Screen-Print & Architectural Watermarks
   Supports Theme Toggles:
-  - Option 3: Brutalist Industrial & Halftone Paper (Active default)
-  - Option 4: Cyber Kinetic Wave & Seismic Frequency Mesh
+  - Option 4: Cyber Kinetic Wave & Seismic Frequency Mesh (Active default per user request)
+  - Option 3: Brutalist Industrial & Halftone Paper
 -->
 <script>
   import { onMount } from 'svelte';
   import { initPrebakedPaperGrain, initKineticWaveBackground } from '../lib/scene3d.js';
 
   onMount(() => {
-    // Set default background style to Option 3: Brutalist Zine
-    if (!document.documentElement.getAttribute('data-bg-style')) {
-      document.documentElement.setAttribute('data-bg-style', 'zine');
-    }
+    // Default background style: Option 4 Cyber Kinetic Wave
+    document.documentElement.setAttribute('data-bg-style', 'wave');
     initPrebakedPaperGrain();
-    initKineticWaveBackground();
+
+    // Defer full-screen wave canvas rendering until loader is dismissed so GPU is 100% dedicated to loader!
+    const startWave = () => {
+      initKineticWaveBackground();
+    };
+
+    const loader = document.getElementById('signature-intro-loader');
+    if (!loader || loader.classList.contains('is-dismissed')) {
+      startWave();
+    } else {
+      window.addEventListener('signature-dismissed', startWave, { once: true });
+    }
   });
 </script>
 
@@ -82,7 +91,7 @@
   </div>
 </div>
 
-<!-- 5. Option 4: Cyber Kinetic Wave & Seismic Frequency Canvas (Interactive layer, active when toggled) -->
+<!-- 5. Option 4: Cyber Kinetic Wave & Seismic Frequency Canvas (Interactive layer, active by default) -->
 <div class="cyber-kinetic-wave-layer" id="cyber-kinetic-wave-layer" aria-hidden="true">
   <canvas id="kinetic-wave-canvas"></canvas>
 </div>

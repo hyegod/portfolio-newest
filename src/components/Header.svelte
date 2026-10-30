@@ -7,7 +7,7 @@
   import { playMechanicalTick } from '../lib/interactions.js';
 
   let currentTheme = 'editorial';
-  let currentBgMode = 'zine'; // 'zine' (Option 3 default) or 'wave' (Option 4)
+  let currentBgMode = 'wave'; // 'zine' (Option 3 default) or 'wave' (Option 4)
   let isOpen = false;
 
   const themes = [
@@ -47,7 +47,7 @@
   onMount(() => {
     const active = document.documentElement.getAttribute('data-theme') || 'editorial';
     currentTheme = active;
-    const activeBg = document.documentElement.getAttribute('data-bg-style') || 'zine';
+    const activeBg = document.documentElement.getAttribute('data-bg-style') || 'wave';
     currentBgMode = activeBg;
     document.documentElement.setAttribute('data-bg-style', currentBgMode);
 

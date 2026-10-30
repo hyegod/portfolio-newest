@@ -101,15 +101,10 @@
           <span class="sig-tagline">INTENT · INTERACTION · TECTONIC SYSTEM</span>
           <span class="loader-coord-pill">JAKARTA / STUTTGART CAD LAB</span>
         </div>
-        <div class="loader-btn-cluster">
-          <button type="button" class="sig-fs-btn" id="loader-fs-trigger" title="Launch F11 Fullscreen">
-            <span>⛶ F11 FULLSCREEN</span>
-          </button>
-          <button type="button" class="sig-skip-btn" id="signature-skip-btn">
-            <span>ENTER STUDIO</span>
-            <span class="key-hint">[↵]</span>
-          </button>
-        </div>
+        <button type="button" class="sig-skip-btn" id="signature-skip-btn">
+          <span>ENTER STUDIO</span>
+          <span class="key-hint">[↵]</span>
+        </button>
       </div>
     </div>
   </div>
