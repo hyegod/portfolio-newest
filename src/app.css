@@ -1,0 +1,3670 @@
+/* ==========================================================================
+   KINETIK.STRUCT // EXPERIMENTAL EDITORIAL CREATIVE PORTFOLIO
+   Civil Engineering × Information Technology × Graphic Design
+   Palette: Warm Cream (#F2EFE9), Deep Black (#0D0D10), Electric Blue (#0038FF), Acid Lime (#D4FF00)
+   ========================================================================== */
+
+:root {
+  /* Core Palette - Editorial Archive Mode (Default) */
+  --bg-paper: #F2EFE9;
+  --bg-paper-alt: #E6E1D6;
+  --bg-card: #EAE5DA;
+  --ink-black: #0D0D10;
+  --ink-muted: #4A4946;
+  --ink-faint: rgba(13, 13, 16, 0.16);
+  --rule-color: #1A1A1E;
+  --grid-hairline: rgba(13, 13, 16, 0.08);
+
+  /* Signature Accents */
+  --electric-blue: #0038FF;
+  --electric-blue-glow: rgba(0, 56, 255, 0.25);
+  --acid-lime: #D4FF00;
+  --acid-lime-dark: #B8DF00;
+  --accent-text: #0038FF;
+
+  /* High-Contrast Interactive Button & Badge Tokens */
+  --btn-primary-bg: #0D0D10;
+  --btn-primary-fg: #D4FF00;
+  --btn-primary-border: #0D0D10;
+  --btn-hover-bg: #0038FF;
+  --btn-hover-fg: #FFFFFF;
+  --badge-dark-bg: #0D0D10;
+  --badge-dark-fg: #D4FF00;
+  
+  /* Tactile Tape Colors (from Stussy Reference) */
+  --tape-slate: #4E637A;
+  --tape-rose: #B47884;
+  --tape-masking: #DFD8C8;
+  --tape-blue: #0038FF;
+
+  /* Typography */
+  --font-display: 'Syne', 'Space Grotesk', sans-serif;
+  --font-grotesk: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  --font-marker: 'Permanent Marker', 'Rock Salt', cursive;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  /* Layout Metrics */
+  --header-h: 54px;
+  --footer-h: 48px;
+  --spine-w: 48px;
+  --border-thin: 1px solid var(--rule-color);
+  --border-bold: 2px solid var(--ink-black);
+}
+
+/* Theme 02: Blueprint CAD Mode */
+[data-theme="blueprint"] {
+  --bg-paper: #0026B3;
+  --bg-paper-alt: #001D8A;
+  --bg-card: #002ECA;
+  --ink-black: #F4F6FF;
+  --ink-muted: #B8CAFF;
+  --ink-faint: rgba(244, 246, 255, 0.22);
+  --rule-color: rgba(244, 246, 255, 0.65);
+  --grid-hairline: rgba(244, 246, 255, 0.12);
+  --electric-blue: #0048FF;
+  --acid-lime: #D4FF00;
+  --accent-text: #D4FF00;
+  --btn-primary-bg: #D4FF00;
+  --btn-primary-fg: #0D0D10;
+  --btn-primary-border: #0D0D10;
+  --btn-hover-bg: #FFFFFF;
+  --btn-hover-fg: #001D8A;
+  --badge-dark-bg: #070D29;
+  --badge-dark-fg: #D4FF00;
+  --tape-slate: #001766;
+  --tape-rose: #D4FF00;
+}
+
+/* Theme 03: Cyber Terminal Mode */
+[data-theme="cyber"] {
+  --bg-paper: #0B0B0E;
+  --bg-paper-alt: #14141B;
+  --bg-card: #181822;
+  --ink-black: #F2EFE9;
+  --ink-muted: #A2A5B5;
+  --ink-faint: rgba(242, 239, 233, 0.15);
+  --rule-color: rgba(242, 239, 233, 0.35);
+  --grid-hairline: rgba(0, 85, 255, 0.18);
+  --electric-blue: #0055FF;
+  --acid-lime: #D4FF00;
+  --accent-text: #D4FF00;
+  --btn-primary-bg: #D4FF00;
+  --btn-primary-fg: #0D0D10;
+  --btn-primary-border: #D4FF00;
+  --btn-hover-bg: #0055FF;
+  --btn-hover-fg: #FFFFFF;
+  --badge-dark-bg: #050507;
+  --badge-dark-fg: #D4FF00;
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Controlled by Lenis */
+  background-color: var(--bg-paper);
+  color: var(--ink-black);
+  transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-grotesk);
+  background-color: var(--bg-paper);
+  color: var(--ink-black);
+  line-height: 1.45;
+  overflow-x: clip;
+  position: relative;
+  min-height: 100vh;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--acid-lime);
+  color: #0D0D10;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after,
+  html, body, a, button, input, select, textarea, label,
+  [data-interactive], #cad-interactive-canvas, #cad-interactive-canvas:active,
+  .draggable-sticker, .draggable-sticker:active {
+    cursor: none !important;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  user-select: none;
+}
+
+/* ==========================================================================
+   PAPER TEXTURE, FOLD CREASES & ARCHITECTURAL GRID OVERLAYS (GPU-OPTIMIZED)
+   ========================================================================== */
+.paper-grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.22;
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  transform: translateZ(0);
+  contain: strict;
+}
+
+[data-theme="blueprint"] .paper-grain-overlay,
+[data-theme="cyber"] .paper-grain-overlay {
+  opacity: 0.14;
+}
+
+/* Authentic magazine fold creases like the Stussy reference image */
+.paper-fold-creases {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9985;
+  transform: translateZ(0);
+  contain: strict;
+  background:
+    /* Vertical center magazine fold crease */
+    linear-gradient(90deg,
+      transparent calc(50% - 2px),
+      rgba(0, 0, 0, 0.07) calc(50% - 1px),
+      rgba(255, 255, 255, 0.45) 50%,
+      rgba(0, 0, 0, 0.04) calc(50% + 1px),
+      transparent calc(50% + 3px)
+    ),
+    /* Subtle quarter fold crease */
+    linear-gradient(90deg,
+      transparent calc(77% - 1px),
+      rgba(0, 0, 0, 0.04) 77%,
+      rgba(255, 255, 255, 0.25) calc(77% + 1px),
+      transparent calc(77% + 2px)
+    ),
+    /* Horizontal fold crease */
+    linear-gradient(180deg,
+      transparent calc(52% - 2px),
+      rgba(0, 0, 0, 0.045) 52%,
+      rgba(255, 255, 255, 0.35) calc(52% + 1px),
+      transparent calc(52% + 2px)
+    );
+}
+
+/* Architectural Blueprint Grid Background */
+.architectural-grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0);
+  contain: strict;
+  background-size: 48px 48px, 240px 240px;
+  background-image:
+    linear-gradient(to right, var(--grid-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-hairline) 1px, transparent 1px),
+    linear-gradient(to right, var(--ink-faint) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ink-faint) 1px, transparent 1px);
+}
+
+/* Soft Bottom Viewport Horizon / Receipt Slot Fade */
+.bottom-horizon-slot-fade {
+  position: fixed;
+  left: var(--spine-w);
+  right: 0;
+  bottom: var(--footer-h);
+  height: 48px;
+  pointer-events: none;
+  z-index: 850;
+  transform: translateZ(0);
+  contain: strict;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: linear-gradient(
+    to top,
+    var(--bg-paper) 0%,
+    rgba(242, 239, 233, 0.58) 38%,
+    rgba(242, 239, 233, 0) 100%
+  );
+}
+
+.bottom-horizon-slot-fade.is-active {
+  opacity: 1;
+}
+
+[data-theme="blueprint"] .bottom-horizon-slot-fade {
+  background: linear-gradient(
+    to top,
+    var(--bg-paper) 0%,
+    rgba(0, 38, 179, 0.68) 38%,
+    rgba(0, 38, 179, 0) 100%
+  );
+}
+
+[data-theme="cyber"] .bottom-horizon-slot-fade {
+  background: linear-gradient(
+    to top,
+    var(--bg-paper) 0%,
+    rgba(11, 11, 14, 0.72) 38%,
+    rgba(11, 11, 14, 0) 100%
+  );
+}
+
+/* Global Three.js Background Canvas */
+#webgl-bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.85;
+  transform: translateZ(0);
+}
+
+/* Custom CAD Crosshair Follower (Hardware-composited without software blend-mode readback) */
+.cad-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+  transition: width 0.16s ease, height 0.16s ease;
+  will-change: transform;
+}
+
+.cad-cursor.is-hovering {
+  width: 48px;
+  height: 48px;
+}
+
+.cad-cursor.is-hovering .cad-cursor-ring {
+  border-color: #FF3B1D;
+  transform: rotate(45deg) scale(1.08);
+}
+
+.cad-cursor::before,
+.cad-cursor::after {
+  content: '';
+  position: absolute;
+  background: var(--electric-blue);
+  box-shadow: 0 0 0 0.75px var(--acid-lime);
+}
+
+.cad-cursor::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+.cad-cursor::after {
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+
+.cad-cursor-ring {
+  position: absolute;
+  inset: 6px;
+  border: 1.5px solid var(--electric-blue);
+  box-shadow: 0 0 0 1px var(--acid-lime);
+  border-radius: 50%;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.cad-cursor-coords {
+  position: absolute;
+  top: 26px;
+  left: 26px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.1;
+  color: var(--acid-lime);
+  background: #0D0D10;
+  padding: 2px 4px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   EDITORIAL FRAME HEADER, SPINE & FOOTER (Exact Stussy Reference Framing)
+   ========================================================================== */
+.editorial-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-h);
+  background: rgba(242, 239, 233, 0.97);
+  border-bottom: var(--border-thin);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 22px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateZ(0);
+}
+
+[data-theme="blueprint"] .editorial-header {
+  background: rgba(0, 38, 179, 0.97);
+}
+
+[data-theme="cyber"] .editorial-header {
+  background: rgba(11, 11, 14, 0.97);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.header-brand-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--electric-blue);
+  border: 1.5px solid var(--ink-black);
+  display: inline-block;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0 var(--acid-lime);
+}
+
+.header-brand-title {
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.header-brand-sub {
+  font-size: 9.5px;
+  padding: 2px 6px;
+  border: 1px solid var(--ink-faint);
+  color: var(--ink-muted);
+  letter-spacing: 0.08em;
+}
+
+.header-center-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.header-nav-link {
+  color: var(--ink-black);
+  text-decoration: none;
+  padding: 5px 9px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.header-nav-link:focus-visible {
+  border-color: var(--electric-blue);
+}
+
+.header-nav-link:hover {
+  border-color: var(--ink-black);
+}
+
+.header-nav-link.active {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: #0D0D10;
+  box-shadow: 2px 2px 0 #0D0D10;
+}
+
+.header-right-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Theme & X-Ray Controls */
+.mode-pill-group {
+  display: inline-flex;
+  border: 1px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  flex-shrink: 0;
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 5px 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.mode-btn.active {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+}
+
+.xray-toggle-btn {
+  border: 1.5px solid var(--accent-text);
+  background: transparent;
+  color: var(--accent-text);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.xray-toggle-btn.active,
+.xray-toggle-btn:hover {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  box-shadow: 2px 2px 0 var(--electric-blue);
+}
+
+.page-counter-badge {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  padding-left: 8px;
+  border-left: 1px solid var(--ink-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1320px) {
+  .header-brand-sub {
+    display: none;
+  }
+  .header-nav-link {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+}
+
+/* Left Vertical Spine (Reference: "INTERNATIONAL TRIBE · BUILT TO LAST") */
+.editorial-left-spine {
+  position: fixed;
+  top: var(--header-h);
+  bottom: var(--footer-h);
+  left: 0;
+  width: var(--spine-w);
+  border-right: var(--border-thin);
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  background: rgba(242, 239, 233, 0.88);
+  transform: translateZ(0);
+  user-select: none;
+}
+
+[data-theme="blueprint"] .editorial-left-spine,
+[data-theme="cyber"] .editorial-left-spine {
+  background: rgba(11, 11, 18, 0.82);
+}
+
+.spine-rotated-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-black);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.spine-rotated-text .dot-sep {
+  color: var(--accent-text);
+  font-weight: 900;
+}
+
+.spine-scale-ruler {
+  width: 14px;
+  height: 120px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--ink-black) 0,
+    var(--ink-black) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  opacity: 0.55;
+}
+
+/* Editorial Bottom Footer Bar with Crosshair Target */
+.editorial-footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-h);
+  background: rgba(242, 239, 233, 0.97);
+  border-top: var(--border-thin);
+  z-index: 900;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 28px 0 calc(var(--spine-w) + 24px);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transform: translateZ(0);
+}
+
+[data-theme="blueprint"] .editorial-footer-bar {
+  background: rgba(0, 38, 179, 0.92);
+}
+
+[data-theme="cyber"] .editorial-footer-bar {
+  background: rgba(11, 11, 14, 0.92);
+}
+
+/* Registration Crosshair sitting on the footer line (exact match to reference) */
+.registration-crosshair-dock {
+  position: absolute;
+  top: -16px;
+  left: 47%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--bg-paper);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.footer-pillars-ticker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer-pillars-ticker span.bullet {
+  color: var(--accent-text);
+}
+
+.footer-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink-muted);
+}
+
+.telemetry-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--acid-lime);
+  border: 1px solid var(--ink-black);
+  animation: pulseDot 1.6s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.6; }
+}
+
+.footer-domain {
+  text-align: right;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+/* ==========================================================================
+   MAIN VIEWPORT CONTAINER
+   ========================================================================== */
+.main-editorial-stage {
+  position: relative;
+  z-index: 10;
+  padding-top: var(--header-h);
+  padding-left: var(--spine-w);
+  padding-right: var(--spine-w);
+  padding-bottom: calc(var(--footer-h) + 20px);
+}
+
+.editorial-section {
+  position: relative;
+  padding: 40px 44px;
+  border-bottom: var(--border-bold);
+}
+
+/* ==========================================================================
+   SECTION 01: STÜSSY-REFERENCED EDITORIAL CAMPAIGN / PORTFOLIO SPREAD
+   ========================================================================== */
+#sec-spread {
+  padding-top: 0;
+  padding-bottom: 40px;
+}
+
+.spread-01-container {
+  max-width: 1560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Top Layout Grid: Left Editorial Intro Column + Right Card 01 */
+.spread-top-row {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  gap: 36px;
+  align-items: start;
+  align-content: start;
+  /* Fixed top offset so the cards stay vertically centered and never shift when show more toggles */
+  padding-top: max(0px, calc((100vh - var(--header-h) - var(--footer-h) - var(--card01-h, 580px)) / 2));
+  margin-bottom: clamp(120px, 16vh, 175px);
+}
+
+/* Left Column Editorial Manifesto (Matches Card 01 Height 1:1 when collapsed, expands independently) */
+.editorial-sidebar-essay {
+  padding-top: 8px;
+  position: relative;
+  min-height: var(--card01-h, 580px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.essay-top-content {
+  position: relative;
+}
+
+.essay-measure-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.essay-index-tag {
+  display: inline-block;
+  background: var(--electric-blue);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+  box-shadow: 3px 3px 0 var(--acid-lime);
+}
+
+.essay-main-title {
+  font-family: var(--font-grotesk);
+  font-size: 31px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.essay-paragraph {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.56;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-black);
+  margin-bottom: 0;
+}
+
+.essay-more-collapse {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: height 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.28s ease;
+  will-change: height, opacity;
+}
+
+.essay-more-collapse.is-expanded {
+  opacity: 1;
+}
+
+.essay-more-inner {
+  padding-top: 12px;
+}
+
+.essay-paragraph--more {
+  padding-top: 10px;
+  border-top: 1px dashed var(--ink-faint);
+  transform: translateY(-6px);
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.essay-more-collapse.is-expanded .essay-paragraph--more {
+  transform: translateY(0);
+}
+
+.essay-inline-toggle {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  opacity: 1;
+  transition: color 0.15s ease, background-color 0.15s ease, opacity 0.22s ease;
+}
+
+.essay-inline-toggle.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.essay-inline-toggle:hover {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  text-decoration: none;
+}
+
+/* Architect Spec Mini-Box in Left Column */
+.essay-spec-matrix {
+  border: 1.5px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  padding: 10px 12px;
+  margin-top: 16px;
+  position: relative;
+}
+
+.essay-spec-matrix::before {
+  content: 'SPEC // ISO-19650';
+  position: absolute;
+  top: -9px;
+  left: 8px;
+  background: var(--acid-lime);
+  color: #0D0D10;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border: 1px solid #0D0D10;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4.5px 0;
+  border-bottom: 1px dashed var(--ink-faint);
+}
+
+.spec-row:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  color: var(--ink-muted);
+}
+
+.spec-val {
+  font-weight: 700;
+}
+
+/* Bottom Row of Spread: Card 02 + Card 03 Side by Side */
+.spread-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+  padding-left: 0;
+  position: relative;
+}
+
+/* ==========================================================================
+   COLLAGE CARDS (01, 02, 03) — HALFTONE, STICKERS, TORN TAPE, CALLIGRAPHY
+   ========================================================================== */
+.collage-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1.5px solid var(--ink-black);
+  transition: box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.collage-card:hover {
+  box-shadow: 10px 10px 0 var(--ink-black);
+}
+
+/* Card 01 Halftone Stipple Outer Border (Just like Card 01 in Stussy image!) */
+.collage-card--halftone-frame {
+  padding: 18px;
+  background-color: var(--bg-paper);
+  background-image: radial-gradient(var(--ink-black) 1.15px, transparent 1.15px),
+                    radial-gradient(var(--ink-black) 1.15px, var(--bg-paper) 1.15px);
+  background-size: 6px 6px;
+  background-position: 0 0, 3px 3px;
+}
+
+.collage-visual-stage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #141418;
+  border: 1px solid var(--ink-black);
+}
+
+.collage-card--01 .collage-visual-stage {
+  height: 490px;
+}
+
+.collage-card--02 .collage-visual-stage,
+.collage-card--03 .collage-visual-stage {
+  height: 430px;
+}
+
+.collage-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collage-card:hover .collage-photo {
+  transform: scale(1.035);
+}
+
+/* Acid-Yellow/Lime Circular Number Badges (01, 02, 03) */
+.badge-num-circle {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: var(--acid-lime);
+  border: 2px solid #0D0D10;
+  color: #0D0D10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-grotesk);
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  z-index: 30;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.28);
+  transform: rotate(-6deg);
+}
+
+.collage-card:hover .badge-num-circle {
+  background: #FFFFFF;
+}
+
+.collage-card--01 .badge-num-circle {
+  top: -18px;
+  left: -18px;
+}
+
+.collage-card--02 .badge-num-circle {
+  top: 12px;
+  left: 12px;
+}
+
+.collage-card--03 .badge-num-circle {
+  top: 12px;
+  left: 12px;
+}
+
+/* Expressive Stüssy-Style Street/Architectural Hand-Lettered SVG Overlay */
+.handstyle-tag-svg {
+  position: absolute;
+  z-index: 22;
+  pointer-events: none;
+}
+
+.collage-card--01 .handstyle-tag-svg {
+  top: 18px;
+  left: 82px;
+  width: 390px;
+  height: auto;
+}
+
+.collage-card--02 .handstyle-tag-svg {
+  top: 26px;
+  left: 50px;
+  width: 270px;
+  height: auto;
+}
+
+.collage-card--03 .handstyle-tag-svg {
+  bottom: 42px;
+  left: 28px;
+  width: 300px;
+  height: auto;
+}
+
+/* Handwritten City / Discipline Stack List (e.g., NEW YORK / LOS ANGELES / TOKYO...) */
+.handwritten-stack-list {
+  position: absolute;
+  z-index: 24;
+  font-family: var(--font-marker);
+  font-size: 16px;
+  line-height: 1.28;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  border-bottom: 2.5px solid currentColor;
+}
+
+.collage-card--01 .handwritten-stack-list {
+  bottom: 95px;
+  left: 34px;
+  color: #0D0D10;
+  background: rgba(242, 239, 233, 0.86);
+  padding: 10px 14px;
+  transform: rotate(-1.5deg);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+}
+
+.collage-card--02 .handwritten-stack-list {
+  top: 150px;
+  left: 24px;
+  color: #F2EFE9;
+  text-shadow: 2px 2px 0 #0D0D10;
+  font-size: 14px;
+}
+
+/* Torn Paper / Tape Stickers (Slate Blue, Dusty Rose, Masking Tape) */
+.torn-tape-sticker {
+  position: absolute;
+  z-index: 28;
+  padding: 14px 20px;
+  font-family: var(--font-marker);
+  line-height: 1.22;
+  text-transform: uppercase;
+  box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.26);
+  /* Authentic jagged torn paper polygon */
+  clip-path: polygon(
+    2% 4%, 7% 1%, 14% 3%, 22% 0%, 31% 2%, 42% 0%, 54% 2%, 65% 0%, 76% 3%, 88% 1%, 96% 4%, 99% 2%,
+    98% 15%, 100% 28%, 97% 42%, 100% 57%, 98% 71%, 100% 85%, 97% 96%,
+    90% 99%, 79% 97%, 67% 100%, 55% 98%, 43% 100%, 31% 97%, 19% 100%, 9% 98%, 1% 95%,
+    3% 81%, 0% 67%, 2% 52%, 0% 38%, 3% 23%, 0% 11%
+  );
+  backface-visibility: hidden;
+}
+
+.tape--rose-top {
+  top: 16px;
+  right: -12px;
+  background: var(--tape-rose);
+  color: #0D0D10;
+  font-size: 22px;
+  text-align: center;
+  transform: rotate(-11deg);
+  padding: 14px 24px;
+}
+
+.tape--slate-bottom {
+  bottom: -16px;
+  left: 54%;
+  background: var(--tape-slate);
+  color: #F2EFE9;
+  font-size: 13px;
+  transform: rotate(-8deg);
+  max-width: 215px;
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tape--rose-bottom-left {
+  bottom: -16px;
+  left: 12px;
+  background: var(--tape-rose);
+  color: #0D0D10;
+  font-size: 20px;
+  transform: rotate(-10deg);
+  padding: 12px 26px;
+  z-index: 60;
+}
+
+.tape--slate-card03 {
+  bottom: -10px;
+  right: 125px;
+  background: var(--tape-slate);
+  color: #F2EFE9;
+  font-family: var(--font-grotesk);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transform: rotate(-6deg);
+  padding: 12px 16px;
+}
+
+/* UPC Barcode Tag Box (Reference bottom-right of each card) */
+.barcode-sticker-box {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 29;
+  background: #F4F1EA;
+  color: #0D0D10;
+  border: 1px solid #0D0D10;
+  padding: 7px 10px 4px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.barcode-sticker-box:hover {
+  background: var(--acid-lime);
+  transform: translateY(-2px);
+}
+
+.barcode-bars {
+  width: 108px;
+  height: 32px;
+  background: repeating-linear-gradient(
+    90deg,
+    #0D0D10 0px,
+    #0D0D10 2px,
+    transparent 2px,
+    transparent 4px,
+    #0D0D10 4px,
+    #0D0D10 5px,
+    transparent 5px,
+    transparent 8px,
+    #0D0D10 8px,
+    #0D0D10 11px,
+    transparent 11px,
+    transparent 13px,
+    #0D0D10 13px,
+    #0D0D10 14px,
+    transparent 14px,
+    transparent 16px
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.barcode-laser-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--electric-blue);
+  box-shadow: 0 0 8px var(--electric-blue);
+  opacity: 0;
+}
+
+.barcode-sticker-box:hover .barcode-laser-line {
+  opacity: 1;
+  animation: laserScan 0.9s infinite alternate ease-in-out;
+}
+
+@keyframes laserScan {
+  0% { top: 2px; }
+  100% { top: 28px; }
+}
+
+.barcode-digits {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-top: 3px;
+}
+
+/* Circular Studio Monogram Emblem (Reimagining the Stussy interlocking S badge) */
+.studio-monogram-badge {
+  position: absolute;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #F4F1EA;
+  border: 2px solid #0D0D10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 27;
+  box-shadow: 3px 3px 0 #0D0D10;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.collage-card:hover .studio-monogram-badge {
+  transform: rotate(90deg);
+  background: var(--acid-lime);
+}
+
+/* Card Action / Case Study Trigger Strip */
+.card-editorial-caption-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-paper);
+  border-top: 1.5px solid var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.caption-pillar-tag {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.caption-pillar-tag .pillar-code {
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  border: 1px solid var(--badge-dark-fg);
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+.inspect-case-btn {
+  background: transparent;
+  border: 1px solid var(--ink-black);
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+}
+
+.inspect-case-btn:hover {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-fg);
+  box-shadow: 3px 3px 0 var(--electric-blue);
+}
+
+/* ==========================================================================
+   X-RAY CAD BLUEPRINT OVERLAY LAYER (Activated on Hover or Global X-Ray Toggle)
+   ========================================================================== */
+.cad-xray-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(0, 56, 255, 0.22);
+  transition: opacity 0.3s ease;
+}
+
+body.xray-active .cad-xray-layer,
+.collage-card:hover .cad-xray-layer {
+  opacity: 1;
+}
+
+.cad-xray-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   SECTION 02: OVERSIZED KINETIC MANIFESTO & TRI-PILLAR INTERACTIVE LABS
+   ========================================================================== */
+.section-header-strip {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--ink-black);
+  padding-bottom: 18px;
+  margin-bottom: 36px;
+  max-width: 1560px;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.section-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.section-oversized-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.2vw, 5.2rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  backface-visibility: hidden;
+}
+
+.section-oversized-title .serif-italic {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  text-transform: none;
+  color: var(--accent-text);
+}
+
+.section-meta-readout {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* 3-Column Interactive Tri-Discipline Matrix */
+.tri-pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+  max-width: 1560px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.pillar-module {
+  border: 2px solid var(--ink-black);
+  background: var(--bg-paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--ink-black);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.pillar-module > div {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pillar-module-header {
+  padding: 14px 16px;
+  border-bottom: 1.5px solid var(--ink-black);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: var(--bg-paper-alt);
+}
+
+.pillar-id-badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 8px;
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  border: 1px solid var(--badge-dark-fg);
+  max-width: 100%;
+}
+
+.pillar-module-body {
+  padding: 20px 18px;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pillar-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.55vw, 24px);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.08;
+  margin-bottom: 10px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.pillar-desc {
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  margin-bottom: 18px;
+}
+
+/* Interactive Mini-Widget Inside Each Pillar */
+.interactive-widget-box {
+  border: 1.5px solid var(--ink-black);
+  background: #0D0D10;
+  color: #F2EFE9;
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.widget-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-bottom: 1px solid rgba(242, 239, 233, 0.2);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  color: var(--acid-lime);
+}
+
+/* Pillar 1: Structural Beam Deflection Simulator */
+.beam-canvas-wrap {
+  width: 100%;
+  height: 135px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.beam-slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  min-width: 0;
+}
+
+.eng-range-slider {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  accent-color: var(--acid-lime);
+  height: 4px;
+}
+
+.beam-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(242, 239, 233, 0.2);
+  font-size: 10px;
+}
+
+/* Pillar 2: IT Terminal & Node Packet Simulator */
+.cyber-terminal-screen {
+  height: 145px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: #D4FF00;
+  padding-right: 4px;
+}
+
+.terminal-cmd-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.term-cmd-btn {
+  background: rgba(0, 56, 255, 0.35);
+  border: 1px solid #0055FF;
+  color: #F2EFE9;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 4px 8px;
+  transition: all 0.15s ease;
+}
+
+.term-cmd-btn:hover {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: var(--acid-lime);
+}
+
+/* Pillar 3: Editorial Kinetic Type & Halftone Synth */
+.type-playground-stage {
+  height: 135px;
+  display: flex;
+   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(rgba(212, 255, 0, 0.22) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  border: 1px dashed rgba(242, 239, 233, 0.3);
+  overflow: hidden;
+  position: relative;
+}
+
+.kinetic-preview-word {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--acid-lime);
+  text-shadow: 3px 3px 0 var(--electric-blue);
+  transition: all 0.15s ease;
+  text-align: center;
+  user-select: none;
+}
+
+/* ==========================================================================
+   SECTION 03: INTERACTIVE 3D WEBGL STRUCTURAL & TOPOGRAPHIC CAD LAB
+   ========================================================================== */
+.cad-3d-lab-wrapper {
+  max-width: 1560px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  border: 2px solid var(--ink-black);
+  background: #0B0B0F;
+  color: #F2EFE9;
+  box-shadow: 10px 10px 0 var(--ink-black);
+  min-height: 580px;
+}
+
+.cad-control-sidebar {
+  border-right: 1.5px solid rgba(242, 239, 233, 0.22);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #101016;
+}
+
+.cad-model-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0 22px;
+}
+
+.cad-model-btn {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #F2EFE9;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.cad-model-btn.active,
+.cad-model-btn:hover {
+  background: var(--electric-blue);
+  border-color: var(--acid-lime);
+  color: #FFFFFF;
+  box-shadow: 4px 4px 0 var(--acid-lime);
+}
+
+.cad-param-group {
+  margin-bottom: 14px;
+}
+
+.cad-param-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  margin-bottom: 5px;
+  color: #B4B8C5;
+}
+
+.cad-viewport-container {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0, 56, 255, 0.24), rgba(11, 11, 15, 0.96) 75%);
+}
+
+#cad-interactive-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+#cad-interactive-canvas:active {
+  cursor: grabbing;
+}
+
+/* HUD Overlays inside 3D Viewport */
+.cad-hud-overlay-top {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+}
+
+.cad-hud-box {
+  background: rgba(13, 13, 16, 0.82);
+  border: 1px solid rgba(212, 255, 0, 0.45);
+  padding: 10px 14px;
+  backdrop-filter: blur(4px);
+}
+
+.cad-hud-bottom {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.cad-view-buttons {
+  pointer-events: auto;
+  display: flex;
+  gap: 8px;
+}
+
+.cad-cam-btn {
+  background: rgba(13, 13, 16, 0.85);
+  border: 1px solid #F2EFE9;
+  color: #F2EFE9;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+
+.cad-cam-btn:hover,
+.cad-cam-btn.active {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: var(--acid-lime);
+}
+
+/* ==========================================================================
+   SECTION 04: SELECTED MULTIDISCIPLINARY WORKS ARCHIVE (FILTERABLE + BENTO)
+   ========================================================================== */
+.archive-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 32px;
+  max-width: 1560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-pill-btn {
+  background: var(--bg-paper-alt);
+  border: 1.5px solid var(--ink-black);
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+}
+
+.filter-pill-btn.active,
+.filter-pill-btn:hover {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-border);
+  box-shadow: 4px 4px 0 var(--electric-blue);
+}
+
+/* ---- Manila-folder divider stack (Selected Works Archive) ----
+   Each project is a vertical folder with a staggered tab. Click a tab/strip to
+   slide that folder open; the others collapse back into narrow colored strips. */
+.archive-folder-stack {
+  --strip-w: 92px;
+  --fold-overlap: 22px;
+  display: flex;
+  align-items: stretch;
+  max-width: 1560px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 6px;
+  box-sizing: border-box;
+  container-type: inline-size;
+}
+
+.archive-folder {
+  position: relative;
+  display: flex;
+  flex: 0 0 var(--strip-w);
+  min-width: var(--strip-w);
+  margin-left: calc(var(--fold-overlap) * -1);
+  transition: flex-grow 0.62s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: flex-grow;
+}
+
+.archive-folder:first-child {
+  margin-left: 0;
+}
+
+.archive-folder.is-active {
+  flex-grow: 1;
+}
+
+.archive-folder-stack > .archive-folder {
+  z-index: calc(2 + var(--i, 0));
+}
+
+.folder-strip {
+  position: relative;
+  flex: 0 0 var(--strip-w);
+  width: var(--strip-w);
+  background: var(--folder-bg);
+  color: var(--folder-fg);
+  border: 2px solid var(--ink-black);
+  border-right: none;
+  box-shadow: -7px 0 14px rgba(13, 13, 16, 0.22);
+  font-family: var(--font-mono);
+  text-align: left;
+  padding: 0;
+  cursor: pointer;
+  overflow: visible;
+  transition: filter 0.2s ease;
+}
+
+.folder-strip:hover {
+  filter: brightness(1.07);
+}
+
+.folder-strip:focus-visible {
+  outline: 3px solid var(--electric-blue);
+  outline-offset: 2px;
+}
+
+.folder-tab {
+  position: absolute;
+  top: calc(24px + var(--i, 0) * 128px);
+  left: calc(var(--fold-overlap) * -1 - 2px);
+  width: 54px;
+  height: 178px;
+  background: var(--folder-bg);
+  border: 2px solid var(--ink-black);
+  border-right: none;
+  border-radius: 18px 0 0 18px;
+  box-shadow: -5px 4px 10px rgba(13, 13, 16, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.folder-tab-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 100%;
+  padding: 2px 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.folder-strip:hover .folder-tab {
+  left: calc(var(--fold-overlap) * -1 - 8px);
+}
+
+.archive-folder.is-active .folder-tab {
+  box-shadow: -5px 4px 0 var(--acid-lime);
+}
+
+.folder-tab-name {
+  white-space: nowrap;
+}
+
+.folder-tab-code {
+  opacity: 0.72;
+}
+
+.folder-spine-title {
+  position: absolute;
+  top: 22px;
+  left: 38px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-display);
+  font-size: clamp(34px, 3.1vw, 50px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.archive-folder.is-active .folder-spine-title {
+  opacity: 1;
+}
+
+.folder-spine-file {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.folder-body {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg-paper);
+  border: 2px solid var(--ink-black);
+  border-left: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.archive-folder.is-active .folder-body {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s ease 0.22s, visibility 0s linear 0s;
+}
+
+/* Fixed sheet width (from the container) keeps content from re-wrapping while folders slide */
+.folder-sheet {
+  width: calc(100cqw - (3 * var(--strip-w)) + (3 * var(--fold-overlap)) - var(--strip-w));
+  min-width: 620px;
+  padding-right: var(--fold-overlap);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.folder-sheet > .dossier-top-meta {
+  grid-column: 1 / -1;
+}
+
+.folder-sheet > .dossier-visual-preview {
+  grid-column: 1;
+  grid-row: 2;
+  height: auto;
+  width: 100%;
+  align-self: start;
+  aspect-ratio: 600 / 270;
+  border-right: 1.5px solid var(--ink-black);
+}
+
+.folder-sheet .dossier-content {
+  display: contents;
+}
+
+.folder-sheet .dossier-content > div:first-child {
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  padding: 22px;
+  min-width: 0;
+}
+
+.folder-sheet .dossier-content > div:last-child {
+  grid-column: 1;
+  grid-row: 3;
+  padding: 22px;
+  min-width: 0;
+  border-right: 1.5px solid var(--ink-black);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dossier-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1.5px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dossier-visual-preview {
+  height: 270px;
+  position: relative;
+  overflow: hidden;
+  background: #121217;
+  border-bottom: 1.5px solid var(--ink-black);
+}
+
+.dossier-svg-blueprint {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.dossier-content {
+  padding: 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dossier-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.dossier-summary {
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin-bottom: 18px;
+}
+
+.dossier-tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.tech-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border: 1px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+}
+
+.dossier-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px dashed var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   SECTION 05: INTERACTIVE COLLAGE STICKER BOARD & ARCHITECTURAL SPEC MATRIX
+   ========================================================================== */
+.collage-sandbox-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 36px;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+.draggable-pasteup-board {
+  border: 2px solid var(--ink-black);
+  background-color: var(--bg-paper-alt);
+  background-image:
+    radial-gradient(var(--ink-black) 0.85px, transparent 0.85px);
+  background-size: 14px 14px;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.08);
+}
+
+.pasteup-board-toolbar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+
+.pasteup-toolbar-pill {
+  pointer-events: auto;
+  background: #0D0D10;
+  color: var(--acid-lime);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border: 1px solid var(--acid-lime);
+}
+
+.draggable-sticker {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  z-index: 20;
+  transition: box-shadow 0.15s ease;
+}
+
+.draggable-sticker:active {
+  cursor: grabbing;
+  z-index: 35 !important;
+  box-shadow: 10px 14px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Spec Sheet Table on Right */
+.engineering-spec-sheet {
+  border: 2px solid var(--ink-black);
+  background: var(--bg-paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+
+.spec-table th,
+.spec-table td {
+  border-bottom: 1px solid var(--ink-black);
+  padding: 13px 16px;
+  text-align: left;
+}
+
+.spec-table th {
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10.5px;
+}
+
+.skill-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-paper-alt);
+  border: 1px solid var(--ink-black);
+  margin-top: 6px;
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: var(--accent-text);
+}
+
+/* ==========================================================================
+   SECTION 06: ISO ARCHITECTURAL TITLE BLOCK FOOTER & TRANSMISSION FORM
+   ========================================================================== */
+.iso-titleblock-wrapper {
+  max-width: 1560px;
+  margin: 0 auto;
+  border: 2.5px solid var(--ink-black);
+  background: var(--bg-paper);
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+}
+
+.transmission-form-pane {
+  padding: 36px;
+  border-right: 2px solid var(--ink-black);
+}
+
+.blueprint-input-group {
+  margin-bottom: 18px;
+}
+
+.blueprint-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.blueprint-input,
+.blueprint-select,
+.blueprint-textarea {
+  width: 100%;
+  background: var(--bg-paper-alt);
+  border: 1.5px solid var(--ink-black);
+  color: var(--ink-black);
+  padding: 11px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.blueprint-input:focus,
+.blueprint-select:focus,
+.blueprint-textarea:focus {
+  border-color: var(--electric-blue);
+  box-shadow: 4px 4px 0 var(--acid-lime);
+}
+
+.submit-blueprint-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border: 2px solid var(--btn-primary-border);
+  padding: 14px 28px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.submit-blueprint-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-fg);
+  border-color: var(--btn-hover-bg);
+  box-shadow: 6px 6px 0 var(--acid-lime);
+}
+
+/* Official Engineering Drawing Title Block (Right Pane) */
+.iso-drawing-stamp-pane {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+}
+
+.iso-grid-cells {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1.5px solid var(--ink-black);
+}
+
+.iso-cell {
+  padding: 14px 18px;
+  border-right: 1px solid var(--ink-black);
+  border-bottom: 1px solid var(--ink-black);
+}
+
+.iso-cell:nth-child(2n) {
+  border-right: none;
+}
+
+.iso-cell-label {
+  font-size: 9px;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.iso-cell-value {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.iso-approval-stamp {
+  margin: 24px;
+  padding: 16px 14px;
+  border: 3px double var(--accent-text);
+  color: var(--accent-text);
+  text-align: center;
+  transform: rotate(-2.5deg);
+  position: relative;
+  box-sizing: border-box;
+  max-width: calc(100% - 48px);
+  overflow: hidden;
+}
+
+.iso-stamp-kicker {
+  font-size: clamp(8.5px, 0.9vw, 10px);
+  letter-spacing: 0.16em;
+  font-weight: 700;
+}
+
+.iso-stamp-headline {
+  font-family: var(--font-display);
+  font-size: clamp(13px, 1.4vw, 20px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin: 6px 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.iso-stamp-sub {
+  font-size: clamp(8.5px, 0.9vw, 10px);
+  letter-spacing: 0.06em;
+}
+
+/* ==========================================================================
+   MODAL DOSSIER DRAWER (PROJECT / CAMPAIGN DEEP-DIVE)
+   ========================================================================== */
+.dossier-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 13, 16, 0.82);
+  backdrop-filter: blur(6px);
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.dossier-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dossier-modal-window {
+  width: 100%;
+  max-width: 960px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--bg-paper);
+  color: var(--ink-black);
+  border: 2.5px solid var(--ink-black);
+  box-shadow: 14px 14px 0 var(--acid-lime);
+  position: relative;
+}
+
+.modal-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  border-bottom: 1.5px solid var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.modal-close-btn {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border: none;
+  font-family: var(--font-mono);
+  font-weight: 900;
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
+.modal-body-content {
+  padding: 32px;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (1180px -> 768px -> 480px -> 320px Mobile S)
+   ========================================================================== */
+@media (max-width: 1180px) {
+  .spread-top-row {
+    grid-template-columns: 1fr;
+  }
+  .spread-bottom-row {
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+  .tri-pillar-grid {
+    grid-template-columns: 1fr;
+  }
+  .cad-3d-lab-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .collage-sandbox-grid,
+  .iso-titleblock-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .transmission-form-pane {
+    border-right: none;
+    border-bottom: 2px solid var(--ink-black);
+  }
+}
+
+/* Archive folders: vertical accordion on tablet / mobile */
+@media (max-width: 960px) {
+  .archive-folder-stack {
+    flex-direction: column;
+    container-type: normal;
+    gap: 0;
+  }
+  .archive-folder,
+  .archive-folder.is-active {
+    flex: none;
+    flex-direction: column;
+    min-width: 0;
+    margin-left: 0;
+    margin-top: -2px;
+    transition: none;
+  }
+  .archive-folder:first-child {
+    margin-top: 0;
+  }
+  .folder-strip {
+    flex: none;
+    width: 100%;
+    height: 62px;
+    border-right: 2px solid var(--ink-black);
+    box-shadow: 0 -6px 12px rgba(13, 13, 16, 0.16);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 14px;
+  }
+  .folder-tab {
+    position: static;
+    width: auto;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    order: 2;
+    margin-left: auto;
+  }
+  .folder-tab-text {
+    writing-mode: horizontal-tb;
+    transform: none;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 2px;
+  }
+  .folder-strip:hover .folder-tab {
+    left: auto;
+  }
+  .folder-tab-name {
+    display: none;
+  }
+  .folder-spine-title {
+    position: static;
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 22px;
+    order: 1;
+  }
+  .folder-spine-file {
+    display: none;
+  }
+  .folder-body {
+    display: none;
+    flex: none;
+    opacity: 1;
+    visibility: visible;
+    border-left: 2px solid var(--ink-black);
+    border-top: none;
+  }
+  .archive-folder.is-active .folder-body {
+    display: block;
+  }
+  .folder-sheet {
+    width: auto;
+    min-width: 0;
+    padding-right: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .folder-sheet > .dossier-visual-preview,
+  .folder-sheet .dossier-content > div:first-child,
+  .folder-sheet .dossier-content > div:last-child {
+    grid-column: 1;
+    grid-row: auto;
+    border-right: none;
+  }
+}
+
+@media (max-width: 960px) {
+  :root {
+    --spine-w: 0px;
+    --header-h: 92px;
+  }
+  .main-editorial-stage {
+    padding-left: 0;
+  }
+  .editorial-left-spine {
+    display: none;
+  }
+  .editorial-header {
+    height: auto;
+    min-height: var(--header-h);
+    flex-wrap: wrap;
+    padding: 8px 14px;
+    gap: 6px;
+  }
+  .header-brand {
+    order: 1;
+  }
+  .header-right-controls {
+    order: 2;
+    margin-left: auto;
+  }
+  .header-center-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-top: 6px;
+    border-top: 1px dashed var(--ink-faint);
+    gap: 4px;
+  }
+  .header-center-nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --footer-h: 38px;
+  }
+  .cad-cursor {
+    display: none !important;
+  }
+  .editorial-section {
+    padding: 24px 14px;
+  }
+  .main-editorial-stage {
+    padding-bottom: calc(var(--footer-h) + 28px);
+  }
+
+  /* Compact Footer on Mobile */
+  .editorial-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .footer-telemetry {
+    display: none;
+  }
+  .footer-pillars-ticker {
+    gap: 6px;
+  }
+  .registration-crosshair-dock {
+    width: 24px;
+    height: 24px;
+    top: -12px;
+    left: 50%;
+  }
+  .registration-crosshair-dock svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Mobile S — 480px down to 320px */
+@media (max-width: 540px) {
+  :root {
+    --header-h: 112px;
+  }
+
+  /* 3-Row Ultra-Clean Header for 320px */
+  .editorial-header {
+    padding: 6px 10px;
+    gap: 5px;
+  }
+  .header-brand {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 10.5px;
+  }
+  .header-right-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 4px;
+    padding-top: 4px;
+    border-top: 1px solid var(--ink-faint);
+  }
+  .mode-btn {
+    font-size: 8.5px;
+    padding: 4px 5px;
+    letter-spacing: 0.03em;
+  }
+  .xray-toggle-btn {
+    font-size: 8.5px;
+    padding: 3px 6px;
+    gap: 3px;
+  }
+  .page-counter-badge {
+    font-size: 9.5px;
+    padding-left: 5px;
+    letter-spacing: 0.06em;
+  }
+  .header-nav-link {
+    font-size: 9.5px;
+    padding: 4px 7px;
+  }
+
+  /* Section 01 Spread Cards on 320px */
+  .essay-main-title {
+    font-size: clamp(1.45rem, 7.8vw, 2rem);
+    word-break: break-word;
+  }
+  .essay-paragraph {
+    font-size: 10.5px;
+    margin-bottom: 14px;
+  }
+  .spec-row {
+    font-size: 9px;
+    gap: 6px;
+  }
+  .collage-card--halftone-frame {
+    padding: 8px;
+  }
+  .collage-card--01 .collage-visual-stage,
+  .collage-card--02 .collage-visual-stage,
+  .collage-card--03 .collage-visual-stage {
+    height: 290px;
+  }
+  .badge-num-circle {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+  .collage-card--01 .badge-num-circle {
+    top: 8px;
+    left: 8px;
+  }
+  .collage-card--01 .handstyle-tag-svg,
+  .collage-card--02 .handstyle-tag-svg,
+  .collage-card--03 .handstyle-tag-svg {
+    left: 54px;
+    top: 12px;
+    width: calc(100% - 70px);
+    max-width: 210px;
+  }
+  .tape--rose-top {
+    top: 6px;
+    right: 6px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+  .tape--slate-bottom {
+    left: 8px;
+    right: auto;
+    bottom: 8px;
+    max-width: 155px;
+    font-size: 9px;
+    padding: 7px 9px;
+    transform: rotate(-3deg);
+  }
+  .collage-card--01 .handwritten-stack-list {
+    bottom: 72px;
+    left: 8px;
+    font-size: 10.5px;
+    padding: 6px 8px;
+  }
+  .collage-card--02 .handwritten-stack-list {
+    top: 96px;
+    left: 10px;
+    font-size: 10.5px;
+  }
+  .tape--slate-card03 {
+    left: 8px;
+    right: auto;
+    bottom: 8px;
+    font-size: 9px;
+    padding: 7px 9px;
+  }
+  .tape--rose-bottom-left {
+    left: 0;
+    bottom: -14px;
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+  .barcode-sticker-box {
+    bottom: 8px;
+    right: 8px;
+    padding: 4px 6px 3px;
+  }
+  .barcode-bars {
+    width: 68px;
+    height: 20px;
+  }
+  .barcode-digits {
+    font-size: 7px;
+    letter-spacing: 0.08em;
+  }
+  .studio-monogram-badge {
+    width: 38px;
+    height: 38px;
+  }
+  .card-editorial-caption-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px;
+    font-size: 9.5px;
+  }
+  .caption-pillar-tag {
+    flex-wrap: wrap;
+    font-size: 9.5px;
+  }
+  .inspect-case-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Section 02 & Headers on 320px */
+  .tri-pillar-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: 100%;
+  }
+  .section-oversized-title {
+    font-size: clamp(1.5rem, 7.6vw, 2.2rem);
+    word-break: break-word;
+  }
+  .section-meta-readout {
+    text-align: left;
+    font-size: 9.5px;
+  }
+  .pillar-module {
+    box-shadow: 4px 4px 0 var(--ink-black);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .pillar-module-header {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pillar-module-body {
+    padding: 14px 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .pillar-title {
+    font-size: 19px;
+  }
+  .interactive-widget-box {
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .beam-slider-row {
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 9px;
+  }
+  .beam-telemetry-grid {
+    font-size: 8.5px;
+    gap: 4px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cyber-terminal-screen {
+    font-size: 9.5px;
+    height: 130px;
+    word-break: break-all;
+  }
+  .terminal-cmd-buttons {
+    gap: 4px;
+  }
+  .term-cmd-btn {
+    font-size: 8.5px;
+    padding: 4px 6px;
+  }
+  .type-playground-stage {
+    height: 110px;
+  }
+  .kinetic-preview-word {
+    font-size: clamp(20px, 7vw, 30px);
+  }
+
+  /* Section 03 3D CAD Lab on 320px */
+  .cad-3d-lab-wrapper {
+    box-shadow: 4px 4px 0 var(--ink-black);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .cad-control-sidebar {
+    padding: 14px 12px;
+    box-sizing: border-box;
+  }
+  .cad-model-btn {
+    font-size: 9.5px;
+    padding: 8px 9px;
+  }
+  .cad-viewport-container {
+    height: 360px;
+  }
+  .cad-hud-overlay-top {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .cad-hud-box {
+    padding: 5px 7px;
+    font-size: 8.5px;
+  }
+  #hud-von-mises,
+  #hud-safety-factor,
+  #hud-node-count {
+    font-size: 11px !important;
+  }
+  .cad-hud-bottom {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .cad-view-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    width: 100%;
+  }
+  .cad-cam-btn {
+    padding: 5px 2px;
+    font-size: 8px;
+    text-align: center;
+  }
+
+  /* Section 04 Selected Works Archive on 320px */
+  .folder-spine-title {
+    font-size: 17px;
+  }
+  .folder-sheet .dossier-content > div:first-child,
+  .folder-sheet .dossier-content > div:last-child {
+    padding: 14px 12px;
+  }
+  .filter-pills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    width: 100%;
+  }
+  .filter-pill-btn {
+    padding: 7px 6px;
+    font-size: 9px;
+    text-align: center;
+  }
+  .dossier-top-meta {
+    padding: 9px 10px;
+    font-size: 9px;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .dossier-visual-preview {
+    height: 180px;
+    width: 100%;
+  }
+  .dossier-content {
+    padding: 14px 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .dossier-title {
+    font-size: 19px;
+    word-break: break-word;
+  }
+  .dossier-summary {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .dossier-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  /* Section 05 Pasteup Board & Spec Table on 320px */
+  .draggable-pasteup-board {
+    min-height: 410px;
+  }
+  .pasteup-board-toolbar {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .pasteup-toolbar-pill {
+    font-size: 8.5px;
+    padding: 5px 8px;
+    text-align: center;
+  }
+  .draggable-sticker {
+    max-width: calc(100% - 20px);
+  }
+  .spec-table th,
+  .spec-table td {
+    padding: 8px 6px;
+    font-size: 9.5px;
+    word-break: break-word;
+  }
+
+  /* Section 06 ISO Title Block & Form on 320px */
+  .iso-titleblock-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .transmission-form-pane {
+    padding: 16px 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  #blueprint-dispatch-form {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .blueprint-input-group {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .blueprint-label {
+    font-size: 9.5px;
+    word-break: break-word;
+  }
+  .blueprint-input,
+  .blueprint-select,
+  .blueprint-textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+  .submit-blueprint-btn {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 12px 10px;
+    font-size: 10px;
+  }
+  .iso-drawing-stamp-pane {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .iso-grid-cells {
+    grid-template-columns: 1fr;
+  }
+  .iso-cell {
+    border-right: none;
+    padding: 10px 12px;
+  }
+  .iso-approval-stamp {
+    margin: 14px 10px;
+    padding: 12px 8px;
+    max-width: calc(100% - 20px);
+    transform: rotate(-1.5deg);
+  }
+  .iso-stamp-headline {
+    font-size: clamp(11.5px, 4.2vw, 15.5px);
+    letter-spacing: -0.03em;
+  }
+  .iso-stamp-kicker,
+  .iso-stamp-sub {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Footer at 320px */
+  .editorial-footer-bar {
+    padding: 0 8px;
+    font-size: 7.5px;
+    letter-spacing: 0.04em;
+  }
+  .footer-pillars-ticker {
+    gap: 4px;
+  }
+  .footer-pillars-ticker span:nth-child(n+6) {
+    display: none;
+  }
+  .dossier-modal-backdrop {
+    padding: 10px;
+  }
+  .modal-body-content {
+    padding: 16px 12px;
+  }
+}
+
+/* ==========================================================================
+   DAKSH GAJJAR INSPIRED ENHANCEMENTS:
+   1. One-Line Signature Intro Preloader
+   2. Continuous Scroll-Driven Structural Thread Rail
+   3. Interactive "Intent · Interaction · System" Thread Banner
+   4. Live System Receipt / Telemetry Micro-Cards in Archive
+   ========================================================================== */
+
+/* 1. One-Line Signature Intro Loader */
+.signature-intro-loader {
+  position: fixed;
+  inset: 0;
+  background: #08080B;
+  color: #F2EFE9;
+  z-index: 9995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1),
+              opacity 0.65s ease;
+}
+
+.signature-intro-loader.is-dismissed {
+  transform: translateY(-102%);
+  pointer-events: none;
+}
+
+.signature-loader-inner {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  position: relative;
+}
+
+/* Hardware-accelerated GPU ambient glow behind the signature (eliminates per-frame CPU filter rasterization) */
+.signature-loader-inner::before {
+  content: '';
+  position: absolute;
+  inset: 15% 10%;
+  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(212, 255, 0, 0.12) 0%, rgba(0, 85, 255, 0.05) 50%, transparent 75%);
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(28px);
+  transform: translateZ(0);
+}
+
+.signature-loader-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #9496A1;
+  border-bottom: 1px solid rgba(242, 239, 233, 0.15);
+  padding-bottom: 12px;
+}
+
+#signature-loader-pct {
+  color: var(--acid-lime);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.signature-one-line-svg {
+  width: 100%;
+  height: auto;
+  max-height: 240px;
+  overflow: visible;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+#signature-one-line-path {
+  will-change: stroke-dashoffset;
+}
+
+.signature-loader-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(242, 239, 233, 0.15);
+  padding-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+}
+
+.sig-tagline {
+  color: #F2EFE9;
+  opacity: 0.8;
+}
+
+.sig-skip-btn {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border: none;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.sig-skip-btn:hover {
+  background: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* 2. Full-Stage Organic Content-Weaving Thread SVG Overlay (Daksh Gajjar Homage)
+   Placed BEHIND content cards (z-index: 1) so the thread weaves through margins &
+   gutters and tucks cleanly behind cards without covering text or UI! */
+.content-weaving-thread-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none !important;
+  z-index: 1;
+  overflow: visible;
+}
+
+.editorial-section {
+  z-index: 2;
+  background: transparent;
+}
+
+/* Content cards sit above the thread (z-index: 6) with opaque paper/dark backgrounds
+   so the thread tucks cleanly behind them */
+.editorial-sidebar-essay {
+  background: var(--bg-paper);
+  padding: 16px;
+  border: 1.5px solid var(--ink-black);
+  box-shadow: 5px 5px 0 var(--ink-black);
+  z-index: 6;
+}
+
+.collage-card,
+.thread-synthesis-banner,
+.pillar-module,
+.cad-3d-lab-wrapper,
+.draggable-pasteup-board,
+.engineering-spec-sheet,
+.iso-titleblock-wrapper {
+  position: relative;
+  z-index: 6;
+}
+
+/* Card 01 only follows the left card when the manifesto is expanded (otherwise both are equal height and static) */
+@media (min-width: 1181px) {
+  .spread-top-row.is-expanded > .collage-card--01 {
+    position: sticky;
+    top: calc(var(--header-h) + 22px);
+    align-self: start;
+  }
+}
+
+.weaving-thread-track {
+  pointer-events: none;
+}
+
+.weaving-thread-active {
+  pointer-events: none;
+  transition: none !important;
+  will-change: stroke-dashoffset;
+}
+
+.weaving-thread-bullseye {
+  pointer-events: none;
+  transition: none !important;
+  will-change: transform;
+}
+
+.thread-anchor-ring {
+  fill: var(--bg-paper);
+  stroke: #FF3B1D;
+  stroke-width: 1.8;
+  opacity: 0.55;
+}
+
+/* 3. Header Availability Status Pill */
+.header-availability-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  border: 1px solid var(--badge-dark-fg);
+  padding: 2px 8px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.avail-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--acid-lime);
+  animation: pulseDot 1.6s infinite;
+}
+
+/* 4. Interactive "Intent · Interaction · System" Thread Synthesis Banner */
+.thread-synthesis-banner {
+  margin-top: 44px;
+  border: 2px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  padding: 22px 26px;
+  position: relative;
+  box-shadow: 6px 6px 0 var(--ink-black);
+}
+
+.thread-banner-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border-bottom: 1px dashed var(--ink-faint);
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.thread-kicker {
+  color: #FF3B1D;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.thread-sub {
+  color: var(--ink-muted);
+}
+
+.thread-nodes-interactive-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.thread-stage-node {
+  flex: 1;
+  background: var(--bg-paper);
+  border: 1.5px solid var(--ink-black);
+  color: var(--ink-black);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.thread-stage-node .stage-num {
+  font-size: 9.5px;
+  color: var(--accent-text);
+  font-weight: 800;
+}
+
+.thread-stage-node .stage-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.thread-stage-node .stage-tag {
+  font-size: 9.5px;
+  color: var(--ink-muted);
+}
+
+.thread-stage-node.active,
+.thread-stage-node:hover {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-border);
+  box-shadow: 4px 4px 0 #FF3B1D;
+}
+
+.thread-stage-node.active .stage-num,
+.thread-stage-node:hover .stage-num,
+.thread-stage-node.active .stage-tag,
+.thread-stage-node:hover .stage-tag {
+  color: var(--btn-primary-fg);
+  opacity: 0.9;
+}
+
+.thread-connector-line {
+  width: 48px;
+  height: 2px;
+  background: var(--ink-faint);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.thread-connector-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #FF3B1D;
+  animation: threadPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes threadPulse {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.thread-stage-readout {
+  background: #0D0D10;
+  color: #F2EFE9;
+  border-left: 4px solid var(--acid-lime);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.thread-stage-readout strong {
+  color: var(--acid-lime);
+}
+
+/* 5. Daksh-Style Tilted Serrated Paper Receipts, 4-Column Assessment & Bleed Titles */
+.system-receipt-card {
+  border: 1.5px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  position: relative;
+  box-shadow: 5px 6px 0 rgba(13, 13, 16, 0.16);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+
+.system-receipt-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 5px;
+  background: radial-gradient(circle at 5px 5px, transparent 4px, var(--ink-black) 4.5px);
+  background-size: 10px 5px;
+  opacity: 0.35;
+}
+
+.system-receipt--tilted-left {
+  transform: rotate(-1.4deg);
+}
+
+.system-receipt--tilted-right {
+  transform: rotate(1.4deg);
+}
+
+.archive-folder:hover .system-receipt--tilted-left,
+.archive-folder:hover .system-receipt--tilted-right {
+  transform: rotate(0deg) translateY(-2px);
+  box-shadow: 6px 6px 0 #FF3B1D;
+}
+
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ink-faint);
+  font-weight: 800;
+  font-size: 10px;
+}
+
+.receipt-status-pill {
+  background: var(--badge-dark-bg);
+  color: var(--badge-dark-fg);
+  border: 1px solid var(--badge-dark-fg);
+  padding: 2px 6px;
+  font-size: 9px;
+}
+
+.receipt-ledger-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+.receipt-row .val-plus {
+  color: var(--ink-black);
+  font-weight: 700;
+}
+
+.receipt-row .val-minus {
+  color: #FF3B1D;
+  font-weight: 700;
+}
+
+.receipt-row--net {
+  border-top: 1px dashed var(--ink-faint);
+  padding-top: 6px;
+  margin-top: 2px;
+  font-weight: 800;
+  color: var(--ink-black);
+  font-size: 11px;
+}
+
+.receipt-action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--ink-faint);
+  font-size: 9.5px;
+  color: var(--ink-muted);
+}
+
+.receipt-micro-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border: 1px solid var(--btn-primary-border);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 4px 8px;
+  letter-spacing: 0.06em;
+  transition: all 0.15s ease;
+}
+
+.receipt-micro-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-fg);
+}
+
+/* Orbit-Style Pipeline Stage Pills (Project 02 Card) */
+.pipeline-stage-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.pipe-node-btn {
+  background: var(--bg-paper);
+  border: 1px solid var(--ink-black);
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 5px 4px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.pipe-node-btn.active,
+.pipe-node-btn:hover {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+  border-color: var(--btn-primary-border);
+}
+
+.pipeline-live-readout {
+  background: #0D0D10;
+  color: var(--acid-lime);
+  padding: 8px 10px;
+  font-size: 9.5px;
+  line-height: 1.45;
+  border-left: 3px solid #0055FF;
+}
+
+/* Daksh CrediFlow-Style 4-Column Structural Assessment Strip */
+.daksh-assessment-strip {
+  border-top: 1.5px solid var(--ink-black);
+  border-bottom: 1.5px solid var(--ink-black);
+  padding: 10px 0;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+
+.assessment-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--ink-black);
+  border-bottom: 1px solid var(--ink-faint);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.assessment-4col-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.assess-col {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  border-right: 1px solid var(--ink-faint);
+}
+
+.assess-col:first-child {
+  padding-left: 0;
+}
+
+.assess-col:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.assess-label {
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  margin-bottom: 3px;
+}
+
+.assess-num {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink-black);
+  line-height: 1.1;
+}
+
+.assess-sub {
+  font-size: 8.5px;
+  color: var(--ink-muted);
+  margin-top: 2px;
+}
+
+/* Daksh-Style Giant Bleed Title + Floating Circular Red VIEW Button */
+.daksh-bleed-title-wrap {
+  position: relative;
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.daksh-giant-bleed-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.4vw, 54px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: var(--ink-black);
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.daksh-circle-view-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FF3B1D;
+  color: #FFFFFF;
+  border: 2px solid #0D0D10;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 3px 3px 0 #0D0D10;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  backface-visibility: hidden;
+}
+
+.daksh-circle-view-btn:hover {
+  background: var(--acid-lime);
+  color: #0D0D10;
+}
+
+@media (max-width: 1440px) {
+  .header-availability-pill {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .thread-nodes-interactive-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .thread-connector-line {
+    width: 2px;
+    height: 16px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 540px) {
+  .signature-loader-top-meta,
+  .signature-loader-bottom-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 9px;
+  }
+  .sig-skip-btn {
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+  }
+  .thread-synthesis-banner {
+    padding: 14px 12px;
+    margin-top: 28px;
+    box-shadow: 4px 4px 0 var(--ink-black);
+  }
+  .thread-stage-node {
+    padding: 10px;
+  }
+  .thread-stage-node .stage-name {
+    font-size: 15px;
+  }
+  .thread-stage-readout {
+    padding: 10px;
+    font-size: 10px;
+  }
+  .system-receipt-card {
+    padding: 10px;
+    transform: none !important;
+  }
+  .pipeline-stage-pills {
+    grid-template-columns: 1fr 1fr;
+  }
+  .assessment-4col-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .assess-col {
+    padding: 4px 6px;
+    border-right: none;
+    border-bottom: 1px dashed var(--ink-faint);
+  }
+  .daksh-giant-bleed-title {
+    font-size: clamp(22px, 8vw, 32px);
+  }
+  .daksh-circle-view-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 8.5px;
+  }
+}
+
+/* Reduced Motion Accessibility Compliance */
+@media (prefers-reduced-motion: reduce) {
+  .telemetry-live-dot,
+  .avail-dot,
+  .thread-connector-pulse,
+  .barcode-sticker-box:hover .barcode-laser-line {
+    animation: none !important;
+  }
+  .collage-photo,
+  .collage-card,
+  .badge-num-circle {
+    transition: none !important;
+  }
+}
+
+
