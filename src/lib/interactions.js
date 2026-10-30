@@ -426,20 +426,7 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
-  // 10. Rotate the footer Registration Crosshair continuously with scroll
-  const crosshairSvg = document.getElementById('footer-crosshair-svg');
-  if (crosshairSvg) {
-    gsap.to(crosshairSvg, {
-      rotation: 720,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true
-      }
-    });
-  }
+
 }
 
 export function initAnimeMicroInteractions() {
@@ -490,78 +477,23 @@ export function initAnimeMicroInteractions() {
   });
 }
 
-export function initCadCursor() {
-  const cursor = document.getElementById('cad-cursor');
-  const coords = document.getElementById('cad-cursor-coords');
+export function initFooterCoordinates() {
   const footerCoords = document.getElementById('footer-live-coords');
-  if (!cursor) return;
-
-  const isTouchOrTablet = () => {
-    return (
-      window.innerWidth <= 1024 ||
-      window.matchMedia('(hover: none), (pointer: coarse)').matches ||
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0
-    );
-  };
-
-  if (isTouchOrTablet()) {
-    cursor.style.display = 'none';
-  }
-
-  let mouseX = -100;
-  let mouseY = -100;
-  let lastTarget = null;
-  let rafQueued = false;
-  let winW = window.innerWidth;
-  let winH = window.innerHeight;
+  if (!footerCoords) return;
+  let winW = typeof window !== 'undefined' ? window.innerWidth : 1000;
+  let winH = typeof window !== 'undefined' ? window.innerHeight : 800;
   let prevCoordKey = '';
-
   window.addEventListener('resize', () => {
     winW = window.innerWidth;
     winH = window.innerHeight;
-    if (isTouchOrTablet()) {
-      cursor.style.display = 'none';
-    }
   }, { passive: true });
-
-  window.addEventListener('touchstart', () => {
-    cursor.style.display = 'none';
-  }, { passive: true });
-
-  function flushCursor() {
-    rafQueued = false;
-    cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-
-    const normX = ((mouseX / winW) * 1000).toFixed(0).padStart(4, '0');
-    const normY = ((mouseY / winH) * 1000).toFixed(0).padStart(4, '0');
-    const key = `${normX}:${normY}`;
+  window.addEventListener('pointermove', (e) => {
+    const normX = ((e.clientX / winW) * 1000).toFixed(0).padStart(4, '0');
+    const normY = ((e.clientY / winH) * 1000).toFixed(0).padStart(4, '0');
+    const key = normX + ':' + normY;
     if (key !== prevCoordKey) {
       prevCoordKey = key;
-      if (coords) coords.textContent = `X:${normX} Y:${normY}`;
-      if (footerCoords) footerCoords.textContent = `GRID [${normX}, ${normY}]`;
-    }
-
-    const isInteractive = Boolean(
-      lastTarget &&
-      lastTarget.closest &&
-      lastTarget.closest('a, button, input, select, textarea, .draggable-sticker, #cad-interactive-canvas')
-    );
-    cursor.classList.toggle('is-hovering', isInteractive);
-  }
-
-  window.addEventListener('pointermove', (e) => {
-    if (e.pointerType === 'touch' || isTouchOrTablet()) {
-      cursor.style.display = 'none';
-      return;
-    }
-    cursor.style.display = '';
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    lastTarget = e.target;
-    if (!rafQueued) {
-      rafQueued = true;
-      requestAnimationFrame(flushCursor);
+      footerCoords.textContent = 'GRID [' + normX + ', ' + normY + ']';
     }
   }, { passive: true });
 }
@@ -581,9 +513,7 @@ export function initThemeAndXrayControls() {
         document.documentElement.setAttribute('data-theme', mode);
       }
 
-      if (typeof window.updateBgSceneTheme === 'function') {
-        window.updateBgSceneTheme(mode);
-      }
+
     });
   }
 
@@ -604,37 +534,9 @@ export function initThemeAndXrayControls() {
         document.documentElement.setAttribute('data-theme', mode);
       }
 
-      if (typeof window.updateBgSceneTheme === 'function') {
-        window.updateBgSceneTheme(mode);
-      }
+
     });
   });
-
-  // SPEED Mode Toggle Button: disables background 3D canvas and optimizes animations
-  const speedBtn = document.getElementById('speed-toggle-btn');
-  if (speedBtn) {
-    const savedSpeed = typeof localStorage !== 'undefined' && localStorage.getItem('kinetik_speed_mode') === 'on';
-    if (savedSpeed) {
-      document.body.classList.add('speed-mode-active');
-      speedBtn.classList.add('active');
-      window.isSpeedModeActive = true;
-      const stateEl = speedBtn.querySelector('.speed-state-text');
-      if (stateEl) stateEl.textContent = 'ON';
-    }
-
-    speedBtn.addEventListener('click', () => {
-      playMechanicalTick(1100, 0.03);
-      const isActive = document.body.classList.toggle('speed-mode-active');
-      speedBtn.classList.toggle('active', isActive);
-      window.isSpeedModeActive = isActive;
-      const stateEl = speedBtn.querySelector('.speed-state-text');
-      if (stateEl) stateEl.textContent = isActive ? 'ON' : 'OFF';
-
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('kinetik_speed_mode', isActive ? 'on' : 'off');
-      }
-    });
-  }
 
   const xrayBtn = document.getElementById('xray-toggle-btn');
   if (xrayBtn) {
@@ -1801,7 +1703,7 @@ export function bootInteractions() {
   // Only what the intro needs runs immediately; everything else waits until the loader has left the
   // screen and is then executed as small separate tasks (no single long main-thread task).
   initSignatureIntroLoader();
-  initCadCursor();
+  initFooterCoordinates();
 
   const queue = [
     initSmoothScrollAndGSAP,

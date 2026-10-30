@@ -117,12 +117,6 @@
       {/if}
     </div>
 
-    <button type="button" class="speed-toggle-btn" id="speed-toggle-btn" title="Toggle Speed Mode (Disables 3D Background & Optimizes Animations)">
-      <span class="speed-bolt">⚡</span>
-      <span class="speed-label">SPEED:</span>
-      <span class="speed-state-text">OFF</span>
-    </button>
-
     <button type="button" class="xray-toggle-btn" id="xray-toggle-btn" title="Toggle Structural CAD X-Ray Overlays">
       <span>⌖ X-RAY:</span>
       <span class="xray-state-text">OFF</span>
