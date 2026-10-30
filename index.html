@@ -7,16 +7,9 @@
   <meta name="theme-color" content="#F2EFE9" />
   <title>KINETIK.STRUCT // Experimental Editorial Creative Portfolio — Civil Eng × IT × Graphic Design (Svelte)</title>
 
-  <!-- Connect early to the CDNs that host the motion libraries -->
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-  <link rel="preconnect" href="https://unpkg.com" crossorigin />
-
-  <!-- Motion libraries: deferred so they never block first paint (executed in order, before the app module).
-       Three.js is NOT listed here — it is fetched lazily by src/lib/scene3d.js after the intro loader. -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-  <script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <!-- Preload critical hero LCP image immediately so browser starts download at millisecond 0 -->
+  <link rel="preload" as="image" href="/assets/images/campaign-01-480.webp" type="image/webp" media="(max-width: 640px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/images/campaign-01.webp" type="image/webp" media="(min-width: 641px)" fetchpriority="high" />
 </head>
 <body>
   <div id="app"></div>

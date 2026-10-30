@@ -34,7 +34,16 @@
   $: expandedText = FULL_MANIFESTO_WORDS.slice(collapsedWordCount).join(' ');
 
   async function calibrateCollapsedWords() {
-    if (!card01El || !sidebarEl || !headerGroupEl || !bottomContentEl || !probeEl) return;
+    if (!card01El || !sidebarEl || !headerGroupEl || !bottomContentEl) return;
+
+    // On mobile and tablet (<=1180px), cards are stacked vertically in 1 column.
+    // Use an optimal fixed word count to completely eliminate forced synchronous reflow loops on page load!
+    if (window.innerWidth <= 1180) {
+      collapsedWordCount = 38;
+      return;
+    }
+
+    if (!probeEl) return;
     const cHeight = card01El.offsetHeight;
     if (cHeight < 200) return;
     card01Height = cHeight;
@@ -78,20 +87,6 @@
     if (moreInnerEl) {
       expandedInnerH = moreInnerEl.offsetHeight;
     }
-
-    // Center the first card vertically between header and footer on mobile/tablet
-    if (!showMoreEssay && sidebarEl) {
-      const sHeight = sidebarEl.offsetHeight;
-      const headerEl = document.querySelector('.editorial-header');
-      const footerEl = document.querySelector('.editorial-footer-bar');
-      const stageEl = document.getElementById('main-editorial-stage');
-      const realHeaderH = headerEl ? headerEl.offsetHeight : 92;
-      const realFooterH = footerEl ? footerEl.offsetHeight : 38;
-      const stagePadTop = stageEl ? parseFloat(window.getComputedStyle(stageEl).paddingTop) || realHeaderH : realHeaderH;
-      const availH = window.innerHeight - realHeaderH - realFooterH;
-      const desiredCardTop = realHeaderH + Math.max(10, Math.round((availH - sHeight) / 2));
-      mobilePadTop = Math.max(8, Math.round(desiredCardTop - stagePadTop));
-    }
   }
 
   function toggleEssayMore() {
@@ -104,15 +99,28 @@
   }
 
   onMount(() => {
-    calibrateCollapsedWords();
+    // Immediate calculation for mobile without forced reflow
+    if (window.innerWidth <= 1180) {
+      calibrateCollapsedWords();
+    } else {
+      // Defer desktop binary search to idle so it never blocks initial paint
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => calibrateCollapsedWords());
+      } else {
+        setTimeout(calibrateCollapsedWords, 60);
+      }
+    }
+
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => calibrateCollapsedWords());
+      document.fonts.ready.then(() => {
+        if (window.innerWidth > 1180) calibrateCollapsedWords();
+      });
     }
 
     window.addEventListener('resize', calibrateCollapsedWords, { passive: true });
 
     let ro = null;
-    if (card01El && typeof ResizeObserver !== 'undefined') {
+    if (card01El && typeof ResizeObserver !== 'undefined' && window.innerWidth > 1180) {
       ro = new ResizeObserver(() => {
         calibrateCollapsedWords();
       });
@@ -230,10 +238,12 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-01.webp"
-            srcset="/assets/images/campaign-01-640.webp 640w, /assets/images/campaign-01.webp 896w"
-            sizes="(max-width: 768px) 100vw, 900px"
+            srcset="/assets/images/campaign-01-480.webp 480w, /assets/images/campaign-01-640.webp 640w, /assets/images/campaign-01.webp 800w"
+            sizes="(max-width: 480px) 100vw, (max-width: 960px) 640px, 800px"
             alt="Civil Engineer in utilitarian workwear holding blueprints beside a brutalist concrete bridge pier and steel truss"
             class="collage-photo"
+            width="800"
+            height="1071"
             decoding="async"
             fetchpriority="high"
           />
@@ -305,10 +315,12 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-02.webp"
-            srcset="/assets/images/campaign-02-640.webp 640w, /assets/images/campaign-02.webp 896w"
-            sizes="(max-width: 768px) 100vw, 900px"
+            srcset="/assets/images/campaign-02-480.webp 480w, /assets/images/campaign-02-640.webp 640w, /assets/images/campaign-02.webp 800w"
+            sizes="(max-width: 480px) 100vw, (max-width: 960px) 640px, 800px"
             alt="Experimental kinetic tensegrity drone surveying rig suspended against a deep cobalt blue sky"
             class="collage-photo"
+            width="800"
+            height="1071"
             decoding="async"
             loading="lazy"
           />
@@ -379,10 +391,12 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-03.webp"
-            srcset="/assets/images/campaign-03-640.webp 640w, /assets/images/campaign-03.webp 896w"
-            sizes="(max-width: 768px) 100vw, 900px"
+            srcset="/assets/images/campaign-03-480.webp 480w, /assets/images/campaign-03-640.webp 640w, /assets/images/campaign-03.webp 800w"
+            sizes="(max-width: 480px) 100vw, (max-width: 960px) 640px, 800px"
             alt="Editorial collage combining studio workwear sweatshirt with brutalist architecture loupe and cyan engineering blueprints"
             class="collage-photo"
+            width="800"
+            height="1071"
             decoding="async"
             loading="lazy"
           />

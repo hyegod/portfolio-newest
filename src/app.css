@@ -2336,8 +2336,8 @@ body.xray-active .cad-xray-layer,
 @media (max-width: 1180px) {
   .spread-top-row {
     grid-template-columns: 1fr;
-    /* Vertically center the first card between header and footer (computed in SectionSpread.svelte) */
-    padding-top: var(--mobile-pad-top, 28px);
+    /* Vertically center the first card between header and footer purely in CSS */
+    padding-top: max(16px, calc((100dvh - var(--header-h) - var(--footer-h) - 520px) / 2));
   }
   .spread-bottom-row {
     grid-template-columns: 1fr;

@@ -1,18 +1,12 @@
-/* Self-hosted fonts (no render-blocking Google Fonts round-trip; fetched only for the subsets actually used) */
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/jetbrains-mono/400-italic.css';
-import '@fontsource/jetbrains-mono/600.css';
-import '@fontsource/jetbrains-mono/700.css';
-import '@fontsource/jetbrains-mono/800.css';
-import '@fontsource/space-grotesk/400.css';
-import '@fontsource/space-grotesk/500.css';
-import '@fontsource/space-grotesk/600.css';
-import '@fontsource/space-grotesk/700.css';
-import '@fontsource/syne/700.css';
-import '@fontsource/syne/800.css';
-import '@fontsource/permanent-marker/400.css';
-import '@fontsource/instrument-serif/400.css';
-import '@fontsource/instrument-serif/400-italic.css';
+/* Self-hosted fonts — strictly pruned to required subsets & weights to avoid critical chain waterfalls */
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import '@fontsource/space-grotesk/latin-500.css';
+import '@fontsource/space-grotesk/latin-700.css';
+import '@fontsource/syne/latin-800.css';
+import '@fontsource/permanent-marker/latin-400.css';
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource/instrument-serif/latin-400-italic.css';
 
 import './app.css';
 import App from './App.svelte';

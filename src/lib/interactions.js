@@ -1,7 +1,20 @@
 /* ==========================================================================
-   KINETIK.STRUCT // INTERACTIONS, GSAP SCROLLTRIGGER, ANIME.JS & LENIS
+   KINETIK.STRUCT // INTERACTIONS, GSAP SCROLLTRIGGER & LENIS
    (src/lib/interactions.js)
    ========================================================================== */
+
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
+
+if (typeof window !== 'undefined') {
+  window.gsap = gsap;
+  window.ScrollTrigger = ScrollTrigger;
+  window.Lenis = Lenis;
+}
+
+gsap.registerPlugin(ScrollTrigger);
+gsap.config({ force3D: true });
 
 const prefersReducedMotion =
   typeof window !== 'undefined' &&
@@ -46,12 +59,13 @@ export function initSmoothScrollAndGSAP() {
 
   let lenis = null;
 
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.config({ force3D: true });
-  }
+  // Touch and mobile devices have hardware momentum scrolling; avoid JS scroll hijacking on mobile
+  const isTouchOrMobile = typeof window !== 'undefined' && (
+    window.innerWidth <= 768 ||
+    window.matchMedia('(hover: none), (pointer: coarse)').matches
+  );
 
-  if (typeof Lenis !== 'undefined' && !prefersReducedMotion) {
+  if (!isTouchOrMobile && !prefersReducedMotion) {
     lenis = new Lenis({
       duration: 1.05,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -60,19 +74,11 @@ export function initSmoothScrollAndGSAP() {
 
     lenis.scrollTo(0, { immediate: true });
 
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    }
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
   }
 
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -334,15 +340,17 @@ export function initSmoothScrollAndGSAP() {
 }
 
 export function initAnimeMicroInteractions() {
-  if (typeof anime === 'undefined') return;
-
-  anime({
-    targets: '.handstyle-stroke-path',
-    strokeDashoffset: [anime.setDashoffset, 0],
-    easing: 'easeInOutQuart',
-    duration: 1800,
-    delay: anime.stagger(260, { start: 300 })
-  });
+  gsap.fromTo(
+    '.handstyle-stroke-path',
+    { strokeDashoffset: 1000 },
+    {
+      strokeDashoffset: 0,
+      duration: 1.8,
+      ease: 'power2.inOut',
+      stagger: 0.26,
+      delay: 0.3
+    }
+  );
 
   document.querySelectorAll('[data-anime-counter]').forEach((el) => {
     const targetVal = parseFloat(el.getAttribute('data-anime-counter'));
@@ -350,12 +358,11 @@ export function initAnimeMicroInteractions() {
     const suffix = el.getAttribute('data-suffix') || '';
     const obj = { val: 0 };
 
-    anime({
-      targets: obj,
+    gsap.to(obj, {
       val: targetVal,
-      duration: 2200,
-      easing: 'easeOutExpo',
-      update: () => {
+      duration: 2.2,
+      ease: 'power2.out',
+      onUpdate: () => {
         el.textContent = obj.val.toFixed(decimals) + suffix;
       }
     });
@@ -369,11 +376,12 @@ export function initAnimeMicroInteractions() {
       const orig = digits.getAttribute('data-orig') || digits.textContent;
       digits.setAttribute('data-orig', orig);
 
-      anime({
-        targets: box,
-        scale: [1, 1.05, 1],
-        duration: 350,
-        easing: 'easeOutBack'
+      gsap.to(box, {
+        scale: 1.05,
+        duration: 0.18,
+        yoyo: true,
+        repeat: 1,
+        ease: 'back.out(1.7)'
       });
     });
   });
@@ -948,58 +956,33 @@ export function initSignatureIntroLoader() {
   const progressObj = { pct: 0 };
   let lastPct = -1;
 
-  if (typeof gsap !== 'undefined') {
-    const tl = gsap.timeline({
-      onComplete: () => {
-        setTimeout(dismissLoader, 180);
-      }
-    });
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const drawDuration = isMobile ? 1.5 : 2.0;
 
-    tl.to(path, {
-      strokeDashoffset: 0,
-      duration: 3.6,
-      ease: 'power1.inOut'
-    }, 0);
+  const tl = gsap.timeline({
+    onComplete: () => {
+      setTimeout(dismissLoader, 120);
+    }
+  });
 
-    tl.to(progressObj, {
-      pct: 100,
-      duration: 3.5,
-      ease: 'power1.inOut',
-      onUpdate: () => {
-        const current = Math.round(progressObj.pct);
-        if (current !== lastPct && pctEl) {
-          lastPct = current;
-          pctEl.textContent = `${current.toString().padStart(2, '0')}%`;
-        }
-      }
-    }, 0);
-  } else if (typeof anime !== 'undefined') {
-    anime({
-      targets: path,
-      strokeDashoffset: [len, 0],
-      easing: 'easeInOutSine',
-      duration: 3600
-    });
+  tl.to(path, {
+    strokeDashoffset: 0,
+    duration: drawDuration,
+    ease: 'power1.inOut'
+  }, 0);
 
-    anime({
-      targets: progressObj,
-      pct: 100,
-      easing: 'easeInOutSine',
-      duration: 3500,
-      update: () => {
-        const current = Math.round(progressObj.pct);
-        if (current !== lastPct && pctEl) {
-          lastPct = current;
-          pctEl.textContent = `${current.toString().padStart(2, '0')}%`;
-        }
-      },
-      complete: () => {
-        setTimeout(dismissLoader, 180);
+  tl.to(progressObj, {
+    pct: 100,
+    duration: drawDuration - 0.1,
+    ease: 'power1.inOut',
+    onUpdate: () => {
+      const current = Math.round(progressObj.pct);
+      if (current !== lastPct && pctEl) {
+        lastPct = current;
+        pctEl.textContent = `${current.toString().padStart(2, '0')}%`;
       }
-    });
-  } else {
-    setTimeout(dismissLoader, 450);
-  }
+    }
+  }, 0);
 }
 
 export function initScrollStructuralThread() {
