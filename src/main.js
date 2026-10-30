@@ -10,9 +10,13 @@ import '@fontsource/instrument-serif/latin-400-italic.css';
 
 import './app.css';
 import App from './App.svelte';
+import { injectSpeedInsights } from '@vercel/speed-insights';
 
 const app = new App({
   target: document.getElementById('app')
 });
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
 
 export default app;
