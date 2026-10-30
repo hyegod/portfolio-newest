@@ -198,18 +198,22 @@ export function initGlobalBackgroundScene() {
   animateBg();
 
   let lastSceneResizeW = typeof window !== 'undefined' ? window.innerWidth : 0;
+  let bgResizeTimer = null;
   window.addEventListener('resize', () => {
     // Skip resize if width didn't change (prevents re-allocating WebGL framebuffers on mobile address bar collapse/expand)
     if (window.innerWidth === lastSceneResizeW) return;
     lastSceneResizeW = window.innerWidth;
 
-    cachedWinW = window.innerWidth;
-    cachedWinH = window.innerHeight;
-    cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - cachedWinH);
-    camera.aspect = cachedWinW / cachedWinH;
-    camera.updateProjectionMatrix();
-    renderer.setSize(cachedWinW, cachedWinH);
-  });
+    if (bgResizeTimer) clearTimeout(bgResizeTimer);
+    bgResizeTimer = setTimeout(() => {
+      cachedWinW = window.innerWidth;
+      cachedWinH = window.innerHeight;
+      cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - cachedWinH);
+      camera.aspect = cachedWinW / cachedWinH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(cachedWinW, cachedWinH);
+    }, 120);
+  }, { passive: true });
 }
 
 /* ------------------------------------------------------------------------
@@ -695,16 +699,21 @@ export function initInteractiveCadSandbox() {
   animateCad();
 
   let lastCadW = container ? container.clientWidth : 0;
+  let cadResizeTimer = null;
   window.addEventListener('resize', () => {
     const w = container.clientWidth || 800;
     if (w === lastCadW) return;
     lastCadW = w;
-    const h = container.clientHeight || 580;
-    camera.aspect = w / h;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, h);
-    renderer.render(scene, camera);
-  });
+
+    if (cadResizeTimer) clearTimeout(cadResizeTimer);
+    cadResizeTimer = setTimeout(() => {
+      const h = container.clientHeight || 580;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+      renderer.render(scene, camera);
+    }, 120);
+  }, { passive: true });
 }
 
 /* ------------------------------------------------------------------------

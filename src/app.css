@@ -161,7 +161,7 @@ img {
   background-repeat: repeat;
   background-size: 128px 128px;
   transform: translateZ(0);
-  contain: strict;
+  contain: paint;
 }
 
 [data-theme="blueprint"] .paper-grain-overlay,
@@ -176,7 +176,7 @@ img {
   pointer-events: none;
   z-index: 9985;
   transform: translateZ(0);
-  contain: strict;
+  contain: paint;
   background:
     /* Vertical center magazine fold crease */
     linear-gradient(90deg,
@@ -209,13 +209,13 @@ img {
   pointer-events: none;
   z-index: 0;
   transform: translateZ(0);
-  contain: strict;
+  contain: paint;
   background-size: 48px 48px, 240px 240px;
   background-image:
-    linear-gradient(to right, var(--grid-hairline) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-hairline) 1px, transparent 1px),
-    linear-gradient(to right, var(--ink-faint) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--ink-faint) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-hairline) 0, var(--grid-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-hairline) 0, var(--grid-hairline) 1px, transparent 1px),
+    linear-gradient(to right, var(--ink-faint) 0, var(--ink-faint) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ink-faint) 0, var(--ink-faint) 1px, transparent 1px);
 }
 
 /* Soft Bottom Viewport Horizon / Seamless Gradient Shadow Fade */
@@ -228,7 +228,7 @@ img {
   pointer-events: none;
   z-index: 850;
   transform: translateZ(0);
-  contain: strict;
+  contain: paint;
   opacity: 1;
   background: linear-gradient(
     to top,
@@ -790,14 +790,10 @@ body.speed-mode-active .barcode-laser-line {
   width: var(--spine-w);
   border-right: var(--border-thin);
   z-index: 800;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 0;
   background: rgba(242, 239, 233, 0.88);
   transform: translateZ(0);
   user-select: none;
+  overflow: hidden;
 }
 
 [data-theme="blueprint"] .editorial-left-spine,
@@ -806,8 +802,11 @@ body.speed-mode-active .barcode-laser-line {
 }
 
 .spine-rotated-text {
+  position: absolute;
+  top: calc((100svh - var(--header-h) - var(--footer-h)) / 2);
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(180deg);
   writing-mode: vertical-rl;
-  transform: rotate(180deg);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
@@ -818,7 +817,6 @@ body.speed-mode-active .barcode-laser-line {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin: auto 0;
 }
 
 .spine-rotated-text .dot-sep {
@@ -827,8 +825,11 @@ body.speed-mode-active .barcode-laser-line {
 }
 
 .spine-scale-ruler {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   width: 14px;
-  height: clamp(32px, 6vh, 60px);
+  height: 44px;
   flex-shrink: 0;
   background-image: repeating-linear-gradient(
     to bottom,
@@ -838,6 +839,14 @@ body.speed-mode-active .barcode-laser-line {
     transparent 6px
   );
   opacity: 0.55;
+}
+
+.spine-scale-ruler:first-child {
+  top: 24px;
+}
+
+.spine-scale-ruler:last-child {
+  top: calc(100svh - var(--header-h) - var(--footer-h) - 68px);
 }
 
 /* Editorial Bottom Footer Bar with Crosshair Target */
