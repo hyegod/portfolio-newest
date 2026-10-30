@@ -154,194 +154,276 @@ export function initSmoothScrollAndGSAP() {
   if (prefersReducedMotion) return;
 
   // =========================================================================
-  // SCROLL-SCRUBBED 3D GLOBE / RECEIPT-ROLLER BOTTOM ENTRANCE (ALL ELEMENTS)
-  // - Elements enter at the bottom of the screen with low opacity (0.08),
-  //   curled along the horizontal X-axis (rotationX: -36deg, scale: 0.91, y: 72px)
-  //   with top-edge hinge (transformOrigin: '50% 0%') like a receipt emerging
-  //   from a roller or a continent rotating up around the bottom of a 3D globe.
-  // - As the user scrolls and the element reaches its viewing zone on screen,
-  //   it smoothly unrolls flat (rotationX: 0, scale: 1, y: 0) and reaches
-  //   100% full opacity (opacity: 1).
+  // ARCHITECTURAL KINETIC REVEALS // TECTONIC CARDS & EDITORIAL TYPOGRAPHY
+  // Replaced bottom curled receipt rollers with clean, high-performance
+  // editorial animations that trigger smoothly without scroll-lag or jitter.
   // =========================================================================
 
-  // 1. Primary Cards & Structural Containers (Globe / Receipt Roller Unroll)
-  const primaryRollerSelector = [
+  // 1. Primary Cards & Structural Containers (Tactile Elevation)
+  const primaryCardsSelector = [
     '.collage-card--02',
     '.collage-card--03',
     '.thread-synthesis-banner',
-    '.pillar-module',
     '.cad-3d-lab-wrapper',
     '.archive-filter-bar',
     '.archive-folder-stack',
     '.draggable-pasteup-board',
     '.engineering-spec-sheet',
-    '.iso-titleblock-wrapper'
+    '.iso-titleblock-wrapper',
+    '.transmission-form-pane'
   ].join(', ');
 
-  gsap.utils.toArray(primaryRollerSelector).forEach((el) => {
+  gsap.utils.toArray(primaryCardsSelector).forEach((el) => {
     gsap.fromTo(
       el,
       {
-        y: 76,
-        opacity: 0.08,
-        scale: 0.91,
-        rotationX: -36,
-        transformPerspective: 1150,
-        transformOrigin: '50% 0%',
+        y: 42,
+        opacity: 0,
+        scale: 0.985,
         force3D: true
       },
       {
         y: 0,
         opacity: 1,
         scale: 1,
-        rotationX: 0,
-        force3D: true,
-        ease: 'power1.out',
+        duration: 0.85,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: el,
-          start: 'top 102%',
-          end: 'top 62%',
-          scrub: scrubPrimary
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+          once: true
         }
       }
     );
   });
 
-  // 2. Section Headers, Oversized Titles & Sub-Elements (Globe Horizon Unroll)
-  const secondaryRollerSelector = [
-    '.section-kicker',
-    '.section-oversized-title',
-    '.section-meta-readout',
-    '.thread-stage-node',
-    '.thread-stage-readout',
-    '.pillar-title',
-    '.pillar-desc',
-    '.interactive-widget-box',
-    '.dossier-title',
-    '.dossier-summary',
-    '.daksh-assessment-strip',
-    '.daksh-bleed-title-wrap',
-    '.spec-table tbody tr',
-    '.blueprint-input-group',
-    '.iso-cell'
-  ].join(', ');
-
-  gsap.utils.toArray(secondaryRollerSelector).forEach((el) => {
+  // 2. Oversized Editorial Titles (Brutalist Masked Reveal & Tracking Snap)
+  gsap.utils.toArray('.section-oversized-title').forEach((title) => {
     gsap.fromTo(
-      el,
+      title,
       {
-        y: 38,
-        opacity: 0.1,
-        scale: 0.94,
-        rotationX: -28,
-        transformPerspective: 950,
-        transformOrigin: '50% 0%',
+        y: 36,
+        opacity: 0,
+        letterSpacing: '-0.035em',
         force3D: true
       },
       {
         y: 0,
         opacity: 1,
-        scale: 1,
-        rotationX: 0,
-        force3D: true,
-        ease: 'power1.out',
+        letterSpacing: '-0.02em',
+        duration: 0.9,
+        ease: 'power4.out',
         scrollTrigger: {
-          trigger: el,
-          start: 'top 101%',
-          end: 'top 72%',
-          scrub: scrubSecondary
+          trigger: title,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          once: true
         }
       }
     );
   });
 
-  // 3. System Receipt Cards in Archive (Extrudes like a real paper receipt while keeping its tilted resting angle!)
+  // 3. Section Kickers & Engineering Sub-Headers (Drafting Slide-in)
+  gsap.utils.toArray('.section-kicker').forEach((kicker) => {
+    gsap.fromTo(
+      kicker,
+      {
+        x: -28,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: kicker,
+          start: 'top 92%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  });
+
+  // 4. Tri-Pillar Modules (Staggered Tectonic Cascade)
+  const pillarGrid = document.querySelector('.tri-pillar-grid');
+  if (pillarGrid) {
+    const pillars = pillarGrid.querySelectorAll('.pillar-module');
+    if (pillars.length) {
+      gsap.fromTo(
+        pillars,
+        {
+          y: 45,
+          opacity: 0,
+          scale: 0.97,
+          force3D: true
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: pillarGrid,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
+      );
+    }
+  }
+
+  // 5. System Receipt Cards in Archive (Clean Flat Elevation with Resting Tilt)
   gsap.utils.toArray('.system-receipt-card').forEach((receipt) => {
     const isLeft = receipt.classList.contains('system-receipt--tilted-left');
     const restAngle = isLeft ? -1.4 : 1.4;
     gsap.fromTo(
       receipt,
       {
-        y: 48,
-        opacity: 0.08,
-        scaleY: 0.82,
-        scaleX: 0.94,
-        rotationX: -40,
+        y: 36,
+        opacity: 0,
         rotationZ: 0,
-        transformPerspective: 900,
-        transformOrigin: '50% 0%',
         force3D: true
       },
       {
         y: 0,
         opacity: 1,
-        scaleY: 1,
-        scaleX: 1,
-        rotationX: 0,
         rotationZ: restAngle,
-        force3D: true,
-        ease: 'power1.out',
+        duration: 0.75,
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: receipt,
-          start: 'top 100%',
-          end: 'top 70%',
-          scrub: scrubPrimary
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          once: true
         }
       }
     );
   });
 
-  // 4. Skill Progress Bars & ISO Approval Stamp (Scroll-Scrubbed)
+  // 6. Tactile Stickers, Badges & Tapes (Physics Spring Snap)
+  gsap.utils.toArray('.torn-tape-sticker, .barcode-sticker-box').forEach((sticker) => {
+    gsap.fromTo(
+      sticker,
+      {
+        scale: 0.86,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.65,
+        ease: 'back.out(2)',
+        scrollTrigger: {
+          trigger: sticker,
+          start: 'top 92%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  });
+
+  // 7. Hydraulic Progress Bars & Telemetry Fills
   gsap.utils.toArray('.skill-bar-fill').forEach((bar) => {
     gsap.fromTo(
       bar,
-      { scaleX: 0.08, force3D: true },
+      { scaleX: 0, force3D: true },
       {
         scaleX: 1,
-        force3D: true,
+        duration: 1.1,
         transformOrigin: 'left center',
-        ease: 'power1.out',
+        ease: 'power3.inOut',
         scrollTrigger: {
           trigger: bar,
-          start: 'top 98%',
-          end: 'top 72%',
-          scrub: scrubSecondary
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          once: true
         }
       }
     );
   });
 
+  // 8. ISO Approval Stamp (Physical Ink Seal Press)
   const isoStamp = document.querySelector('.iso-approval-stamp');
   if (isoStamp) {
     gsap.fromTo(
       isoStamp,
       {
-        y: 36,
-        opacity: 0.08,
-        scale: 1.18,
-        rotationX: -30,
-        rotationZ: -2.5,
-        transformPerspective: 900,
-        transformOrigin: '50% 0%',
+        scale: 1.35,
+        opacity: 0,
+        rotationZ: -8,
         force3D: true
       },
       {
-        y: 0,
-        opacity: 1,
         scale: 1,
-        rotationX: 0,
+        opacity: 1,
         rotationZ: -2.5,
-        force3D: true,
-        ease: 'power1.out',
+        duration: 0.6,
+        ease: 'back.out(2.4)',
         scrollTrigger: {
           trigger: isoStamp,
-          start: 'top 100%',
-          end: 'top 74%',
-          scrub: scrubPrimary
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+          once: true
         }
       }
     );
   }
+
+  // 9. Engineering Spec Sheet Table Rows (Staggered Telemetry Slide)
+  gsap.utils.toArray('.engineering-spec-sheet .spec-table tbody').forEach((tbody) => {
+    const rows = tbody.querySelectorAll('tr');
+    if (rows.length) {
+      gsap.fromTo(
+        rows,
+        {
+          x: -16,
+          opacity: 0,
+          force3D: true
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: tbody,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
+      );
+    }
+  });
+
+  // 10. Collage Photo Subtle Zoom-Settle
+  gsap.utils.toArray('.collage-card .collage-photo').forEach((img) => {
+    gsap.fromTo(
+      img,
+      { scale: 1.05, force3D: true },
+      {
+        scale: 1.0,
+        duration: 1.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: img,
+          start: 'top 88%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  });
 
   // 10. Rotate the footer Registration Crosshair continuously with scroll
   const crosshairSvg = document.getElementById('footer-crosshair-svg');

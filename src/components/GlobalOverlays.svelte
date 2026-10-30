@@ -1,12 +1,11 @@
 <!--
   GlobalOverlays.svelte
   Tactile pre-baked paper grain, magazine fold creases, architectural grid,
-  global scroll-driven Three.js WebGL background canvas, smooth horizon slot fade, and CAD cursor.
+  global scroll-driven Three.js WebGL background canvas, and CAD cursor.
 -->
 <div class="paper-grain-overlay" aria-hidden="true"></div>
 <div class="paper-fold-creases" aria-hidden="true"></div>
 <div class="architectural-grid-bg" aria-hidden="true"></div>
-<div class="bottom-horizon-slot-fade is-active" aria-hidden="true"></div>
 
 <canvas id="webgl-bg-canvas" aria-hidden="true"></canvas>
 

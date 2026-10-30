@@ -218,62 +218,7 @@ img {
     linear-gradient(to bottom, var(--ink-faint) 0, var(--ink-faint) 1px, transparent 1px);
 }
 
-/* Soft Bottom Viewport Horizon / Seamless Gradient Shadow Fade */
-.bottom-horizon-slot-fade {
-  position: fixed;
-  left: var(--spine-w);
-  right: 0;
-  bottom: var(--footer-h);
-  height: clamp(90px, 14svh, 140px);
-  pointer-events: none;
-  z-index: 850;
-  transform: translateZ(0);
-  contain: paint;
-  opacity: 1;
-  background: linear-gradient(
-    to top,
-    var(--bg-paper) 0%,
-    rgba(242, 239, 233, 0.98) 16%,
-    rgba(242, 239, 233, 0.86) 32%,
-    rgba(242, 239, 233, 0.64) 50%,
-    rgba(242, 239, 233, 0.38) 68%,
-    rgba(242, 239, 233, 0.16) 84%,
-    rgba(242, 239, 233, 0.04) 94%,
-    transparent 100%
-  );
-}
-
-.bottom-horizon-slot-fade.is-active {
-  opacity: 1;
-}
-
-[data-theme="blueprint"] .bottom-horizon-slot-fade {
-  background: linear-gradient(
-    to top,
-    var(--bg-paper) 0%,
-    rgba(0, 38, 179, 0.96) 16%,
-    rgba(0, 38, 179, 0.84) 32%,
-    rgba(0, 38, 179, 0.62) 50%,
-    rgba(0, 38, 179, 0.36) 68%,
-    rgba(0, 38, 179, 0.14) 84%,
-    rgba(0, 38, 179, 0.03) 94%,
-    transparent 100%
-  );
-}
-
-[data-theme="cyber"] .bottom-horizon-slot-fade {
-  background: linear-gradient(
-    to top,
-    var(--bg-paper) 0%,
-    rgba(11, 11, 14, 0.98) 16%,
-    rgba(11, 11, 14, 0.86) 32%,
-    rgba(11, 11, 14, 0.64) 50%,
-    rgba(11, 11, 14, 0.38) 68%,
-    rgba(11, 11, 14, 0.16) 84%,
-    rgba(11, 11, 14, 0.04) 94%,
-    transparent 100%
-  );
-}
+/* Bottom horizon blur removed per user request */
 
 /* Global Three.js Background Canvas */
 #webgl-bg-canvas {
