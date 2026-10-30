@@ -3916,3 +3916,65 @@ body.xray-active .cad-xray-layer,
     gap: 6px;
   }
 }
+
+
+/* ==========================================================================
+   KINETIC TYPOGRAPHY MASKS & 3D CARD PERSPECTIVE
+   ========================================================================== */
+.kinetic-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 2px;
+}
+
+.kinetic-word {
+  display: inline-block;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+}
+
+.spread-top-row,
+.spread-bottom-row,
+.tri-pillar-grid,
+.cad-3d-lab-wrapper,
+.timeline-milestones-track,
+.system-receipts-grid {
+  perspective: 1400px;
+}
+
+/* Tactile 3D Hover & Elevation on Cards */
+.collage-card {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.collage-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 14px 14px 0 var(--ink-black);
+}
+
+.pillar-module {
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillar-module:hover {
+  transform: translateY(-7px);
+  box-shadow: 10px 10px 0 var(--ink-black);
+}
+
+.timeline-milestone-card {
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.timeline-milestone-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 12px 12px 0 var(--acid-lime);
+}
+
+.system-receipt-card:hover {
+  transform: translateY(-8px) rotate(0deg) scale(1.02) !important;
+  box-shadow: 12px 12px 0 var(--ink-black);
+}

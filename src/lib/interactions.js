@@ -61,6 +61,93 @@ export function playMechanicalTick(freq = 900, duration = 0.025) {
   }
 }
 
+
+/* ------------------------------------------------------------------------
+   KINETIC TYPOGRAPHY UTILITIES: MASKED WORD REVEALS & TEXT SCRAMBLER
+   ------------------------------------------------------------------------ */
+function splitIntoKineticWords(el) {
+  if (!el || el.dataset.kineticSplit === 'true') return Array.from(el.querySelectorAll('.kinetic-word'));
+  el.dataset.kineticSplit = 'true';
+
+  const walker = (node) => {
+    if (node.nodeType === 3) {
+      const text = node.textContent;
+      if (!text.trim()) return node;
+      const words = text.split(/(\\s+)/);
+      const frag = document.createDocumentFragment();
+      words.forEach((w) => {
+        if (/^\\s+$/.test(w)) {
+          frag.appendChild(document.createTextNode(w));
+        } else if (w.length > 0) {
+          const mask = document.createElement('span');
+          mask.className = 'kinetic-mask';
+          const inner = document.createElement('span');
+          inner.className = 'kinetic-word';
+          inner.textContent = w;
+          mask.appendChild(inner);
+          frag.appendChild(mask);
+        }
+      });
+      return frag;
+    } else if (node.nodeType === 1) {
+      if (node.classList && (node.classList.contains('kinetic-mask') || node.classList.contains('bullet') || node.classList.contains('essay-inline-toggle'))) {
+        return node;
+      }
+      const children = Array.from(node.childNodes);
+      children.forEach((child) => {
+        const replacement = walker(child);
+        if (replacement && replacement !== child) {
+          node.replaceChild(replacement, child);
+        }
+      });
+      return node;
+    }
+    return node;
+  };
+
+  const children = Array.from(el.childNodes);
+  children.forEach((child) => {
+    const replacement = walker(child);
+    if (replacement && replacement !== child) {
+      el.replaceChild(replacement, child);
+    }
+  });
+
+  return Array.from(el.querySelectorAll('.kinetic-word'));
+}
+
+function scrambleText(el, targetText, duration = 600) {
+  if (!el) return;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789//_░▒▓';
+  const orig = targetText || el.textContent;
+  const len = orig.length;
+  const startTime = performance.now();
+
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    const revealedCount = Math.floor(progress * len);
+
+    let output = '';
+    for (let i = 0; i < len; i++) {
+      if (i < revealedCount || orig[i] === ' ' || orig[i] === '\\n') {
+        output += orig[i];
+      } else {
+        output += chars[Math.floor(Math.random() * chars.length)];
+      }
+    }
+    el.textContent = output;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      el.textContent = orig;
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
 export function initSmoothScrollAndGSAP() {
   if (typeof window !== 'undefined') {
     if ('scrollRestoration' in history) {
@@ -154,43 +241,312 @@ export function initSmoothScrollAndGSAP() {
   if (prefersReducedMotion) return;
 
   // =========================================================================
-  // ARCHITECTURAL KINETIC REVEALS // TECTONIC CARDS & EDITORIAL TYPOGRAPHY
-  // Replaced bottom curled receipt rollers with clean, high-performance
-  // editorial animations that trigger smoothly without scroll-lag or jitter.
+  // ARCHITECTURAL KINETIC SUITE: FULL EDITORIAL TYPOGRAPHY & TECTONIC CARDS
   // =========================================================================
 
-  // 1. Primary Cards & Structural Containers (Tactile Elevation)
-  const primaryCardsSelector = [
-    '.collage-card--02',
-    '.collage-card--03',
-    '.thread-synthesis-banner',
-    '.cad-3d-lab-wrapper',
-    '.archive-filter-bar',
-    '.archive-folder-stack',
-    '.draggable-pasteup-board',
-    '.engineering-spec-sheet',
-    '.iso-titleblock-wrapper',
-    '.transmission-form-pane',
-    '.timeline-milestone-card'
-  ].join(', ');
+  // A. FULL KINETIC TYPOGRAPHY SYSTEM
+  // -------------------------------------------------------------------------
 
-  gsap.utils.toArray(primaryCardsSelector).forEach((el) => {
+  // 1. Kinetic Masked Word Reveals for Oversized Titles & Major Headings
+  const majorHeadings = document.querySelectorAll([
+    '.section-oversized-title',
+    '.essay-main-title',
+    '.pillar-title',
+    '.timeline-milestone-role',
+    '.receipt-project-title'
+  ].join(', '));
+
+  majorHeadings.forEach((heading) => {
+    const words = splitIntoKineticWords(heading);
+    if (words.length) {
+      gsap.fromTo(
+        words,
+        {
+          yPercent: 125,
+          rotateZ: (i) => (i % 2 === 0 ? -4 : 4),
+          opacity: 0,
+          force3D: true
+        },
+        {
+          yPercent: 0,
+          rotateZ: 0,
+          opacity: 1,
+          duration: 0.95,
+          stagger: 0.035,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 92%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
+      );
+    }
+  });
+
+  // 2. Telemetry Character Decoder / Scrambler for Kickers & Badges
+  const scramblerElements = document.querySelectorAll([
+    '.section-kicker',
+    '.essay-index-tag',
+    '.pillar-id-badge',
+    '.milestone-code'
+  ].join(', '));
+
+  scramblerElements.forEach((el) => {
+    const origText = el.textContent.trim();
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 92%',
+      once: true,
+      onEnter: () => {
+        scrambleText(el, origText, 650);
+        gsap.fromTo(
+          el,
+          { x: -30, opacity: 0, force3D: true },
+          { x: 0, opacity: 1, duration: 0.7, ease: 'power2.out' }
+        );
+      }
+    });
+  });
+
+  // 3. Staggered Kinetic Paragraphs & Curatorial Lead Notes
+  const paragraphElements = document.querySelectorAll([
+    '.essay-paragraph',
+    '.section-curatorial-note',
+    '.pillar-desc',
+    '.timeline-milestone-desc',
+    '.section-meta-readout',
+    '.receipt-desc'
+  ].join(', '));
+
+  paragraphElements.forEach((p) => {
     gsap.fromTo(
-      el,
+      p,
       {
-        y: 42,
+        y: 28,
         opacity: 0,
-        scale: 0.985,
         force3D: true
       },
       {
         y: 0,
         opacity: 1,
-        scale: 1,
         duration: 0.85,
         ease: 'power3.out',
         scrollTrigger: {
-          trigger: el,
+          trigger: p,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  });
+
+  // 4. Drafting Matrix & Spec Sheet Rows (Staggered Telemetry Cascade)
+  gsap.utils.toArray([
+    '.essay-spec-matrix',
+    '.engineering-spec-sheet .spec-table tbody',
+    '.timeline-deliverables'
+  ].join(', ')).forEach((container) => {
+    const rows = container.querySelectorAll('.spec-row, tr, li');
+    if (rows.length) {
+      gsap.fromTo(
+        rows,
+        {
+          x: -24,
+          opacity: 0,
+          force3D: true
+        },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.06,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: container,
+            start: 'top 88%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
+      );
+    }
+  });
+
+
+  // B. FULL TECTONIC CARDS IN-ANIMATION SYSTEM
+  // -------------------------------------------------------------------------
+
+  // 1. HERO SECTION 01: Left Dossier Sidebar & Card 01 3D Entrance
+  const heroCard01 = document.querySelector('.collage-card--01');
+  const heroSidebar = document.querySelector('.editorial-sidebar-essay');
+
+  if (heroSidebar) {
+    gsap.fromTo(
+      heroSidebar,
+      {
+        x: -55,
+        scale: 0.94,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.15,
+        ease: 'power4.out',
+        delay: 0.1
+      }
+    );
+  }
+
+  if (heroCard01) {
+    // 3D perspective drop & physical settle
+    gsap.fromTo(
+      heroCard01,
+      {
+        y: 80,
+        scale: 0.88,
+        rotationX: 12,
+        rotationY: -6,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        y: 0,
+        scale: 1,
+        rotationX: 0,
+        rotationY: 0,
+        opacity: 1,
+        duration: 1.35,
+        ease: 'power4.out',
+        delay: 0.15
+      }
+    );
+
+    // Inner photo zoom-settle
+    const photo01 = heroCard01.querySelector('.collage-photo');
+    if (photo01) {
+      gsap.fromTo(
+        photo01,
+        { scale: 1.15, force3D: true },
+        { scale: 1.0, duration: 1.5, ease: 'power3.out', delay: 0.2 }
+      );
+    }
+
+    // Number '01' Badge Spring Snap
+    const badge01 = heroCard01.querySelector('.badge-num-circle');
+    if (badge01) {
+      gsap.fromTo(
+        badge01,
+        { scale: 0, rotation: -45, opacity: 0, force3D: true },
+        { scale: 1, rotation: -6, opacity: 1, duration: 0.8, ease: 'back.out(2.8)', delay: 0.45 }
+      );
+    }
+
+    // Physical stickers & tape slap
+    const stickers01 = heroCard01.querySelectorAll('.torn-tape-sticker, .barcode-sticker-box, .studio-monogram-badge');
+    if (stickers01.length) {
+      gsap.fromTo(
+        stickers01,
+        { scale: 0.65, opacity: 0, force3D: true },
+        { scale: 1, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'back.out(2.4)', delay: 0.55 }
+      );
+    }
+
+    // Caption bar slide-up
+    const caption01 = heroCard01.querySelector('.card-editorial-caption-bar');
+    if (caption01) {
+      gsap.fromTo(
+        caption01,
+        { y: 24, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', delay: 0.65 }
+      );
+    }
+  }
+
+  // 2. BOTTOM SPREAD: Card 02 (Left) & Card 03 (Right) Coordinated 3D Entry
+  const card02 = document.querySelector('.collage-card--02');
+  const card03 = document.querySelector('.collage-card--03');
+
+  if (card02) {
+    gsap.fromTo(
+      card02,
+      {
+        x: -65,
+        y: 75,
+        rotationZ: -3.5,
+        rotationY: 7,
+        scale: 0.9,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        y: 0,
+        rotationZ: 0,
+        rotationY: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card02,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  }
+
+  if (card03) {
+    gsap.fromTo(
+      card03,
+      {
+        x: 65,
+        y: 75,
+        rotationZ: 3.5,
+        rotationY: -7,
+        scale: 0.9,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        y: 0,
+        rotationZ: 0,
+        rotationY: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: card03,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  }
+
+  // Badges & Photos for Cards 02 & 03
+  gsap.utils.toArray('.collage-card--02 .badge-num-circle, .collage-card--03 .badge-num-circle').forEach((badge) => {
+    gsap.fromTo(
+      badge,
+      { scale: 0, rotation: -40, opacity: 0, force3D: true },
+      {
+        scale: 1,
+        rotation: -6,
+        opacity: 1,
+        duration: 0.75,
+        ease: 'back.out(2.6)',
+        scrollTrigger: {
+          trigger: badge,
           start: 'top 88%',
           toggleActions: 'play none none none',
           once: true
@@ -199,25 +555,17 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
-  // 2. Oversized Editorial Titles (Brutalist Masked Reveal & Tracking Snap)
-  gsap.utils.toArray('.section-oversized-title').forEach((title) => {
+  gsap.utils.toArray('.collage-card--02 .collage-photo, .collage-card--03 .collage-photo').forEach((img) => {
     gsap.fromTo(
-      title,
+      img,
+      { scale: 1.15, force3D: true },
       {
-        y: 36,
-        opacity: 0,
-        letterSpacing: '-0.035em',
-        force3D: true
-      },
-      {
-        y: 0,
-        opacity: 1,
-        letterSpacing: '-0.02em',
-        duration: 0.9,
-        ease: 'power4.out',
+        scale: 1.0,
+        duration: 1.35,
+        ease: 'power3.out',
         scrollTrigger: {
-          trigger: title,
-          start: 'top 90%',
+          trigger: img,
+          start: 'top 88%',
           toggleActions: 'play none none none',
           once: true
         }
@@ -225,31 +573,7 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
-  // 3. Section Kickers & Engineering Sub-Headers (Drafting Slide-in)
-  gsap.utils.toArray('.section-kicker').forEach((kicker) => {
-    gsap.fromTo(
-      kicker,
-      {
-        x: -28,
-        opacity: 0,
-        force3D: true
-      },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: kicker,
-          start: 'top 92%',
-          toggleActions: 'play none none none',
-          once: true
-        }
-      }
-    );
-  });
-
-  // 4. Tri-Pillar Modules (Staggered Tectonic Cascade)
+  // 3. SECTION 02: Three Identity Pillar Modules (Cascade 3D Lift)
   const pillarGrid = document.querySelector('.tri-pillar-grid');
   if (pillarGrid) {
     const pillars = pillarGrid.querySelectorAll('.pillar-module');
@@ -257,21 +581,23 @@ export function initSmoothScrollAndGSAP() {
       gsap.fromTo(
         pillars,
         {
-          y: 45,
+          y: 70,
+          scale: 0.91,
+          rotationX: 10,
           opacity: 0,
-          scale: 0.97,
           force3D: true
         },
         {
           y: 0,
-          opacity: 1,
           scale: 1,
-          duration: 0.8,
-          stagger: 0.12,
+          rotationX: 0,
+          opacity: 1,
+          duration: 0.95,
+          stagger: 0.14,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: pillarGrid,
-            start: 'top 85%',
+            start: 'top 82%',
             toggleActions: 'play none none none',
             once: true
           }
@@ -280,27 +606,129 @@ export function initSmoothScrollAndGSAP() {
     }
   }
 
-  // 5. System Receipt Cards in Archive (Clean Flat Elevation with Resting Tilt)
-  gsap.utils.toArray('.system-receipt-card').forEach((receipt) => {
-    const isLeft = receipt.classList.contains('system-receipt--tilted-left');
-    const restAngle = isLeft ? -1.4 : 1.4;
+  // 4. SECTION 03: 3D CAD Lab Wrapper & Telemetry Panel
+  const cadWrapper = document.querySelector('.cad-3d-lab-wrapper');
+  if (cadWrapper) {
     gsap.fromTo(
-      receipt,
+      cadWrapper,
       {
-        y: 36,
+        y: 65,
+        scale: 0.93,
         opacity: 0,
-        rotationZ: 0,
         force3D: true
       },
       {
         y: 0,
+        scale: 1,
         opacity: 1,
-        rotationZ: restAngle,
-        duration: 0.75,
+        duration: 1.15,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: cadWrapper,
+          start: 'top 82%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+
+    const modelBtns = cadWrapper.querySelectorAll('.cad-model-btn');
+    if (modelBtns.length) {
+      gsap.fromTo(
+        modelBtns,
+        { x: -20, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: cadWrapper,
+            start: 'top 85%',
+            once: true
+          }
+        }
+      );
+    }
+  }
+
+  // 5. SECTION 04: Timeline Milestone Cards (Alternating Mechanical Impact)
+  const milestoneCards = document.querySelectorAll('.timeline-milestone-card');
+  milestoneCards.forEach((card, idx) => {
+    const fromX = idx % 2 === 0 ? -55 : 55;
+    const tilt = idx % 2 === 0 ? -2.5 : 2.5;
+    gsap.fromTo(
+      card,
+      {
+        x: fromX,
+        y: 55,
+        rotationZ: tilt,
+        scale: 0.92,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        y: 0,
+        rotationZ: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 0.95,
         ease: 'power3.out',
         scrollTrigger: {
+          trigger: card,
+          start: 'top 86%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+
+    const yearBadge = card.querySelector('.milestone-year-badge');
+    if (yearBadge) {
+      gsap.fromTo(
+        yearBadge,
+        { scale: 0.6, opacity: 0, force3D: true },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'back.out(2.4)',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 86%',
+            once: true
+          }
+        }
+      );
+    }
+  });
+
+  // 6. SECTION 05: Archive System Receipt Cards (Paper Slip Physics)
+  gsap.utils.toArray('.system-receipt-card').forEach((receipt, idx) => {
+    const isLeft = receipt.classList.contains('system-receipt--tilted-left');
+    const targetAngle = isLeft ? -1.6 : 1.6;
+    gsap.fromTo(
+      receipt,
+      {
+        y: 85,
+        scale: 0.9,
+        rotationZ: isLeft ? -6 : 6,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        y: 0,
+        scale: 1,
+        rotationZ: targetAngle,
+        opacity: 1,
+        duration: 0.9,
+        delay: (idx % 3) * 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
           trigger: receipt,
-          start: 'top 90%',
+          start: 'top 88%',
           toggleActions: 'play none none none',
           once: true
         }
@@ -308,31 +736,140 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
-  // 6. Tactile Stickers, Badges & Tapes (Physics Spring Snap)
-  gsap.utils.toArray('.torn-tape-sticker, .barcode-sticker-box').forEach((sticker) => {
+  // 7. SECTION 06: Draggable Pasteup Board & Dropping Stickers
+  const pasteupBoard = document.querySelector('.draggable-pasteup-board');
+  if (pasteupBoard) {
     gsap.fromTo(
-      sticker,
+      pasteupBoard,
       {
-        scale: 0.86,
+        y: 65,
+        scale: 0.93,
         opacity: 0,
+        force3D: true
+      },
+      {
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: pasteupBoard,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+
+    const stickers = pasteupBoard.querySelectorAll('.draggable-sticker');
+    if (stickers.length) {
+      gsap.fromTo(
+        stickers,
+        {
+          y: -65,
+          scale: 0.65,
+          rotation: (i) => (i % 2 === 0 ? -18 : 18),
+          opacity: 0,
+          force3D: true
+        },
+        {
+          y: 0,
+          scale: 1,
+          rotation: 0,
+          opacity: 1,
+          stagger: 0.07,
+          duration: 0.75,
+          ease: 'back.out(2.5)',
+          scrollTrigger: {
+            trigger: pasteupBoard,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
+      );
+    }
+  }
+
+  // 8. SECTION 07: ISO Titleblock, Transmission Form & Approval Stamp
+  const titleblockWrap = document.querySelector('.iso-titleblock-wrapper');
+  if (titleblockWrap) {
+    gsap.fromTo(
+      titleblockWrap,
+      {
+        y: 60,
+        scale: 0.94,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 1.05,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: titleblockWrap,
+          start: 'top 84%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  }
+
+  const dispatchForm = document.querySelector('.transmission-form-pane');
+  if (dispatchForm) {
+    gsap.fromTo(
+      dispatchForm,
+      {
+        x: 45,
+        opacity: 0,
+        force3D: true
+      },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: dispatchForm,
+          start: 'top 84%',
+          toggleActions: 'play none none none',
+          once: true
+        }
+      }
+    );
+  }
+
+  const isoStamp = document.querySelector('.iso-approval-stamp');
+  if (isoStamp) {
+    gsap.fromTo(
+      isoStamp,
+      {
+        scale: 1.85,
+        opacity: 0,
+        rotationZ: -16,
         force3D: true
       },
       {
         scale: 1,
         opacity: 1,
-        duration: 0.65,
-        ease: 'back.out(2)',
+        rotationZ: -2.5,
+        duration: 0.7,
+        ease: 'back.out(3.2)',
         scrollTrigger: {
-          trigger: sticker,
-          start: 'top 92%',
+          trigger: isoStamp,
+          start: 'top 86%',
           toggleActions: 'play none none none',
           once: true
         }
       }
     );
-  });
+  }
 
-  // 7. Hydraulic Progress Bars & Telemetry Fills
+  // 9. Hydraulic Progress Bars & Telemetry Fills
   gsap.utils.toArray('.skill-bar-fill').forEach((bar) => {
     gsap.fromTo(
       bar,
@@ -351,82 +888,6 @@ export function initSmoothScrollAndGSAP() {
       }
     );
   });
-
-  // 8. ISO Approval Stamp (Physical Ink Seal Press)
-  const isoStamp = document.querySelector('.iso-approval-stamp');
-  if (isoStamp) {
-    gsap.fromTo(
-      isoStamp,
-      {
-        scale: 1.35,
-        opacity: 0,
-        rotationZ: -8,
-        force3D: true
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        rotationZ: -2.5,
-        duration: 0.6,
-        ease: 'back.out(2.4)',
-        scrollTrigger: {
-          trigger: isoStamp,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-          once: true
-        }
-      }
-    );
-  }
-
-  // 9. Engineering Spec Sheet Table Rows (Staggered Telemetry Slide)
-  gsap.utils.toArray('.engineering-spec-sheet .spec-table tbody').forEach((tbody) => {
-    const rows = tbody.querySelectorAll('tr');
-    if (rows.length) {
-      gsap.fromTo(
-        rows,
-        {
-          x: -16,
-          opacity: 0,
-          force3D: true
-        },
-        {
-          x: 0,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: tbody,
-            start: 'top 88%',
-            toggleActions: 'play none none none',
-            once: true
-          }
-        }
-      );
-    }
-  });
-
-  // 10. Collage Photo Subtle Zoom-Settle
-  gsap.utils.toArray('.collage-card .collage-photo').forEach((img) => {
-    gsap.fromTo(
-      img,
-      { scale: 1.05, force3D: true },
-      {
-        scale: 1.0,
-        duration: 1.2,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: img,
-          start: 'top 88%',
-          toggleActions: 'play none none none',
-          once: true
-        }
-      }
-    );
-  });
-
-
 }
 
 export function initAnimeMicroInteractions() {
