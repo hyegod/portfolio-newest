@@ -3526,7 +3526,14 @@ body.xray-active .cad-xray-layer,
    Placed BEHIND content cards (z-index: 1) so the thread weaves through margins &
    gutters and tucks cleanly behind cards without covering text or UI! */
 .content-weaving-thread-svg {
-  display: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none !important;
+  z-index: 1;
+  overflow: visible;
 }
 
 .editorial-section {
