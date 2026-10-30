@@ -694,8 +694,98 @@ export function initInteractiveCadSandbox() {
   });
 }
 
+/* ------------------------------------------------------------------------
+   LAZY THREE.JS LOADING
+   Three.js (~600 KB) is no longer a render-blocking <head> script. It is fetched on demand:
+   - Background wireframe field: after the signature intro loader is dismissed (it is hidden behind it anyway)
+   - CAD sandbox: only when its canvas is about to scroll into view
+   ------------------------------------------------------------------------ */
+const THREE_CDN_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+let threeLoadPromise = null;
+
+function loadThree() {
+  if (typeof THREE !== 'undefined') return Promise.resolve();
+  if (!threeLoadPromise) {
+    threeLoadPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = THREE_CDN_URL;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => {
+        threeLoadPromise = null;
+        reject(new Error('three.js failed to load'));
+      };
+      document.head.appendChild(s);
+    });
+  }
+  return threeLoadPromise;
+}
+
+function whenIdle(cb, timeout = 1500) {
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(cb, { timeout });
+  } else {
+    setTimeout(cb, 120);
+  }
+}
+
 export function bootScene3D() {
   initPrebakedPaperGrain();
-  initGlobalBackgroundScene();
-  initInteractiveCadSandbox();
+
+  // 1) Global background scene — start once the intro loader has left the screen
+  let bgStarted = false;
+  const startBackground = () => {
+    if (bgStarted) return;
+    bgStarted = true;
+    whenIdle(() => {
+      loadThree()
+        .then(() => {
+          initGlobalBackgroundScene();
+          const theme =
+            document.documentElement.getAttribute('data-theme') ||
+            document.body.getAttribute('data-theme') ||
+            'paper';
+          if (typeof window.updateBgSceneTheme === 'function') window.updateBgSceneTheme(theme);
+        })
+        .catch(() => {});
+    });
+  };
+
+  const loader = document.getElementById('signature-intro-loader');
+  if (!loader || loader.classList.contains('is-dismissed')) {
+    startBackground();
+  } else {
+    window.addEventListener('signature-dismissed', startBackground, { once: true });
+    setTimeout(startBackground, 8000); // safety net
+  }
+
+  // 2) CAD sandbox — only when the canvas is within ~1 screen of the viewport
+  const cadCanvas = document.getElementById('cad-interactive-canvas');
+  if (!cadCanvas) return;
+
+  let cadStarted = false;
+  const startCad = () => {
+    if (cadStarted) return;
+    cadStarted = true;
+    loadThree()
+      .then(() => initInteractiveCadSandbox())
+      .catch(() => {
+        cadStarted = false;
+      });
+  };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          startCad();
+        }
+      },
+      { rootMargin: '1200px 0px' }
+    );
+    io.observe(cadCanvas);
+  } else {
+    startCad();
+  }
 }

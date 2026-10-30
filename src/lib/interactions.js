@@ -907,11 +907,29 @@ export function initSignatureIntroLoader() {
 
   if (!loader) return;
 
+  let dismissedEmitted = false;
+  function emitDismissed() {
+    if (dismissedEmitted) return;
+    dismissedEmitted = true;
+    window.dispatchEvent(new CustomEvent('signature-dismissed'));
+  }
+
+  // Notify the rest of the app whenever the loader leaves, however it was dismissed
+  if (typeof MutationObserver !== 'undefined') {
+    const mo = new MutationObserver(() => {
+      if (loader.classList.contains('is-dismissed')) {
+        mo.disconnect();
+        emitDismissed();
+      }
+    });
+    mo.observe(loader, { attributes: true, attributeFilter: ['class'] });
+  }
+
   function dismissLoader() {
     if (loader.classList.contains('is-dismissed')) return;
     loader.classList.add('is-dismissed');
     playMechanicalTick(1280, 0.04);
-    window.dispatchEvent(new CustomEvent('signature-dismissed'));
+    emitDismissed();
   }
 
   if (skipBtn) {
@@ -939,13 +957,13 @@ export function initSignatureIntroLoader() {
 
     tl.to(path, {
       strokeDashoffset: 0,
-      duration: 1.8,
-      ease: 'power2.inOut'
+      duration: 3.6,
+      ease: 'power1.inOut'
     }, 0);
 
     tl.to(progressObj, {
       pct: 100,
-      duration: 1.75,
+      duration: 3.5,
       ease: 'power1.inOut',
       onUpdate: () => {
         const current = Math.round(progressObj.pct);
@@ -959,15 +977,15 @@ export function initSignatureIntroLoader() {
     anime({
       targets: path,
       strokeDashoffset: [len, 0],
-      easing: 'easeInOutCubic',
-      duration: 1800
+      easing: 'easeInOutSine',
+      duration: 3600
     });
 
     anime({
       targets: progressObj,
       pct: 100,
-      easing: 'easeInOutQuad',
-      duration: 1750,
+      easing: 'easeInOutSine',
+      duration: 3500,
       update: () => {
         const current = Math.round(progressObj.pct);
         if (current !== lastPct && pctEl) {
@@ -1301,7 +1319,7 @@ export function initScrollStructuralThread() {
     // Safety fallback in case dismissed without event
     setTimeout(() => {
       if (!lastBuiltW) runInitialThreadBuild();
-    }, 2200);
+    }, 5200);
   } else {
     runInitialThreadBuild();
   }
@@ -1640,17 +1658,47 @@ export function initSystemReceiptCards() {
   });
 }
 export function bootInteractions() {
+  // Only what the intro needs runs immediately; everything else waits until the loader has left the
+  // screen and is then executed as small separate tasks (no single long main-thread task).
   initSignatureIntroLoader();
-  initSmoothScrollAndGSAP();
-  initScrollStructuralThread();
-  initAnimeMicroInteractions();
   initCadCursor();
-  initThemeAndXrayControls();
-  initBeamDeflectionSolver();
-  initCyberTerminal();
-  initKineticTypePlayground();
-  initArchiveFilter();
-  initSystemReceiptCards();
-  initDraggablePasteupBoard();
-  initModalsAndForm();
+
+  const queue = [
+    initSmoothScrollAndGSAP,
+    initScrollStructuralThread,
+    initThemeAndXrayControls,
+    initAnimeMicroInteractions,
+    initBeamDeflectionSolver,
+    initCyberTerminal,
+    initKineticTypePlayground,
+    initArchiveFilter,
+    initSystemReceiptCards,
+    initDraggablePasteupBoard,
+    initModalsAndForm
+  ];
+
+  let started = false;
+  const runQueue = () => {
+    if (started) return;
+    started = true;
+    const step = () => {
+      const fn = queue.shift();
+      if (!fn) return;
+      try {
+        fn();
+      } catch (err) {
+        console.error('[init]', fn.name, err);
+      }
+      setTimeout(step, 0);
+    };
+    step();
+  };
+
+  const loaderEl = document.getElementById('signature-intro-loader');
+  if (!loaderEl || loaderEl.classList.contains('is-dismissed')) {
+    runQueue();
+  } else {
+    window.addEventListener('signature-dismissed', runQueue, { once: true });
+    setTimeout(runQueue, 8000); // safety net
+  }
 }

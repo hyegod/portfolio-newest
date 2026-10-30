@@ -271,6 +271,7 @@ img {
   z-index: 1;
   pointer-events: none;
   opacity: 0.85;
+  filter: blur(1.5px);
   transform: translateZ(0);
 }
 
@@ -2335,6 +2336,8 @@ body.xray-active .cad-xray-layer,
 @media (max-width: 1180px) {
   .spread-top-row {
     grid-template-columns: 1fr;
+    /* Vertically center the first card between header and footer (computed in SectionSpread.svelte) */
+    padding-top: var(--mobile-pad-top, 28px);
   }
   .spread-bottom-row {
     grid-template-columns: 1fr;

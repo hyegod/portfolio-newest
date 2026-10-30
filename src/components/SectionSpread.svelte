@@ -26,6 +26,7 @@
   let probeEl = null;
   let moreInnerEl = null;
   let card01Height = 580;
+  let mobilePadTop = 28;
   let collapsedWordCount = 40;
   let expandedInnerH = 235;
 
@@ -77,6 +78,20 @@
     if (moreInnerEl) {
       expandedInnerH = moreInnerEl.offsetHeight;
     }
+
+    // Center the first card vertically between header and footer on mobile/tablet
+    if (!showMoreEssay && sidebarEl) {
+      const sHeight = sidebarEl.offsetHeight;
+      const headerEl = document.querySelector('.editorial-header');
+      const footerEl = document.querySelector('.editorial-footer-bar');
+      const stageEl = document.getElementById('main-editorial-stage');
+      const realHeaderH = headerEl ? headerEl.offsetHeight : 92;
+      const realFooterH = footerEl ? footerEl.offsetHeight : 38;
+      const stagePadTop = stageEl ? parseFloat(window.getComputedStyle(stageEl).paddingTop) || realHeaderH : realHeaderH;
+      const availH = window.innerHeight - realHeaderH - realFooterH;
+      const desiredCardTop = realHeaderH + Math.max(10, Math.round((availH - sHeight) / 2));
+      mobilePadTop = Math.max(8, Math.round(desiredCardTop - stagePadTop));
+    }
   }
 
   function toggleEssayMore() {
@@ -94,6 +109,8 @@
       document.fonts.ready.then(() => calibrateCollapsedWords());
     }
 
+    window.addEventListener('resize', calibrateCollapsedWords, { passive: true });
+
     let ro = null;
     if (card01El && typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver(() => {
@@ -103,6 +120,7 @@
     }
 
     return () => {
+      window.removeEventListener('resize', calibrateCollapsedWords);
       if (ro) ro.disconnect();
     };
   });
@@ -112,7 +130,7 @@
   <div class="spread-01-container">
 
     <!-- TOP ROW: LEFT MANIFESTO ESSAY + RIGHT LARGE HALFTONE CARD 01 -->
-    <div class="spread-top-row" class:is-expanded={showMoreEssay} style="--card01-h: {card01Height}px;">
+    <div class="spread-top-row" class:is-expanded={showMoreEssay} style="--card01-h: {card01Height}px; --mobile-pad-top: {mobilePadTop}px;">
 
       <!-- Left Editorial Column -->
       <div bind:this={sidebarEl} class="editorial-sidebar-essay" data-thread-anchor="sec01-manifesto" data-thread-bias="left">
@@ -212,6 +230,8 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-01.webp"
+            srcset="/assets/images/campaign-01-640.webp 640w, /assets/images/campaign-01.webp 896w"
+            sizes="(max-width: 768px) 100vw, 900px"
             alt="Civil Engineer in utilitarian workwear holding blueprints beside a brutalist concrete bridge pier and steel truss"
             class="collage-photo"
             decoding="async"
@@ -285,6 +305,8 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-02.webp"
+            srcset="/assets/images/campaign-02-640.webp 640w, /assets/images/campaign-02.webp 896w"
+            sizes="(max-width: 768px) 100vw, 900px"
             alt="Experimental kinetic tensegrity drone surveying rig suspended against a deep cobalt blue sky"
             class="collage-photo"
             decoding="async"
@@ -357,6 +379,8 @@
         <div class="collage-visual-stage">
           <img
             src="/assets/images/campaign-03.webp"
+            srcset="/assets/images/campaign-03-640.webp 640w, /assets/images/campaign-03.webp 896w"
+            sizes="(max-width: 768px) 100vw, 900px"
             alt="Editorial collage combining studio workwear sweatshirt with brutalist architecture loupe and cyan engineering blueprints"
             class="collage-photo"
             decoding="async"
