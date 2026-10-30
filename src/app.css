@@ -163,33 +163,7 @@ img {
   opacity: 0.16;
 }
 
-/* 2. Authentic Screen-Print Halftone Dot Matrix (Street-Zine & Newspaper Press) */
-.halftone-screen-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.22;
-  background-image:
-    radial-gradient(circle at center, var(--ink-black) 1.25px, transparent 1.25px),
-    radial-gradient(circle at center, var(--ink-black) 0.85px, transparent 0.85px);
-  background-size: 18px 18px, 36px 36px;
-  background-position: 0 0, 9px 9px;
-  transform: translateZ(0);
-  contain: strict;
-  transition: opacity 0.4s ease;
-}
-
-[data-bg-style="wave"] .halftone-screen-overlay {
-  opacity: 0.08;
-}
-
-[data-theme="blueprint"] .halftone-screen-overlay,
-[data-theme="cyber"] .halftone-screen-overlay {
-  opacity: 0.14;
-}
-
-/* 3. Architectural Blueprint & Graph Grid Background (Multi-tier: 20px & 100px) */
+/* Architectural CAD Graph Grid Background (Multi-tier: 20px & 100px) */
 .architectural-grid-bg {
   position: fixed;
   inset: 0;
@@ -205,219 +179,19 @@ img {
     linear-gradient(to bottom, var(--ink-faint) 1px, transparent 1px);
 }
 
-/* 4. Industrial Drafting Watermarks, Rubber Stamps & Stencils */
-.industrial-watermarks-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-  transition: opacity 0.4s ease;
-}
-
-[data-bg-style="wave"] .industrial-watermarks-layer {
-  opacity: 0.25;
-}
-
-.industrial-stamp {
-  position: absolute;
-  pointer-events: none;
-  user-select: none;
-  color: var(--ink-black);
-  z-index: 1;
-}
-
-.stamp--seal-tl {
-  top: calc(var(--header-h) + 26px);
-  left: calc(var(--spine-w) + 24px);
-  width: 145px;
-  height: 145px;
-  opacity: 0.14;
-  transform: rotate(-8deg);
-  transition: transform 0.3s ease;
-}
-
-.stamp-seal-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.stamp--batch-tr {
-  top: calc(var(--header-h) + 32px);
-  right: 28px;
-  opacity: 0.13;
-  transform: rotate(3deg);
-  background: var(--bg-paper);
-  border: 2px dashed var(--ink-black);
-  padding: 6px 10px;
-}
-
-.stamp-box-header {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  border-bottom: 1px solid var(--ink-faint);
-  padding-bottom: 3px;
-  margin-bottom: 3px;
-}
-
-.stamp-box-title {
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  line-height: 1.1;
-}
-
-.stamp-box-meta {
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  line-height: 1.25;
-  color: var(--ink-muted);
-  margin-top: 3px;
-}
-
-.stamp-box-barcode {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  margin-top: 3px;
-}
-
-.industrial-hatch-corner {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  pointer-events: none;
-  opacity: 0.07;
-}
-
-.industrial-hatch-corner.corner--tl {
-  top: var(--header-h);
-  left: var(--spine-w);
-  background: repeating-linear-gradient(45deg, var(--ink-black) 0, var(--ink-black) 2px, transparent 2px, transparent 10px);
-}
-
-.industrial-hatch-corner.corner--br {
-  bottom: var(--footer-h);
-  right: 0;
-  background: repeating-linear-gradient(-45deg, var(--ink-black) 0, var(--ink-black) 2px, transparent 2px, transparent 10px);
-}
-
-.industrial-cad-ruler {
-  position: absolute;
-  display: flex;
-  gap: 28px;
-  font-family: var(--font-mono);
-  font-size: 7.5px;
-  letter-spacing: 0.1em;
-  color: var(--ink-black);
-  opacity: 0.22;
-  pointer-events: none;
-  user-select: none;
-}
-
-.industrial-cad-ruler.ruler--left {
-  left: calc(var(--spine-w) + 4px);
-  top: 48%;
-  transform: rotate(-90deg) translateX(-50%);
-  transform-origin: left top;
-}
-
-.industrial-cad-ruler.ruler--right {
-  right: 4px;
-  top: 48%;
-  transform: rotate(90deg) translateX(50%);
-  transform-origin: right top;
-}
-
-.industrial-giant-text {
-  position: absolute;
-  font-family: var(--font-display);
-  font-size: clamp(34px, 4.2vw, 56px);
-  font-weight: 900;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--ink-black);
-  opacity: 0.05;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-}
-
-.industrial-giant-text.giant-text--left {
-  left: calc(var(--spine-w) + 12px);
-  top: 30%;
-  transform-origin: left top;
-  transform: rotate(-90deg) translateY(-50%);
-}
-
-.industrial-giant-text.giant-text--right {
-  right: 8px;
-  top: 65%;
-  transform-origin: right top;
-  transform: rotate(90deg) translateY(-50%);
-}
-
-/* 5. Option 4: Cyber Kinetic Wave & Seismic Frequency Canvas */
+/* Cyber Kinetic Wave & Seismic Frequency Canvas (Dedicated Permanent Background) */
 .cyber-kinetic-wave-layer {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-[data-bg-style="wave"] .cyber-kinetic-wave-layer {
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
 #kinetic-wave-canvas {
   width: 100%;
   height: 100%;
   display: block;
-}
-
-/* Header BG Switcher Button */
-.bg-style-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--ink-black);
-  padding: 3px 8px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--ink-black);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 2px 2px 0 var(--ink-black);
-}
-
-.bg-style-toggle-btn:hover {
-  background: var(--acid-lime);
-  color: #0D0D10;
-  transform: translateY(-1px);
-  box-shadow: 3px 3px 0 var(--ink-black);
-}
-
-.bg-style-icon {
-  color: var(--electric-blue);
-  font-weight: 900;
-}
-
-@media (max-width: 900px) {
-  .industrial-giant-text,
-  .industrial-cad-ruler {
-    display: none;
-  }
 }
 
 /* Bottom horizon blur removed per user request */

@@ -108,11 +108,7 @@ export function initKineticWaveBackground() {
     if (now - lastTime < 28) return;
     lastTime = now;
 
-    const bgStyle = document.documentElement.getAttribute('data-bg-style');
-    if (bgStyle !== 'wave') {
-      ctx.clearRect(0, 0, width, height);
-      return;
-    }
+// Pure Cyber Kinetic Wave active
 
     ctx.clearRect(0, 0, width, height);
     time += 1;
