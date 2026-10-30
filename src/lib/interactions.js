@@ -1425,7 +1425,6 @@ export function initModalsAndForm() {
 export function initSignatureIntroLoader() {
   const loader = document.getElementById('signature-intro-loader');
   const path = document.getElementById('signature-one-line-path');
-  const laserDot = document.getElementById('signature-laser-dot');
   const pctEl = document.getElementById('signature-loader-pct');
   const progressFill = document.getElementById('signature-progress-fill');
   const phaseTagEl = document.getElementById('loader-phase-tag');
@@ -1443,7 +1442,7 @@ export function initSignatureIntroLoader() {
     window.dispatchEvent(new CustomEvent('signature-dismissed'));
   }
 
-  // Live Clock updater
+  // Live Clock updater (low frequency: 1s)
   function updateClock() {
     if (!clockEl) return;
     const d = new Date();
@@ -1491,11 +1490,6 @@ export function initSignatureIntroLoader() {
     });
   }
 
-  // Clicking anywhere on the backdrop also enters
-  loader.addEventListener('click', () => {
-    dismissLoader();
-  });
-
   if (prefersReducedMotion || !path) {
     setTimeout(dismissLoader, 600);
     return;
@@ -1517,14 +1511,14 @@ export function initSignatureIntroLoader() {
   let lastPct = -1;
   let currentPhaseIndex = -1;
 
-  // Cinematic pacing: ~3.4s on desktop, ~3.0s on mobile (luxurious, readable, not rushed)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-  const drawDuration = isMobile ? 3.0 : 3.4;
+  // Cinematic pacing: ~3.2s on desktop, ~2.8s on mobile/tablet (fluid, hardware-accelerated, zero lag)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1024;
+  const drawDuration = isMobile ? 2.8 : 3.2;
 
   tl = gsap.timeline({
     onComplete: () => {
-      // Hold for 380ms at 100% so user sees the complete locked state
-      setTimeout(dismissLoader, 380);
+      // Hold for 350ms at 100% so user sees the complete locked state
+      setTimeout(dismissLoader, 350);
     }
   });
 
@@ -1563,16 +1557,6 @@ export function initSignatureIntroLoader() {
           if (consoleTextEl) consoleTextEl.textContent = PHASES[pIndex].msg;
           playMechanicalTick(920 + pIndex * 100, 0.015);
         }
-      }
-
-      // Track laser pen dot to current stroke position
-      if (laserDot && path.getPointAtLength) {
-        try {
-          const traveled = (progressObj.pct / 100) * len;
-          const pt = path.getPointAtLength(traveled);
-          laserDot.setAttribute('cx', pt.x);
-          laserDot.setAttribute('cy', pt.y);
-        } catch (_) {}
       }
     }
   }, 0);
