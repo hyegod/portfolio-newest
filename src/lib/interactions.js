@@ -573,6 +573,94 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
+  // 2.5. SYNTHESIS BRIDGE: "Intent · Interaction · System" Thread Banner 3D Entrance
+  const synthesisBanner = document.querySelector('.thread-synthesis-banner');
+  if (synthesisBanner) {
+    const bannerTop = synthesisBanner.querySelector('.thread-banner-top');
+    const stageNodes = synthesisBanner.querySelectorAll('.thread-stage-node');
+    const connectors = synthesisBanner.querySelectorAll('.thread-connector-line');
+    const readout = synthesisBanner.querySelector('.thread-stage-readout');
+
+    const tlBanner = gsap.timeline({
+      scrollTrigger: {
+        trigger: synthesisBanner,
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+        once: true
+      }
+    });
+
+    // 1. Physical 3D plate drop & box-shadow settle
+    tlBanner.fromTo(
+      synthesisBanner,
+      {
+        y: 65,
+        scale: 0.93,
+        rotationX: 8,
+        opacity: 0,
+        boxShadow: '0px 0px 0 var(--ink-black)',
+        force3D: true
+      },
+      {
+        y: 0,
+        scale: 1,
+        rotationX: 0,
+        opacity: 1,
+        boxShadow: '6px 6px 0 var(--ink-black)',
+        duration: 1.15,
+        ease: 'power4.out'
+      },
+      0
+    );
+
+    // 2. Top meta kicker slide down
+    if (bannerTop) {
+      tlBanner.fromTo(
+        bannerTop,
+        { y: -16, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out' },
+        0.18
+      );
+    }
+
+    // 3. Staggered node buttons spring pop
+    if (stageNodes.length) {
+      tlBanner.fromTo(
+        stageNodes,
+        { y: 32, scale: 0.90, opacity: 0, force3D: true },
+        {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'back.out(2.4)'
+        },
+        0.28
+      );
+    }
+
+    // 4. Horizontal connector wires expand
+    if (connectors.length) {
+      tlBanner.fromTo(
+        connectors,
+        { scaleX: 0, opacity: 0, transformOrigin: 'center center', force3D: true },
+        { scaleX: 1, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
+        0.42
+      );
+    }
+
+    // 5. Lower readout console slide-up & settle
+    if (readout) {
+      tlBanner.fromTo(
+        readout,
+        { y: 22, opacity: 0, force3D: true },
+        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
+        0.52
+      );
+    }
+  }
+
   // 3. SECTION 02: Three Identity Pillar Modules (Cascade 3D Lift)
   const pillarGrid = document.querySelector('.tri-pillar-grid');
   if (pillarGrid) {
