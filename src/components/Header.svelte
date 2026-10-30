@@ -2,6 +2,65 @@
   Header.svelte
   Fixed Editorial Header Bar ("KINETIK.STRUCT | STUDIO KIT | 01 / 06")
 -->
+<script>
+  import { onMount } from 'svelte';
+  import { playMechanicalTick } from '../lib/interactions.js';
+
+  let currentTheme = 'editorial';
+  let isOpen = false;
+
+  const themes = [
+    { id: 'editorial', label: 'PAPER', badge: '01' },
+    { id: 'blueprint', label: 'BLUEPRINT', badge: '02' },
+    { id: 'cyber', label: 'TERMINAL', badge: '03' }
+  ];
+
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    isOpen = !isOpen;
+    playMechanicalTick(980, 0.02);
+  }
+
+  function selectTheme(themeId) {
+    currentTheme = themeId;
+    isOpen = false;
+    playMechanicalTick(840, 0.03);
+
+    if (themeId === 'editorial') {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', themeId);
+    }
+
+    if (typeof window.updateBgSceneTheme === 'function') {
+      window.updateBgSceneTheme(themeId);
+    }
+  }
+
+  onMount(() => {
+    const active = document.documentElement.getAttribute('data-theme') || 'editorial';
+    currentTheme = active;
+
+    const closeMenu = (e) => {
+      if (!e.target.closest('.custom-theme-dropdown')) {
+        isOpen = false;
+      }
+    };
+    window.addEventListener('click', closeMenu);
+    const onKey = (e) => {
+      if (e.key === 'Escape') isOpen = false;
+    };
+    window.addEventListener('keydown', onKey);
+
+    return () => {
+      window.removeEventListener('click', closeMenu);
+      window.removeEventListener('keydown', onKey);
+    };
+  });
+
+  $: currentLabel = themes.find(t => t.id === currentTheme)?.label || 'PAPER';
+</script>
+
 <header class="editorial-header">
   <div class="header-brand">
     <span class="header-brand-dot"></span>
@@ -23,14 +82,38 @@
   </nav>
 
   <div class="header-right-controls">
-    <div class="theme-dropdown-wrap">
-      <span class="theme-select-prefix">THEME:</span>
-      <select class="theme-dropdown-select" id="theme-dropdown-select" aria-label="Visual Theme Mode">
-        <option value="editorial">PAPER</option>
-        <option value="blueprint">BLUEPRINT</option>
-        <option value="cyber">TERMINAL</option>
-      </select>
-      <span class="theme-select-caret" aria-hidden="true">▾</span>
+    <div class="custom-theme-dropdown" class:is-open={isOpen}>
+      <button
+        type="button"
+        class="custom-dropdown-trigger"
+        on:click={toggleDropdown}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+      >
+        <span class="trigger-label">{currentLabel}</span>
+        <span class="trigger-arrow" class:is-rotated={isOpen}>▾</span>
+      </button>
+
+      {#if isOpen}
+        <div class="custom-dropdown-menu" role="listbox">
+          {#each themes as t}
+            <button
+              type="button"
+              class="custom-dropdown-item"
+              class:is-active={currentTheme === t.id}
+              role="option"
+              aria-selected={currentTheme === t.id}
+              on:click={() => selectTheme(t.id)}
+            >
+              <span class="item-tag">[{t.badge}]</span>
+              <span class="item-label">{t.label}</span>
+              {#if currentTheme === t.id}
+                <span class="item-check">✓</span>
+              {/if}
+            </button>
+          {/each}
+        </div>
+      {/if}
     </div>
 
     <button type="button" class="speed-toggle-btn" id="speed-toggle-btn" title="Toggle Speed Mode (Disables 3D Background & Optimizes Animations)">
