@@ -17,6 +17,19 @@
     'I BUILD ROBUST DIGITAL AND PHYSICAL ARTIFACTS ENGINEERED TO LAST.'
   ).split(' ');
 
+    let activeStage = 'intent';
+  const stageData = {
+    intent: '<strong>01 // STRUCTURAL INTENT:</strong> Defining the physical &amp; spatial problem with engineering rigor—load paths, equilibrium, and tectonic honesty before a single pixel or line of code is drawn.',
+    interaction: '<strong>02 // EDITORIAL INTERACTION:</strong> Translating raw technical telemetry into tactile human experiences—bold Swiss grids, expressive street-zine typography, and responsive motion.',
+    system: '<strong>03 // COMPUTATIONAL SYSTEM:</strong> Architecting the intelligence underneath—WebAssembly finite-element solvers, real-time WebGL shaders, and resilient full-stack pipelines.'
+  };
+
+  function selectStage(key) {
+    if (activeStage === key) return;
+    activeStage = key;
+    playMechanicalTick(1020, 0.025);
+  }
+
   let showMoreEssay = false;
   let manuallyToggled = false;
   let card01El = null;
@@ -469,7 +482,14 @@
       </div>
 
       <div class="thread-nodes-interactive-row">
-        <button type="button" class="thread-stage-node active" data-thread-stage="intent">
+        <button
+          type="button"
+          class="thread-stage-node"
+          class:active={activeStage === 'intent'}
+          data-thread-stage="intent"
+          on:click={() => selectStage('intent')}
+          on:mouseenter={() => selectStage('intent')}
+        >
           <span class="stage-num">01 //</span>
           <span class="stage-name">INTENT</span>
           <span class="stage-tag">[CIVIL &amp; TECTONIC]</span>
@@ -479,7 +499,14 @@
           <div class="thread-connector-pulse"></div>
         </div>
 
-        <button type="button" class="thread-stage-node" data-thread-stage="interaction">
+        <button
+          type="button"
+          class="thread-stage-node"
+          class:active={activeStage === 'interaction'}
+          data-thread-stage="interaction"
+          on:click={() => selectStage('interaction')}
+          on:mouseenter={() => selectStage('interaction')}
+        >
           <span class="stage-num">02 //</span>
           <span class="stage-name">INTERACTION</span>
           <span class="stage-tag">[EDITORIAL &amp; VISUAL]</span>
@@ -489,7 +516,14 @@
           <div class="thread-connector-pulse"></div>
         </div>
 
-        <button type="button" class="thread-stage-node" data-thread-stage="system">
+        <button
+          type="button"
+          class="thread-stage-node"
+          class:active={activeStage === 'system'}
+          data-thread-stage="system"
+          on:click={() => selectStage('system')}
+          on:mouseenter={() => selectStage('system')}
+        >
           <span class="stage-num">03 //</span>
           <span class="stage-name">SYSTEM</span>
           <span class="stage-tag">[FULLSTACK &amp; WEBGL]</span>
@@ -497,7 +531,7 @@
       </div>
 
       <div class="thread-stage-readout" id="thread-stage-readout">
-        <strong>01 // STRUCTURAL INTENT:</strong> Defining the physical &amp; spatial problem with engineering rigor—load paths, equilibrium, and tectonic honesty before a single pixel or line of code is drawn.
+        {@html stageData[activeStage]}
       </div>
     </div>
 

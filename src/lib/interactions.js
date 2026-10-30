@@ -1628,7 +1628,38 @@ export function initSignatureIntroLoader() {
 }
 
 export function initScrollStructuralThread() {
-  // Disabled: background weaving thread removed to eliminate overlapping/colliding background lines
+  // Background SVG line removed per user request to avoid collision lines.
+  // Interactive Synthesis Stage nodes (01 INTENT, 02 INTERACTION, 03 SYSTEM) are wired here:
+  const STAGE_COPY = {
+    intent: '<strong>01 // STRUCTURAL INTENT:</strong> Defining the physical &amp; spatial problem with engineering rigor—load paths, equilibrium, and tectonic honesty before a single pixel or line of code is drawn.',
+    interaction: '<strong>02 // EDITORIAL INTERACTION:</strong> Translating raw technical telemetry into tactile human experiences—bold Swiss grids, expressive street-zine typography, and responsive motion.',
+    system: '<strong>03 // COMPUTATIONAL SYSTEM:</strong> Architecting the intelligence underneath—WebAssembly finite-element solvers, real-time WebGL shaders, and resilient full-stack pipelines.'
+  };
+
+  const activateStage = (btn) => {
+    const stageButtons = document.querySelectorAll('[data-thread-stage]');
+    const readoutEl = document.getElementById('thread-stage-readout');
+    const key = btn.getAttribute('data-thread-stage');
+    if (!key || !STAGE_COPY[key]) return false;
+    stageButtons.forEach((b) => b.classList.toggle('active', b === btn));
+    if (readoutEl) {
+      readoutEl.innerHTML = STAGE_COPY[key];
+    }
+    return true;
+  };
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest && e.target.closest('[data-thread-stage]');
+    if (!btn) return;
+    if (activateStage(btn)) playMechanicalTick(1020, 0.025);
+  });
+
+  document.addEventListener('mouseover', (e) => {
+    const btn = e.target.closest && e.target.closest('[data-thread-stage]');
+    if (!btn) return;
+    if (btn.contains(e.relatedTarget)) return;
+    if (activateStage(btn)) playMechanicalTick(1020, 0.025);
+  });
 }
 
 export function initSystemReceiptCards() {
