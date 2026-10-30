@@ -3148,48 +3148,96 @@ body.xray-active .cad-xray-layer,
    4. Live System Receipt / Telemetry Micro-Cards in Archive
    ========================================================================== */
 
-/* 1. One-Line Signature Intro Loader */
+/* 1. Full-Screen Architectural Signature Intro Loader */
 .signature-intro-loader {
   position: fixed;
   inset: 0;
-  background: #08080B;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  background: #07070A;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 85, 255, 0.08) 0%, transparent 65%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 44px 44px, 44px 44px;
   color: #F2EFE9;
-  z-index: 9995;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1),
-              opacity 0.65s ease;
+  z-index: 99999;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
 }
 
 .signature-intro-loader.is-dismissed {
-  transform: translateY(-102%);
   pointer-events: none;
 }
 
+/* Precision Technical Viewport Corners */
+.loader-corner-bracket {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: rgba(242, 239, 233, 0.35);
+  z-index: 5;
+  pointer-events: none;
+}
+.loader-corner--tl { top: 16px; left: 24px; }
+.loader-corner--tr { top: 16px; right: 24px; }
+.loader-corner--bl { bottom: 16px; left: 24px; }
+.loader-corner--br { bottom: 16px; right: 24px; }
+
+/* Background Blueprint Technical Watermark & Compass Rings */
+.loader-bg-blueprint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.75;
+}
+
+.loader-compass-svg {
+  width: min(85vw, 680px);
+  height: min(85vw, 680px);
+}
+
+.spin-slow {
+  transform-origin: 300px 300px;
+  animation: spinCompass 70s linear infinite;
+}
+
+.spin-reverse {
+  transform-origin: 300px 300px;
+  animation: spinCompassReverse 45s linear infinite;
+}
+
+@keyframes spinCompass {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinCompassReverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+/* Loader Inner - Edge to Edge Spanning */
 .signature-loader-inner {
+  position: relative;
+  z-index: 3;
   width: 100%;
-  max-width: 860px;
+  height: 100%;
+  padding: clamp(22px, 4vh, 44px) clamp(20px, 4.5vw, 56px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 28px;
-  position: relative;
+  box-sizing: border-box;
 }
 
-/* Hardware-accelerated GPU ambient glow behind the signature (eliminates per-frame CPU filter rasterization) */
-.signature-loader-inner::before {
-  content: '';
-  position: absolute;
-  inset: 15% 10%;
-  background: radial-gradient(ellipse 65% 55% at 50% 50%, rgba(212, 255, 0, 0.12) 0%, rgba(0, 85, 255, 0.05) 50%, transparent 75%);
-  pointer-events: none;
-  z-index: -1;
-  filter: blur(28px);
-  transform: translateZ(0);
-}
-
+/* Top Meta Telemetry */
 .signature-loader-top-meta {
   display: flex;
   justify-content: space-between;
@@ -3197,61 +3245,274 @@ body.xray-active .cad-xray-layer,
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.14em;
-  color: #9496A1;
-  border-bottom: 1px solid rgba(242, 239, 233, 0.15);
+  color: #A0A3AF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   padding-bottom: 12px;
 }
 
-#signature-loader-pct {
+.loader-meta-left, .loader-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.loader-status-pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--acid-lime);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--acid-lime);
+  animation: loaderPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.5; }
+}
+
+.loader-iso-badge {
+  background: rgba(0, 85, 255, 0.2);
+  border: 1px solid rgba(0, 85, 255, 0.5);
+  color: #4D8BFF;
+  font-size: 9px;
+  padding: 2px 7px;
+  letter-spacing: 0.1em;
+}
+
+.loader-phase-tag {
   color: var(--acid-lime);
-  font-weight: 800;
-  font-size: 13px;
+  font-weight: 700;
+}
+
+.loader-clock {
+  color: rgba(242, 239, 233, 0.5);
+}
+
+/* Center Hero Presentation */
+.loader-center-hero {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.loader-hero-watermark {
+  font-family: var(--font-grotesk);
+  font-size: clamp(60px, 13vw, 160px);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.88;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  pointer-events: none;
+  user-select: none;
+  margin-bottom: 4px;
+}
+
+.loader-hero-sub {
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1.2vw, 12px);
+  letter-spacing: 0.22em;
+  color: rgba(242, 239, 233, 0.6);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.loader-signature-stage {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  height: clamp(140px, 22vh, 220px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .signature-one-line-svg {
   width: 100%;
-  height: auto;
-  max-height: 240px;
+  height: 100%;
   overflow: visible;
-  transform: translateZ(0);
-  will-change: transform;
+  filter: drop-shadow(0 0 16px rgba(212, 255, 0, 0.2));
+}
+
+.sig-path-trace {
+  opacity: 0.2;
 }
 
 #signature-one-line-path {
   will-change: stroke-dashoffset;
 }
 
+#signature-laser-dot {
+  filter: drop-shadow(0 0 8px #D4FF00);
+}
+
+/* Real-Time Telemetry Console */
+.loader-telemetry-console {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.loader-pct-huge {
+  font-family: var(--font-mono);
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 900;
+  color: var(--acid-lime);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(212, 255, 0, 0.45);
+}
+
+.loader-console-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.15vw, 12px);
+  letter-spacing: 0.14em;
+  color: #C5C7D0;
+}
+
+.console-prefix {
+  color: var(--acid-lime);
+  font-weight: 800;
+}
+
+/* Bottom Progress Track & Actions */
 .signature-loader-bottom-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 14px;
+}
+
+.loader-progress-track-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loader-progress-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: rgba(242, 239, 233, 0.4);
+}
+
+.loader-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.loader-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0066FF 0%, var(--acid-lime) 80%, #FFFFFF 100%);
+  box-shadow: 0 0 12px var(--acid-lime);
+  will-change: width;
+}
+
+.loader-bottom-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(242, 239, 233, 0.15);
-  padding-top: 14px;
+}
+
+.loader-tagline-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
 }
 
 .sig-tagline {
   color: #F2EFE9;
-  opacity: 0.8;
+  opacity: 0.85;
+}
+
+.loader-coord-pill {
+  color: rgba(242, 239, 233, 0.45);
 }
 
 .sig-skip-btn {
   background: var(--acid-lime);
   color: #0D0D10;
   border: none;
-  padding: 6px 14px;
+  padding: 8px 18px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 800;
-  letter-spacing: 0.1em;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sig-skip-btn:hover {
   background: #FFFFFF;
   transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
+}
+
+.key-hint {
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .loader-corner-bracket {
+    display: none;
+  }
+  .loader-meta-right,
+  .loader-coord-pill {
+    display: none;
+  }
+  .loader-hero-watermark {
+    font-size: 52px;
+  }
+  .loader-hero-sub {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  .loader-signature-stage {
+    height: 120px;
+  }
+  .loader-pct-huge {
+    font-size: 36px;
+  }
+  .loader-console-line {
+    font-size: 9.5px;
+  }
+  .loader-bottom-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .sig-skip-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* 2. Full-Stage Organic Content-Weaving Thread SVG Overlay (Daksh Gajjar Homage)
