@@ -36,9 +36,9 @@
   async function calibrateCollapsedWords() {
     if (!card01El || !sidebarEl || !headerGroupEl || !bottomContentEl) return;
 
-    // On mobile and tablet (<=1180px), cards are stacked vertically in 1 column.
+    // On mobile phone (< 768px), cards are stacked vertically in 1 column.
     // Use an optimal fixed word count to completely eliminate forced synchronous reflow loops on page load!
-    if (window.innerWidth <= 1180) {
+    if (window.innerWidth < 768) {
       collapsedWordCount = 38;
       return;
     }
@@ -100,10 +100,10 @@
 
   onMount(() => {
     // Immediate calculation for mobile without forced reflow
-    if (window.innerWidth <= 1180) {
+    if (window.innerWidth < 768) {
       calibrateCollapsedWords();
     } else {
-      // Defer desktop binary search to idle so it never blocks initial paint
+      // Defer tablet & desktop binary search to idle so it never blocks initial paint
       if ('requestIdleCallback' in window) {
         window.requestIdleCallback(() => calibrateCollapsedWords());
       } else {
@@ -113,14 +113,14 @@
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
-        if (window.innerWidth > 1180) calibrateCollapsedWords();
+        if (window.innerWidth >= 768) calibrateCollapsedWords();
       });
     }
 
     window.addEventListener('resize', calibrateCollapsedWords, { passive: true });
 
     let ro = null;
-    if (card01El && typeof ResizeObserver !== 'undefined' && window.innerWidth > 1180) {
+    if (card01El && typeof ResizeObserver !== 'undefined' && window.innerWidth >= 768) {
       ro = new ResizeObserver(() => {
         calibrateCollapsedWords();
       });

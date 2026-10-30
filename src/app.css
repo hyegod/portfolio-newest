@@ -2333,12 +2333,41 @@ body.xray-active .cad-xray-layer,
 }
 
 /* ==========================================================================
-   RESPONSIVE BREAKPOINTS (1180px -> 768px -> 480px -> 320px Mobile S)
+   RESPONSIVE BREAKPOINTS (Tablet: 768px -> 1180px | Mobile Phone: < 768px)
    ========================================================================== */
-@media (max-width: 1180px) {
+@media (min-width: 768px) and (max-width: 1180px) {
+  .spread-top-row {
+    grid-template-columns: minmax(250px, 34%) 1fr;
+    gap: 24px;
+    align-items: start;
+    padding-top: max(16px, calc((100dvh - var(--header-h) - var(--footer-h) - var(--card01-h, 540px)) / 2));
+    margin-bottom: clamp(60px, 9vh, 100px);
+  }
+  .spread-bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding-left: 0;
+    margin-bottom: clamp(60px, 9vh, 90px);
+  }
+  .tri-pillar-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cad-3d-lab-wrapper {
+    grid-template-columns: 1fr 280px;
+    gap: 16px;
+  }
+  .collage-sandbox-grid,
+  .iso-titleblock-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
   .spread-top-row {
     grid-template-columns: 1fr;
-    /* Vertically center the first card between header and footer purely in CSS */
+    /* Vertically center the first card between header and footer purely in CSS on phones */
     padding-top: max(16px, calc((100dvh - var(--header-h) - var(--footer-h) - 520px) / 2));
   }
   .spread-bottom-row {
@@ -3139,7 +3168,7 @@ body.xray-active .cad-xray-layer,
 }
 
 /* Card 01 only follows the left card when the manifesto is expanded (otherwise both are equal height and static) */
-@media (min-width: 1181px) {
+@media (min-width: 768px) {
   .spread-top-row.is-expanded > .collage-card--01 {
     position: sticky;
     top: calc(var(--header-h) + 22px);
