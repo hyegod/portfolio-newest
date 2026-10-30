@@ -117,7 +117,13 @@
       });
     }
 
-    window.addEventListener('resize', calibrateCollapsedWords, { passive: true });
+    let lastW = typeof window !== 'undefined' ? window.innerWidth : 0;
+    const onResize = () => {
+      if (window.innerWidth === lastW) return;
+      lastW = window.innerWidth;
+      if (window.innerWidth >= 768) calibrateCollapsedWords();
+    };
+    window.addEventListener('resize', onResize, { passive: true });
 
     let ro = null;
     if (card01El && typeof ResizeObserver !== 'undefined' && window.innerWidth >= 768) {
@@ -128,7 +134,7 @@
     }
 
     return () => {
-      window.removeEventListener('resize', calibrateCollapsedWords);
+      window.removeEventListener('resize', onResize);
       if (ro) ro.disconnect();
     };
   });

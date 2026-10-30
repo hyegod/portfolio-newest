@@ -197,7 +197,12 @@ export function initGlobalBackgroundScene() {
 
   animateBg();
 
+  let lastSceneResizeW = typeof window !== 'undefined' ? window.innerWidth : 0;
   window.addEventListener('resize', () => {
+    // Skip resize if width didn't change (prevents re-allocating WebGL framebuffers on mobile address bar collapse/expand)
+    if (window.innerWidth === lastSceneResizeW) return;
+    lastSceneResizeW = window.innerWidth;
+
     cachedWinW = window.innerWidth;
     cachedWinH = window.innerHeight;
     cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - cachedWinH);
@@ -689,8 +694,11 @@ export function initInteractiveCadSandbox() {
 
   animateCad();
 
+  let lastCadW = container ? container.clientWidth : 0;
   window.addEventListener('resize', () => {
     const w = container.clientWidth || 800;
+    if (w === lastCadW) return;
+    lastCadW = w;
     const h = container.clientHeight || 580;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();

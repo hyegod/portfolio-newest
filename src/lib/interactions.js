@@ -16,6 +16,21 @@ if (typeof window !== 'undefined') {
 gsap.registerPlugin(ScrollTrigger);
 gsap.config({ force3D: true });
 
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+  autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
+});
+
+let lastWindowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', () => {
+    if (window.innerWidth !== lastWindowWidth) {
+      lastWindowWidth = window.innerWidth;
+      ScrollTrigger.refresh();
+    }
+  }, { passive: true });
+}
+
 const prefersReducedMotion =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -64,6 +79,11 @@ export function initSmoothScrollAndGSAP() {
     window.innerWidth <= 768 ||
     window.matchMedia('(hover: none), (pointer: coarse)').matches
   );
+
+  // On touch/mobile, use instant 1:1 scrub (true) so animations freeze the exact microsecond touch stops
+  // instead of trailing behind by 220ms, preventing scroll jumps when address bar toggles
+  const scrubPrimary = isTouchOrMobile ? true : 0.22;
+  const scrubSecondary = isTouchOrMobile ? true : 0.2;
 
   if (!isTouchOrMobile && !prefersReducedMotion) {
     lenis = new Lenis({
@@ -181,7 +201,7 @@ export function initSmoothScrollAndGSAP() {
           trigger: el,
           start: 'top 102%',
           end: 'top 62%',
-          scrub: 0.22
+          scrub: scrubPrimary
         }
       }
     );
@@ -229,7 +249,7 @@ export function initSmoothScrollAndGSAP() {
           trigger: el,
           start: 'top 101%',
           end: 'top 72%',
-          scrub: 0.2
+          scrub: scrubSecondary
         }
       }
     );
@@ -265,7 +285,7 @@ export function initSmoothScrollAndGSAP() {
           trigger: receipt,
           start: 'top 100%',
           end: 'top 70%',
-          scrub: 0.22
+          scrub: scrubPrimary
         }
       }
     );
@@ -285,7 +305,7 @@ export function initSmoothScrollAndGSAP() {
           trigger: bar,
           start: 'top 98%',
           end: 'top 72%',
-          scrub: 0.2
+          scrub: scrubSecondary
         }
       }
     );
@@ -317,7 +337,7 @@ export function initSmoothScrollAndGSAP() {
           trigger: isoStamp,
           start: 'top 100%',
           end: 'top 74%',
-          scrub: 0.22
+          scrub: scrubPrimary
         }
       }
     );
@@ -1273,7 +1293,7 @@ export function initScrollStructuralThread() {
         if (!stage) return;
         const w = stage.clientWidth || 0;
         const h = stage.scrollHeight || 0;
-        if (Math.abs(w - lastBuiltW) > 4 || Math.abs(h - lastBuiltH) > 12) {
+        if (Math.abs(w - lastBuiltW) > 4) {
           lastBuiltW = w;
           lastBuiltH = h;
           buildWeavingThreadPath();
@@ -1357,7 +1377,12 @@ export function initScrollStructuralThread() {
   }
 
   window.addEventListener('scroll', onScrollScheduleThread, { passive: true });
-  window.addEventListener('resize', scheduleThreadRebuild, { passive: true });
+  let lastThreadW = typeof window !== 'undefined' ? window.innerWidth : 0;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth === lastThreadW) return;
+    lastThreadW = window.innerWidth;
+    scheduleThreadRebuild();
+  }, { passive: true });
 
   if (typeof ResizeObserver !== 'undefined' && stage) {
     const ro = new ResizeObserver(() => scheduleThreadRebuild());

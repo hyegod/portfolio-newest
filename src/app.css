@@ -224,7 +224,7 @@ img {
   left: var(--spine-w);
   right: 0;
   bottom: var(--footer-h);
-  height: clamp(90px, 14vh, 140px);
+  height: clamp(90px, 14svh, 140px);
   pointer-events: none;
   z-index: 850;
   transform: translateZ(0);
@@ -2585,15 +2585,16 @@ body.xray-active .cad-xray-layer,
     grid-template-columns: minmax(250px, 34%) 1fr;
     gap: 24px;
     align-items: start;
-    padding-top: max(16px, calc((100dvh - var(--header-h) - var(--footer-h) - var(--card01-h, 540px)) / 2));
-    margin-bottom: clamp(60px, 9vh, 100px);
+    padding-top: max(16px, calc((100vh - var(--header-h) - var(--footer-h) - var(--card01-h, 540px)) / 2));
+    padding-top: max(16px, calc((100svh - var(--header-h) - var(--footer-h) - var(--card01-h, 540px)) / 2));
+    margin-bottom: 72px;
   }
   .spread-bottom-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
     padding-left: 0;
-    margin-bottom: clamp(60px, 9vh, 90px);
+    margin-bottom: 72px;
   }
   .tri-pillar-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2612,12 +2613,15 @@ body.xray-active .cad-xray-layer,
 @media (max-width: 767px) {
   .spread-top-row {
     grid-template-columns: 1fr;
-    /* Vertically center the first card between header and footer purely in CSS on phones */
-    padding-top: max(16px, calc((100dvh - var(--header-h) - var(--footer-h) - 520px) / 2));
+    /* Vertically center the first card using stable 100svh so mobile address bar collapse never shifts padding */
+    padding-top: max(16px, calc((100vh - var(--header-h) - var(--footer-h) - 520px) / 2));
+    padding-top: max(16px, calc((100svh - var(--header-h) - var(--footer-h) - 520px) / 2));
+    margin-bottom: 56px;
   }
   .spread-bottom-row {
     grid-template-columns: 1fr;
     padding-left: 0;
+    margin-bottom: 56px;
   }
   .tri-pillar-grid {
     grid-template-columns: 1fr;
