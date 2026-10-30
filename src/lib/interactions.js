@@ -1483,6 +1483,20 @@ export function initSignatureIntroLoader() {
   };
   window.addEventListener('keydown', onKey);
 
+    const fsBtn = document.getElementById('loader-fullscreen-btn');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      try {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      } catch (_) {}
+    });
+  }
+
   if (skipBtn) {
     skipBtn.addEventListener('click', (e) => {
       e.stopPropagation();
