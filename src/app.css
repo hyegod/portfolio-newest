@@ -218,24 +218,28 @@ img {
     linear-gradient(to bottom, var(--ink-faint) 1px, transparent 1px);
 }
 
-/* Soft Bottom Viewport Horizon / Receipt Slot Fade */
+/* Soft Bottom Viewport Horizon / Seamless Gradient Shadow Fade */
 .bottom-horizon-slot-fade {
   position: fixed;
   left: var(--spine-w);
   right: 0;
   bottom: var(--footer-h);
-  height: 48px;
+  height: clamp(90px, 14vh, 140px);
   pointer-events: none;
   z-index: 850;
   transform: translateZ(0);
   contain: strict;
-  opacity: 0;
-  transition: opacity 0.35s ease;
+  opacity: 1;
   background: linear-gradient(
     to top,
     var(--bg-paper) 0%,
-    rgba(242, 239, 233, 0.58) 38%,
-    rgba(242, 239, 233, 0) 100%
+    rgba(242, 239, 233, 0.98) 16%,
+    rgba(242, 239, 233, 0.86) 32%,
+    rgba(242, 239, 233, 0.64) 50%,
+    rgba(242, 239, 233, 0.38) 68%,
+    rgba(242, 239, 233, 0.16) 84%,
+    rgba(242, 239, 233, 0.04) 94%,
+    transparent 100%
   );
 }
 
@@ -247,8 +251,13 @@ img {
   background: linear-gradient(
     to top,
     var(--bg-paper) 0%,
-    rgba(0, 38, 179, 0.68) 38%,
-    rgba(0, 38, 179, 0) 100%
+    rgba(0, 38, 179, 0.96) 16%,
+    rgba(0, 38, 179, 0.84) 32%,
+    rgba(0, 38, 179, 0.62) 50%,
+    rgba(0, 38, 179, 0.36) 68%,
+    rgba(0, 38, 179, 0.14) 84%,
+    rgba(0, 38, 179, 0.03) 94%,
+    transparent 100%
   );
 }
 
@@ -256,8 +265,13 @@ img {
   background: linear-gradient(
     to top,
     var(--bg-paper) 0%,
-    rgba(11, 11, 14, 0.72) 38%,
-    rgba(11, 11, 14, 0) 100%
+    rgba(11, 11, 14, 0.98) 16%,
+    rgba(11, 11, 14, 0.86) 32%,
+    rgba(11, 11, 14, 0.64) 50%,
+    rgba(11, 11, 14, 0.38) 68%,
+    rgba(11, 11, 14, 0.16) 84%,
+    rgba(11, 11, 14, 0.04) 94%,
+    transparent 100%
   );
 }
 
@@ -465,7 +479,138 @@ img {
   white-space: nowrap;
 }
 
-/* Theme & X-Ray Controls */
+/* Theme Dropdown, SPEED & X-Ray Controls */
+.theme-dropdown-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: 1.5px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  padding: 0 6px 0 8px;
+  height: 28px;
+  gap: 5px;
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.theme-dropdown-wrap:hover,
+.theme-dropdown-wrap:focus-within {
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.theme-select-prefix {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.theme-dropdown-select {
+  border: none;
+  background: transparent;
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 14px 2px 0;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.theme-dropdown-select option {
+  background: #F2EFE9;
+  color: #0D0D10;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: bold;
+}
+
+[data-theme="blueprint"] .theme-dropdown-select option {
+  background: #0026B3;
+  color: #F2EFE9;
+}
+
+[data-theme="cyber"] .theme-dropdown-select option {
+  background: #0B0B0E;
+  color: #D4FF00;
+}
+
+.theme-select-caret {
+  position: absolute;
+  right: 6px;
+  font-size: 8px;
+  pointer-events: none;
+  color: var(--ink-black);
+}
+
+/* SPEED Mode Toggle Button */
+.speed-toggle-btn {
+  border: 1.5px solid var(--ink-black);
+  background: var(--bg-paper-alt);
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 4px 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  height: 28px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.speed-toggle-btn:hover {
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.speed-toggle-btn.active {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: #0D0D10;
+  box-shadow: 2px 2px 0 #0D0D10;
+  font-weight: 800;
+}
+
+.speed-bolt {
+  font-size: 11px;
+}
+
+/* SPEED MODE ENGINE (0% Background 3D Load + Optimized Smooth Rendering) */
+body.speed-mode-active #webgl-bg-canvas {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+body.speed-mode-active * {
+  backdrop-filter: none !important;
+}
+
+body.speed-mode-active .cad-cursor {
+  display: none !important;
+}
+
+body.speed-mode-active .paper-grain-overlay {
+  display: none !important;
+}
+
+body.speed-mode-active .barcode-laser-line {
+  animation: none !important;
+}
+
+/* Mode Pill Group Backward Compatibility */
 .mode-pill-group {
   display: inline-flex;
   border: 1px solid var(--ink-black);
@@ -506,6 +651,7 @@ img {
   align-items: center;
   gap: 5px;
   white-space: nowrap;
+  height: 28px;
   flex-shrink: 0;
   transition: all 0.2s ease;
 }
@@ -607,6 +753,7 @@ img {
   height: var(--footer-h);
   background: rgba(242, 239, 233, 0.97);
   border-top: var(--border-thin);
+  box-shadow: 0 -8px 24px rgba(13, 13, 16, 0.06);
   z-index: 900;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -622,10 +769,12 @@ img {
 
 [data-theme="blueprint"] .editorial-footer-bar {
   background: rgba(0, 38, 179, 0.92);
+  box-shadow: 0 -8px 24px rgba(0, 10, 60, 0.35);
 }
 
 [data-theme="cyber"] .editorial-footer-bar {
   background: rgba(11, 11, 14, 0.92);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.55);
 }
 
 /* Registration Crosshair sitting on the footer line (exact match to reference) */
@@ -2587,14 +2736,36 @@ body.xray-active .cad-xray-layer,
     padding-top: 4px;
     border-top: 1px solid var(--ink-faint);
   }
+  .theme-dropdown-wrap {
+    height: 25px;
+    padding: 0 4px 0 6px;
+    gap: 2px;
+  }
+  .theme-select-prefix {
+    display: none;
+  }
+  .theme-dropdown-select {
+    font-size: 8.5px;
+    padding-right: 12px;
+  }
+  .speed-toggle-btn {
+    height: 25px;
+    padding: 2px 6px;
+    font-size: 8.5px;
+    gap: 3px;
+  }
+  .speed-label {
+    display: none;
+  }
   .mode-btn {
     font-size: 8.5px;
     padding: 4px 5px;
     letter-spacing: 0.03em;
   }
   .xray-toggle-btn {
+    height: 25px;
     font-size: 8.5px;
-    padding: 3px 6px;
+    padding: 2px 6px;
     gap: 3px;
   }
   .page-counter-badge {

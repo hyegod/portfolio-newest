@@ -161,6 +161,11 @@ export function initGlobalBackgroundScene() {
     requestAnimationFrame(animateBg);
     if (document.hidden) return;
 
+    // Pause rendering immediately if SPEED mode is active (0% GPU/CPU background work)
+    if (window.isSpeedModeActive || (typeof document !== 'undefined' && document.body.classList.contains('speed-mode-active'))) {
+      return;
+    }
+
     // Pause rendering while the signature intro loader is covering the screen
     const loader = document.getElementById('signature-intro-loader');
     if (loader && !loader.classList.contains('is-dismissed')) {

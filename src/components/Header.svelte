@@ -23,11 +23,21 @@
   </nav>
 
   <div class="header-right-controls">
-    <div class="mode-pill-group" role="group" aria-label="Visual Mode Switcher">
-      <button type="button" class="mode-btn active" data-theme-mode="editorial" title="Warm Cream Editorial Paper">PAPER</button>
-      <button type="button" class="mode-btn" data-theme-mode="blueprint" title="Electric Blue Engineering Blueprint">BLUEPRINT</button>
-      <button type="button" class="mode-btn" data-theme-mode="cyber" title="Deep Black Cyber Terminal">TERMINAL</button>
+    <div class="theme-dropdown-wrap">
+      <span class="theme-select-prefix">THEME:</span>
+      <select class="theme-dropdown-select" id="theme-dropdown-select" aria-label="Visual Theme Mode">
+        <option value="editorial">PAPER</option>
+        <option value="blueprint">BLUEPRINT</option>
+        <option value="cyber">TERMINAL</option>
+      </select>
+      <span class="theme-select-caret" aria-hidden="true">▾</span>
     </div>
+
+    <button type="button" class="speed-toggle-btn" id="speed-toggle-btn" title="Toggle Speed Mode (Disables 3D Background & Optimizes Animations)">
+      <span class="speed-bolt">⚡</span>
+      <span class="speed-label">SPEED:</span>
+      <span class="speed-state-text">OFF</span>
+    </button>
 
     <button type="button" class="xray-toggle-btn" id="xray-toggle-btn" title="Toggle Structural CAD X-Ray Overlays">
       <span>⌖ X-RAY:</span>

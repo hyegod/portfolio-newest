@@ -464,6 +464,27 @@ export function initCadCursor() {
 }
 
 export function initThemeAndXrayControls() {
+  const themeSelect = document.getElementById('theme-dropdown-select');
+  if (themeSelect) {
+    const cur = document.documentElement.getAttribute('data-theme') || 'editorial';
+    themeSelect.value = cur;
+
+    themeSelect.addEventListener('change', (e) => {
+      playMechanicalTick(820, 0.03);
+      const mode = e.target.value;
+      if (mode === 'editorial') {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', mode);
+      }
+
+      if (typeof window.updateBgSceneTheme === 'function') {
+        window.updateBgSceneTheme(mode);
+      }
+    });
+  }
+
+  // Backward compatibility with data-theme-mode buttons
   const modeButtons = document.querySelectorAll('[data-theme-mode]');
   modeButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -471,6 +492,8 @@ export function initThemeAndXrayControls() {
       const mode = btn.getAttribute('data-theme-mode');
       modeButtons.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
+
+      if (themeSelect) themeSelect.value = mode;
 
       if (mode === 'editorial') {
         document.documentElement.removeAttribute('data-theme');
@@ -483,6 +506,32 @@ export function initThemeAndXrayControls() {
       }
     });
   });
+
+  // SPEED Mode Toggle Button: disables background 3D canvas and optimizes animations
+  const speedBtn = document.getElementById('speed-toggle-btn');
+  if (speedBtn) {
+    const savedSpeed = typeof localStorage !== 'undefined' && localStorage.getItem('kinetik_speed_mode') === 'on';
+    if (savedSpeed) {
+      document.body.classList.add('speed-mode-active');
+      speedBtn.classList.add('active');
+      window.isSpeedModeActive = true;
+      const stateEl = speedBtn.querySelector('.speed-state-text');
+      if (stateEl) stateEl.textContent = 'ON';
+    }
+
+    speedBtn.addEventListener('click', () => {
+      playMechanicalTick(1100, 0.03);
+      const isActive = document.body.classList.toggle('speed-mode-active');
+      speedBtn.classList.toggle('active', isActive);
+      window.isSpeedModeActive = isActive;
+      const stateEl = speedBtn.querySelector('.speed-state-text');
+      if (stateEl) stateEl.textContent = isActive ? 'ON' : 'OFF';
+
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('kinetik_speed_mode', isActive ? 'on' : 'off');
+      }
+    });
+  }
 
   const xrayBtn = document.getElementById('xray-toggle-btn');
   if (xrayBtn) {
