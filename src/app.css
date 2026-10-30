@@ -889,6 +889,29 @@ img {
   font-weight: 700;
 }
 
+.sidebar-action-group {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-action-btn-primary {
+  text-decoration: none;
+  justify-content: center;
+  padding: 11px 14px;
+  font-size: 10.5px;
+}
+
+.sidebar-action-btn-secondary {
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+  padding: 9px;
+  font-size: 10px;
+}
+
+
 /* Bottom Row of Spread: Card 02 + Card 03 Side by Side */
 .spread-bottom-row {
   display: grid;
@@ -934,7 +957,7 @@ img {
 }
 
 .collage-card--01 .collage-visual-stage {
-  height: clamp(380px, calc(100vh - var(--header-h) - var(--footer-h) - 130px), 490px);
+  height: clamp(260px, calc(100svh - var(--header-h) - var(--footer-h) - 90px), 490px);
 }
 
 .collage-card--02 .collage-visual-stage,
@@ -1084,7 +1107,7 @@ img {
 }
 
 .tape--slate-bottom {
-  bottom: -16px;
+  bottom: -6px;
   left: 54%;
   background: var(--tape-slate);
   color: #F2EFE9;
@@ -2340,22 +2363,102 @@ body.xray-active .cad-xray-layer,
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS (Tablet: 768px -> 1180px | Mobile Phone: < 768px)
    ========================================================================== */
-@media (min-width: 768px) and (max-width: 1180px) {
+@media (min-width: 768px) and (max-width: 1180px), (max-height: 760px) and (min-width: 768px) {
   .spread-top-row {
-    grid-template-columns: minmax(250px, 34%) 1fr;
-    gap: 24px;
+    grid-template-columns: minmax(235px, 32%) 1fr;
+    gap: 20px;
     align-items: center;
     align-content: center;
     min-height: calc(100svh - var(--header-h) - var(--footer-h));
     padding-top: 0;
-    margin-bottom: 60px;
+    margin-bottom: 36px;
   }
   .spread-bottom-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 20px;
     padding-left: 0;
-    margin-bottom: 72px;
+    margin-bottom: 56px;
+  }
+  .collage-card--01.collage-card--halftone-frame {
+    padding: 10px;
+  }
+  .collage-card--01 .collage-visual-stage {
+    height: clamp(230px, calc(100svh - var(--header-h) - var(--footer-h) - 78px), 430px);
+  }
+  .collage-card--02 .collage-visual-stage,
+  .collage-card--03 .collage-visual-stage {
+    height: clamp(280px, 42vh, 380px);
+  }
+  .collage-card--01 .badge-num-circle {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+    top: -10px;
+    left: -10px;
+  }
+  .card-editorial-caption-bar {
+    padding: 6px 12px;
+    font-size: 9.5px;
+    min-height: 34px;
+  }
+  .tape--slate-bottom {
+    bottom: -2px;
+    font-size: 10px;
+    padding: 5px 10px;
+    max-width: 170px;
+  }
+  .tape--rose-top {
+    top: -8px;
+    right: -8px;
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+  .editorial-sidebar-essay {
+    padding: 12px;
+    min-height: 0;
+    height: 100%;
+    max-height: var(--card01-h, 450px);
+  }
+  .essay-index-tag {
+    font-size: 8.5px;
+    padding: 2px 6px;
+    margin-bottom: 6px;
+    box-shadow: 2px 2px 0 var(--acid-lime);
+  }
+  .essay-main-title {
+    font-size: clamp(19px, 2.7vh, 25px);
+    line-height: 1.04;
+    margin-bottom: 8px;
+  }
+  .essay-paragraph {
+    font-size: 10px;
+    line-height: 1.45;
+  }
+  .essay-spec-matrix {
+    margin-top: 8px;
+    padding: 6px 10px;
+  }
+  .essay-spec-matrix::before {
+    font-size: 8px;
+    top: -8px;
+    padding: 1px 4px;
+  }
+  .spec-row {
+    font-size: 9px;
+    padding: 2.5px 0;
+  }
+  .sidebar-action-group {
+    margin-top: 8px;
+    gap: 6px;
+  }
+  .sidebar-action-btn-primary {
+    padding: 7px 10px !important;
+    font-size: 9.5px !important;
+  }
+  .sidebar-action-btn-secondary {
+    padding: 6px 8px !important;
+    font-size: 9px !important;
   }
   .tri-pillar-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3989,4 +4092,40 @@ body.xray-active .cad-xray-layer,
 .system-receipt-card:hover {
   transform: translateY(-8px) rotate(0deg) scale(1.02) !important;
   box-shadow: 12px 12px 0 var(--ink-black);
+}
+
+@media (max-height: 600px) and (min-width: 768px) {
+  .spread-top-row {
+    margin-bottom: 24px;
+  }
+  .collage-card--01 .collage-visual-stage {
+    height: clamp(210px, calc(100svh - var(--header-h) - var(--footer-h) - 68px), 360px);
+  }
+  .essay-main-title {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .essay-index-tag {
+    margin-bottom: 4px;
+  }
+  .essay-spec-matrix {
+    margin-top: 6px;
+    padding: 4px 8px;
+  }
+  .spec-row {
+    padding: 1.5px 0;
+    font-size: 8.5px;
+  }
+  .sidebar-action-group {
+    margin-top: 6px;
+    gap: 4px;
+  }
+  .sidebar-action-btn-primary {
+    padding: 5px 8px !important;
+    font-size: 9px !important;
+  }
+  .sidebar-action-btn-secondary {
+    padding: 5px 8px !important;
+    font-size: 8.5px !important;
+  }
 }

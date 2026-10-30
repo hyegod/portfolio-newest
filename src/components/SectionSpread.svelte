@@ -25,9 +25,9 @@
   let bottomContentEl = null;
   let probeEl = null;
   let moreInnerEl = null;
-  let card01Height = 580;
+  let card01Height = 440;
   let mobilePadTop = 28;
-  let collapsedWordCount = 40;
+  let collapsedWordCount = 36;
   let expandedInnerH = 235;
 
   $: collapsedText = FULL_MANIFESTO_WORDS.slice(0, collapsedWordCount).join(' ');
@@ -49,22 +49,23 @@
     card01Height = cHeight;
 
     const sidebarStyle = window.getComputedStyle(sidebarEl);
-    const padTop = parseFloat(sidebarStyle.paddingTop) || 16;
-    const padBottom = parseFloat(sidebarStyle.paddingBottom) || 16;
+    const padTop = parseFloat(sidebarStyle.paddingTop) || 12;
+    const padBottom = parseFloat(sidebarStyle.paddingBottom) || 12;
     const borderTop = parseFloat(sidebarStyle.borderTopWidth) || 1.5;
     const borderBottom = parseFloat(sidebarStyle.borderBottomWidth) || 1.5;
 
     const headerH = headerGroupEl.offsetHeight;
     const bottomH = bottomContentEl.offsetHeight;
-    const specMarginTop = 16;
+    const bottomStyle = window.getComputedStyle(bottomContentEl);
+    const specMarginTop = parseFloat(bottomStyle.marginTop) || 8;
 
     // Exact vertical space inside Left Card for the collapsed paragraph so it fills right up to SPEC // ISO-19650
     const availableTextH = Math.max(
-      72,
+      36,
       cHeight - (padTop + padBottom + borderTop + borderBottom + headerH + bottomH + specMarginTop)
     );
 
-    const minWords = 18;
+    const minWords = 12;
     const maxWords = FULL_MANIFESTO_WORDS.length - 32;
     let low = minWords;
     let high = maxWords;
@@ -74,7 +75,7 @@
       const mid = (low + high) >> 1;
       probeEl.textContent = FULL_MANIFESTO_WORDS.slice(0, mid).join(' ') + ' ...show more';
       const h = probeEl.offsetHeight;
-      if (h <= availableTextH + 6) {
+      if (h <= availableTextH + 4) {
         best = mid;
         low = mid + 1;
       } else {
@@ -220,12 +221,12 @@
             </div>
           </div>
 
-          <div style="margin-top: 14px; display:flex; flex-direction:column; gap:8px;">
-            <a href="#sec-identity" class="submit-blueprint-btn" style="text-decoration:none; justify-content:center; padding:11px 14px; font-size:10.5px;">
+          <div class="sidebar-action-group">
+            <a href="#sec-identity" class="submit-blueprint-btn sidebar-action-btn-primary">
               <span>EXPLORE WHAT I DO</span>
               <span>→</span>
             </a>
-            <a href="#sec-work" class="inspect-case-btn" style="text-decoration:none; text-align:center; width:100%; padding:9px;">
+            <a href="#sec-work" class="inspect-case-btn sidebar-action-btn-secondary">
               VIEW FEATURED WORKS // SPEC
             </a>
           </div>
