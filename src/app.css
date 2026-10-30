@@ -50,6 +50,7 @@
   --spine-w: 48px;
   --border-thin: 1px solid var(--rule-color);
   --border-bold: 2px solid var(--ink-black);
+  --section-pad-x: 44px;
 }
 
 /* Theme 02: Blueprint CAD Mode */
@@ -684,8 +685,20 @@ img {
 
 .editorial-section {
   position: relative;
-  padding: 40px 44px;
+  padding: 40px var(--section-pad-x);
+}
+
+/* Section Separators: exact left-right margin matching cards (max-width: 1560px, auto-centered) */
+.editorial-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: var(--section-pad-x);
+  right: var(--section-pad-x);
+  max-width: 1560px;
+  margin: 0 auto;
   border-bottom: var(--border-bold);
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -2524,8 +2537,11 @@ body.xray-active .cad-xray-layer,
   .cad-cursor {
     display: none !important;
   }
+  :root {
+    --section-pad-x: 14px;
+  }
   .editorial-section {
-    padding: 24px 14px;
+    padding: 24px var(--section-pad-x);
   }
   .main-editorial-stage {
     padding-bottom: calc(var(--footer-h) + 28px);
@@ -3722,7 +3738,8 @@ body.xray-active .cad-xray-layer,
 .timeline-container {
   position: relative;
   width: 100%;
-  margin-top: 24px;
+  max-width: 1560px;
+  margin: 24px auto 0;
 }
 
 .timeline-rail-spine {
