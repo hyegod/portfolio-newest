@@ -3,21 +3,22 @@
   Section 02: Three Dimensions of Identity (Interactive Tri-Pillar Lab:
   Euler-Bernoulli Beam Solver, Cyber Terminal, and Kinetic Type Playground)
 -->
-<section class="editorial-section" id="sec-pillars" data-section-index="02" data-section-name="02. TRI-IDENTITY">
+<section class="editorial-section" id="sec-identity" data-section-index="02" data-section-name="02. IDENTITY">
+  <div id="sec-pillars" style="position:absolute; top:0; pointer-events:none;" aria-hidden="true"></div>
   <div class="section-header-strip">
     <div>
       <div class="section-kicker">
         <span>// SECTION 02</span>
         <span>·</span>
-        <span>DISCIPLINARY CONVERGENCE MATRIX</span>
+        <span>WHAT I DO // CORE DISCIPLINES &amp; SERVICES</span>
       </div>
       <h2 class="section-oversized-title">
-        THREE DIMENSIONS OF <span class="serif-italic">Identity</span>
+        WHAT I DO <span class="serif-italic">// Core Disciplines</span>
       </h2>
     </div>
     <div class="section-meta-readout">
-      <div>STRUCTURAL RIGOR × ALGORITHMIC LOGIC × EDITORIAL CHAOS</div>
-      <div style="color:var(--accent-text); font-weight:800;">INTERACTIVE LIVE SIMULATORS BELOW [↓]</div>
+      <div>STRUCTURAL ENGINEERING · FULLSTACK WEBGL · BRUTALIST BRANDING</div>
+      <div style="color:var(--accent-text); font-weight:800;">INTERACTIVE LIVE EXPERIMENTS BELOW [↓]</div>
     </div>
   </div>
 
@@ -27,13 +28,13 @@
     <article class="pillar-module" data-thread-anchor="sec02-pillar01" data-thread-bias="left">
       <div>
         <div class="pillar-module-header">
-          <span class="pillar-id-badge">01 // ENGINEERING MINDSET</span>
-          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">SNI / EUROCODE / FEM</span>
+          <span class="pillar-id-badge">01 // STRUCTURAL &amp; CIVIL ENGINEERING</span>
+          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">SNI / AISC / FEM</span>
         </div>
         <div class="pillar-module-body">
-          <h3 class="pillar-title">Structural Precision &amp; Mechanics</h3>
+          <h3 class="pillar-title">Structural Analysis, BIM &amp; Mechanics</h3>
           <p class="pillar-desc">
-            Rooted in Civil Engineering: structural analysis, finite element modeling, geotechnical equilibrium, and blueprint drafting translated into systematic design architecture.
+            What I do: Rigorous structural calculations, finite element modeling (FEM), seismic load verification, reinforced concrete &amp; steel detailing, and parametric BIM workflows.
           </p>
 
           <!-- Interactive Euler-Bernoulli Beam Simulator -->
@@ -78,13 +79,13 @@
     <article class="pillar-module" data-thread-anchor="sec02-pillar02" data-thread-bias="center">
       <div>
         <div class="pillar-module-header">
-          <span class="pillar-id-badge">02 // TECHNOLOGICAL CURIOSITY</span>
-          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">WEBGL / FULLSTACK / WASM</span>
+          <span class="pillar-id-badge">02 // FULLSTACK &amp; WEBGL COMPUTING</span>
+          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">SVELTE / THREE.JS / API</span>
         </div>
         <div class="pillar-module-body">
-          <h3 class="pillar-title">Computational Systems &amp; Code</h3>
+          <h3 class="pillar-title">Interactive 3D Web &amp; Fullstack Systems</h3>
           <p class="pillar-desc">
-            Driven by Information Technology: interactive 3D WebGL shaders, full-stack architecture, algorithmic automation, and real-time spatial data visualization.
+            What I do: Developing GPU-accelerated 3D web applications, real-time Three.js simulations, reactive web architectures (Svelte/Vite), and resilient data backends.
           </p>
 
           <!-- Interactive Terminal Emulator -->
@@ -113,13 +114,13 @@
     <article class="pillar-module" data-thread-anchor="sec02-pillar03" data-thread-bias="right">
       <div>
         <div class="pillar-module-header">
-          <span class="pillar-id-badge">03 // VISUAL EXPRESSION</span>
-          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">SWISS GRID / ZINE / TYPE</span>
+          <span class="pillar-id-badge">03 // EDITORIAL &amp; BRAND SYSTEMS</span>
+          <span style="font-family:var(--font-mono); font-size:10px; font-weight:700;">SWISS GRID / BRUTALISM</span>
         </div>
         <div class="pillar-module-body">
-          <h3 class="pillar-title">Experimental Editorial Craft</h3>
+          <h3 class="pillar-title">Brutalist Art Direction &amp; Typography</h3>
           <p class="pillar-desc">
-            Passionate about Graphic Design: brutalist oversized typography, tactile print halftones, mixed-media street lookbooks, and unconventional art direction.
+            What I do: Crafting high-impact visual identities, custom variable typography, street-zine print layouts, and brutalist digital platforms built with attitude and tactile craft.
           </p>
 
           <!-- Interactive Type Synthesizer -->

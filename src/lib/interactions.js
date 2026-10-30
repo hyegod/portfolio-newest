@@ -111,7 +111,7 @@ export function initSmoothScrollAndGSAP() {
         const idx = targetEl.getAttribute('data-section-index');
         if (idx) {
           const pageBadgeEl = document.getElementById('editorial-page-counter');
-          if (pageBadgeEl) pageBadgeEl.textContent = `${idx} / 06`;
+          if (pageBadgeEl) pageBadgeEl.textContent = `${idx} / 07`;
           document.querySelectorAll('.header-nav-link').forEach((link) => {
             link.classList.toggle('active', link.getAttribute('href') === targetId);
           });
@@ -145,7 +145,7 @@ export function initSmoothScrollAndGSAP() {
   });
 
   function updateHeaderState(idx, secId) {
-    if (pageBadge) pageBadge.textContent = `${idx} / 06`;
+    if (pageBadge) pageBadge.textContent = `${idx} / 07`;
     navLinks.forEach((link) => {
       link.classList.toggle('active', link.getAttribute('href') === `#${secId}`);
     });
@@ -170,7 +170,8 @@ export function initSmoothScrollAndGSAP() {
     '.draggable-pasteup-board',
     '.engineering-spec-sheet',
     '.iso-titleblock-wrapper',
-    '.transmission-form-pane'
+    '.transmission-form-pane',
+    '.timeline-milestone-card'
   ].join(', ');
 
   gsap.utils.toArray(primaryCardsSelector).forEach((el) => {

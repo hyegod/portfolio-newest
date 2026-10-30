@@ -7,14 +7,14 @@
   import { playMechanicalTick } from '../lib/interactions.js';
 
   const FULL_MANIFESTO_WORDS = (
-    'A SERIES OF MULTIDISCIPLINARY WORKS THAT BLEND STRUCTURAL ENGINEERING, ' +
-    'INFORMATION TECHNOLOGY, AND EXPERIMENTAL GRAPHIC DESIGN. ' +
-    'BUILT ON TECTONIC PRECISION, ALGORITHMIC CURIOSITY, AND AN INDEPENDENT CREATIVE STUDIO MINDSET. ' +
-    'EVERY SYSTEM IS CALIBRATED FOR FINITE-ELEMENT RIGOR, REAL-TIME WEBGL TELEMETRY, ' +
-    'AND ARCHIVAL PRINT CRAFTSMANSHIP — BRIDGING HEAVY CIVIL INFRASTRUCTURE WITH ' +
-    'HIGH-FREQUENCY COMPUTATIONAL INTERFACES AND TACTILE EDITORIAL TYPOGRAPHY. ' +
-    'FROM SEISMIC BRIDGE TRUSSES AND ISO-19650 BIM WORKFLOWS TO KINETIC SHADER PIPELINES, ' +
-    'EACH ARTIFACT DOCUMENTS THE INTERSECTION OF LOAD-BEARING MECHANICS, DIGITAL ARCHITECTURE, AND VISUAL CULTURE.'
+    'I AM FARREL — AN ENGINEER AND CREATIVE TECHNOLOGIST OPERATING AT THE INTERSECTION OF ' +
+    'CIVIL & STRUCTURAL ENGINEERING, ADVANCED FULLSTACK WEBGL DEVELOPMENT, AND EXPERIMENTAL EDITORIAL DESIGN. ' +
+    'TRAINED IN CONTINUUM MECHANICS, SEISMIC EQUILIBRIUM, AND HIGH-PRECISION FINITE-ELEMENT ANALYSIS, ' +
+    'I BRING THE STRUCTURAL INTEGRITY OF HEAVY INFRASTRUCTURE INTO DIGITAL ARCHITECTURE AND HIGH-PERFORMANCE WEB SYSTEMS. ' +
+    'I DO NOT TREAT CODE, CONCRETE, AND TYPOGRAPHY AS SEPARATE SILOS — EVERY SYSTEM DOCUMENTS THE SYMBIOSIS OF ' +
+    'LOAD-BEARING RIGOR, REAL-TIME COMPUTATIONAL TELEMETRY, AND ARCHIVAL PRINT CRAFTSMANSHIP. ' +
+    'FROM PARAMETRIC BRIDGES AND ISO-19650 BIM WORKFLOWS TO BROWSER-BASED SHADERS AND BRUTALIST ZINES, ' +
+    'I BUILD ROBUST DIGITAL AND PHYSICAL ARTIFACTS ENGINEERED TO LAST.'
   ).split(' ');
 
   let showMoreEssay = false;
@@ -140,7 +140,8 @@
   });
 </script>
 
-<section class="editorial-section" id="sec-spread" data-section-index="01" data-section-name="01. CAMPAIGN SPREAD">
+<section class="editorial-section" id="sec-whoami" data-section-index="01" data-section-name="01. WHO AM I">
+  <div id="sec-spread" style="position:absolute; top:0; pointer-events:none;" aria-hidden="true"></div>
   <div class="spread-01-container">
 
     <!-- TOP ROW: LEFT MANIFESTO ESSAY + RIGHT LARGE HALFTONE CARD 01 -->
@@ -150,10 +151,10 @@
       <div bind:this={sidebarEl} class="editorial-sidebar-essay" data-thread-anchor="sec01-manifesto" data-thread-bias="left">
         <div class="essay-top-content">
           <div bind:this={headerGroupEl} class="essay-header-group">
-            <div class="essay-index-tag">STUDIO ARCHIVE // ISSUE 07</div>
+            <div class="essay-index-tag">WHO AM I // PERSONAL DOSSIER</div>
             <h1 class="essay-main-title">
-              DISCIPLINARY<br />
-              SYNTHESIS
+              THE HYBRID<br />
+              PRACTITIONER
             </h1>
           </div>
 
@@ -194,8 +195,12 @@
           <!-- Engineering Telemetry Mini-Matrix -->
           <div class="essay-spec-matrix">
             <div class="spec-row">
+              <span class="spec-label">PRACTITIONER</span>
+              <span class="spec-val">FARREL // KINETIK</span>
+            </div>
+            <div class="spec-row">
               <span class="spec-label">DISCIPLINE 01</span>
-              <span class="spec-val">CIVIL &amp; STRUCTURAL</span>
+              <span class="spec-val">CIVIL &amp; STRUCTURAL ENG</span>
             </div>
             <div class="spec-row">
               <span class="spec-label">DISCIPLINE 02</span>
@@ -203,26 +208,26 @@
             </div>
             <div class="spec-row">
               <span class="spec-label">DISCIPLINE 03</span>
-              <span class="spec-val">EDITORIAL DESIGN</span>
+              <span class="spec-val">BRUTALIST EDITORIAL</span>
             </div>
             <div class="spec-row">
-              <span class="spec-label">LIMIT STATE</span>
-              <span class="spec-val" style="color:var(--accent-text);">ΦMn ≥ 1.4 Mu [OK]</span>
+              <span class="spec-label">CORE MOTTO</span>
+              <span class="spec-val" style="color:var(--accent-text);">TECTONIC // BUILT TO LAST</span>
             </div>
             <div class="spec-row">
-              <span class="spec-label">PROJECTS INDEXED</span>
-              <span class="spec-val" data-anime-counter="48" data-suffix="+">48+</span>
+              <span class="spec-label">EXPERIENCE</span>
+              <span class="spec-val" data-anime-counter="5" data-suffix="+ YEARS">5+ YEARS</span>
             </div>
           </div>
 
           <div style="margin-top: 14px; display:flex; flex-direction:column; gap:8px;">
-            <a href="#sec-cad-3d" class="submit-blueprint-btn" style="text-decoration:none; justify-content:center; padding:11px 14px; font-size:10.5px;">
-              <span>LAUNCH 3D CAD SANDBOX</span>
+            <a href="#sec-identity" class="submit-blueprint-btn" style="text-decoration:none; justify-content:center; padding:11px 14px; font-size:10.5px;">
+              <span>EXPLORE WHAT I DO</span>
               <span>→</span>
             </a>
-            <button type="button" class="inspect-case-btn" data-open-dossier="campaign-01" style="width:100%; padding:9px;">
-              READ STUDIO MANIFESTO // SPEC
-            </button>
+            <a href="#sec-work" class="inspect-case-btn" style="text-decoration:none; text-align:center; width:100%; padding:9px;">
+              VIEW FEATURED WORKS // SPEC
+            </a>
           </div>
         </div>
       </div>

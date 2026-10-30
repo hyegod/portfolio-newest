@@ -2,20 +2,21 @@
   SectionDispatch.svelte
   Section 06: ISO Engineering Title Block & Transmission Dispatch
 -->
-<section class="editorial-section" id="sec-dispatch" data-section-index="06" data-section-name="06. TITLE BLOCK">
+<section class="editorial-section" id="sec-contact" data-section-index="07" data-section-name="07. CONTACT">
+  <div id="sec-dispatch" style="position:absolute; top:0; pointer-events:none;" aria-hidden="true"></div>
   <div class="section-header-strip">
     <div>
       <div class="section-kicker">
-        <span>// SECTION 06</span>
+        <span>// SECTION 07</span>
         <span>·</span>
-        <span>COLOPHON &amp; PROJECT BRIEF TRANSMISSION</span>
+        <span>HUBUNGI GUA // GET IN TOUCH &amp; PROJECT INQUIRY</span>
       </div>
       <h2 class="section-oversized-title">
-        INITIATE <span class="serif-italic">Blueprint</span> DISPATCH
+        CONTACT <span class="serif-italic">// Direct Telemetry</span>
       </h2>
     </div>
     <div class="section-meta-readout">
-      <div>AVAILABLE FOR SELECT COMMISSIONS &amp; CREATIVE DIRECTION</div>
+      <div>AVAILABLE FOR STRUCTURAL COMMISSIONS, WEBGL R&amp;D &amp; ADVISORY</div>
       <div style="color:var(--accent-text); font-weight:800;">RESPONSE SLA: &lt; 24 HOURS</div>
     </div>
   </div>
@@ -25,12 +26,12 @@
     <div class="transmission-form-pane" data-thread-anchor="sec06-form" data-thread-bias="left">
       <form id="blueprint-dispatch-form">
         <div class="blueprint-input-group">
-          <label class="blueprint-label" for="input-sender">01 // ORIGINATOR NAME OR STUDIO</label>
+          <label class="blueprint-label" for="input-sender">01 // YOUR NAME OR ORGANIZATION</label>
           <input type="text" id="input-sender" class="blueprint-input" placeholder="e.g. STUDIO ARCHETYPE // CHIEF ENGINEER" required />
         </div>
 
         <div class="blueprint-input-group">
-          <label class="blueprint-label" for="input-email">02 // RETURN TELEMETRY ADDRESS (EMAIL)</label>
+          <label class="blueprint-label" for="input-email">02 // YOUR EMAIL ADDRESS</label>
           <input type="email" id="input-email" class="blueprint-input" placeholder="dispatch@domain.studio" required />
         </div>
 
@@ -50,7 +51,7 @@
         </div>
 
         <button type="submit" class="submit-blueprint-btn">
-          <span>TRANSMIT BLUEPRINT PACKET</span>
+          <span>TRANSMIT MESSAGE / INITIATE CONTACT</span>
           <span>⌖</span>
         </button>
 
@@ -83,7 +84,7 @@
         </div>
         <div class="iso-cell">
           <div class="iso-cell-label">SHEET INDEX</div>
-          <div class="iso-cell-value">06 / 06 [REV. D]</div>
+          <div class="iso-cell-value">07 / 07 [REV. E]</div>
         </div>
       </div>
 

@@ -3,21 +3,22 @@
   Section 03: Interactive 3D WebGL Structural & Topographic CAD Lab
   (Viewport-culled via IntersectionObserver for 0% GPU usage when off-screen)
 -->
-<section class="editorial-section" id="sec-cad-3d" data-section-index="03" data-section-name="03. 3D CAD LAB">
+<section class="editorial-section" id="sec-work" data-section-index="03" data-section-name="03. WORK">
+  <div id="sec-cad-3d" style="position:absolute; top:0; pointer-events:none;" aria-hidden="true"></div>
   <div class="section-header-strip">
     <div>
       <div class="section-kicker">
         <span>// SECTION 03</span>
         <span>·</span>
-        <span>REAL-TIME THREE.JS FINITE ELEMENT &amp; PARAMETRIC SANDBOX</span>
+        <span>KERJAAN GUA // FEATURED WORK &amp; 3D CAD LAB</span>
       </div>
       <h2 class="section-oversized-title">
-        INTERACTIVE 3D <span class="serif-italic">Structural</span> CAD
+        FEATURED <span class="serif-italic">Works</span> &amp; 3D Lab
       </h2>
     </div>
     <div class="section-meta-readout">
-      <div>DRAG TO ORBIT · SCROLL TO ZOOM · ADJUST LOAD PARAMETERS</div>
-      <div style="color:var(--accent-text); font-weight:800;">STRESS HEATMAP: ELECTRIC BLUE → ACID LIME → OXIDE</div>
+      <div>PRODUCTION 3D CAD SANDBOX &amp; COMPUTATIONAL ENGINEERING SUITE</div>
+      <div style="color:var(--accent-text); font-weight:800;">INTERACTIVE DEMO BELOW · DRAG TO ORBIT / TWEAK STRESS [↓]</div>
     </div>
   </div>
 

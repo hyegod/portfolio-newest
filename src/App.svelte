@@ -9,6 +9,7 @@
   import SectionSpread from './components/SectionSpread.svelte';
   import SectionIdentity from './components/SectionIdentity.svelte';
   import SectionCad3D from './components/SectionCad3D.svelte';
+  import SectionTimeline from './components/SectionTimeline.svelte';
   import SectionArchive from './components/SectionArchive.svelte';
   import SectionPasteup from './components/SectionPasteup.svelte';
   import SectionDispatch from './components/SectionDispatch.svelte';
@@ -40,6 +41,7 @@
   <SectionSpread />
   <SectionIdentity />
   <SectionCad3D />
+  <SectionTimeline />
   <SectionArchive />
   <SectionPasteup />
   <SectionDispatch />

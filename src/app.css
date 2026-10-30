@@ -3938,3 +3938,200 @@ body.xray-active .cad-xray-layer,
 }
 
 
+
+
+/* ==========================================================================
+   SECTION 04: CHRONOLOGICAL TIMELINE & CAREER TRAJECTORY (BRUTALIST ARCHITECTURE)
+   ========================================================================== */
+.timeline-container {
+  position: relative;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.timeline-rail-spine {
+  position: absolute;
+  top: 10px;
+  bottom: 20px;
+  left: 20px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink-black) 0,
+    var(--ink-black) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.timeline-nodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-milestone-card {
+  background: var(--bg-paper);
+  border: 1.5px solid var(--ink-black);
+  box-shadow: 4px 4px 0 var(--ink-black);
+  padding: 22px 26px;
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), box-shadow 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.timeline-milestone-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 7px 7px 0 var(--ink-black);
+}
+
+.timeline-milestone-card.is-current {
+  border-left: 6px solid var(--acid-lime);
+}
+
+.milestone-station-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed var(--ink-faint);
+  padding-bottom: 10px;
+}
+
+.milestone-year-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: var(--ink-black);
+}
+
+.station-bullet {
+  width: 8px;
+  height: 8px;
+  background: var(--acid-lime);
+  border: 1.5px solid var(--ink-black);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.milestone-status-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border: 1.5px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg-paper-alt);
+}
+
+.milestone-code-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+.milestone-role-title {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  color: var(--ink-black);
+}
+
+.milestone-org-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-text);
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+
+.milestone-discipline-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.discipline-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  background: var(--bg-paper-alt);
+  border: 1px solid var(--ink-black);
+  padding: 3px 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.milestone-description {
+  font-family: var(--font-grotesk);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-black);
+  margin: 0 0 14px 0;
+  opacity: 0.92;
+}
+
+.milestone-deliverables-box {
+  background: var(--bg-paper-alt);
+  border: 1px dashed var(--ink-faint);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.deliverables-heading {
+  font-weight: 800;
+  color: var(--ink-black);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.deliverables-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.deliverables-list li {
+  line-height: 1.4;
+  color: var(--ink-black);
+}
+
+.deliv-bullet {
+  color: var(--accent-text);
+  font-weight: 900;
+  margin-right: 4px;
+}
+
+@media (max-width: 768px) {
+  .timeline-rail-spine {
+    display: none;
+  }
+  .timeline-milestone-card {
+    padding: 16px 14px;
+  }
+  .milestone-station-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}

@@ -2,21 +2,22 @@
   SectionPasteup.svelte
   Section 05: Draggable Collage Paste-Up Wall & Technical Spec Matrix
 -->
-<section class="editorial-section" id="sec-pasteup" data-section-index="05" data-section-name="05. COLLAGE MATRIX">
+<section class="editorial-section" id="sec-collage" data-section-index="06" data-section-name="06. COLLAGE">
+  <div id="sec-pasteup" style="position:absolute; top:0; pointer-events:none;" aria-hidden="true"></div>
   <div class="section-header-strip">
     <div>
       <div class="section-kicker">
-        <span>// SECTION 05</span>
+        <span>// SECTION 06</span>
         <span>·</span>
-        <span>TACTILE ZINE PASTE-UP BOARD &amp; CAPABILITY INDEX</span>
+        <span>TACTILE STUDIO COLLAGE &amp; CAPABILITY SPEC SHEET</span>
       </div>
       <h2 class="section-oversized-title">
-        COLLAGE <span class="serif-italic">Paste-Up</span> &amp; SPECS
+        CREATIVE <span class="serif-italic">Collage</span> &amp; Spec Matrix
       </h2>
     </div>
     <div class="section-meta-readout">
-      <div>DRAG ANY STICKER ON THE BOARD · CLICK TO STAMP NEW CUTOUTS</div>
-      <div style="color:var(--accent-text); font-weight:800;">INTERACTIVE STUDIO MOODBOARD</div>
+      <div>DRAG ANY STICKER / TAPE ON THE BOARD · CLICK TO STAMP NEW CUTOUTS</div>
+      <div style="color:var(--accent-text); font-weight:800;">INTERACTIVE STUDIO MOODBOARD [↓]</div>
     </div>
   </div>
 

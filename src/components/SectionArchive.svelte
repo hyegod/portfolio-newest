@@ -19,21 +19,21 @@
   }
 </script>
 
-<section class="editorial-section" id="sec-archive" data-section-index="04" data-section-name="04. ARCHIVE">
+<section class="editorial-section" id="sec-archive" data-section-index="05" data-section-name="05. ARCHIVE">
   <div class="section-header-strip">
     <div>
       <div class="section-kicker">
-        <span>// SECTION 04</span>
+        <span>// SECTION 05</span>
         <span>·</span>
-        <span>INDEXED DOSSIERS (2022 — 2026)</span>
+        <span>WORK YANG LAMA // RETROSPECTIVE ARCHIVE (2021 — 2024)</span>
       </div>
       <h2 class="section-oversized-title">
-        SELECTED <span class="serif-italic">Works</span> ARCHIVE
+        HISTORICAL <span class="serif-italic">Archive</span> &amp; Past Works
       </h2>
     </div>
     <div class="section-meta-readout">
-      <div>FILTER BY DISCIPLINARY VECTOR</div>
-      <div>CLICK A FOLDER TAB TO OPEN ITS DOSSIER</div>
+      <div>ARSIP PROJECT &amp; RISET TERDAHULU · 4 COMPLETED DOSSIERS</div>
+      <div>KLIK FOLDER TAB UNTUK MEMBUKA DETAIL SPESIFIKASI [↓]</div>
     </div>
   </div>
 

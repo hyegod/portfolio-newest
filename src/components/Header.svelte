@@ -73,12 +73,13 @@
   </div>
 
   <nav class="header-center-nav" aria-label="Primary Editorial Navigation">
-    <a href="#sec-spread" class="header-nav-link active">01. SPREAD</a>
-    <a href="#sec-pillars" class="header-nav-link">02. IDENTITY</a>
-    <a href="#sec-cad-3d" class="header-nav-link">03. 3D CAD</a>
-    <a href="#sec-archive" class="header-nav-link">04. ARCHIVE</a>
-    <a href="#sec-pasteup" class="header-nav-link">05. COLLAGE</a>
-    <a href="#sec-dispatch" class="header-nav-link">06. DISPATCH</a>
+    <a href="#sec-whoami" class="header-nav-link active">01. WHO AM I</a>
+    <a href="#sec-identity" class="header-nav-link">02. IDENTITY</a>
+    <a href="#sec-work" class="header-nav-link">03. WORK</a>
+    <a href="#sec-timeline" class="header-nav-link">04. TIMELINE</a>
+    <a href="#sec-archive" class="header-nav-link">05. ARCHIVE</a>
+    <a href="#sec-collage" class="header-nav-link">06. COLLAGE</a>
+    <a href="#sec-contact" class="header-nav-link">07. CONTACT</a>
   </nav>
 
   <div class="header-right-controls">
@@ -127,6 +128,6 @@
       <span class="xray-state-text">OFF</span>
     </button>
 
-    <div class="page-counter-badge" id="editorial-page-counter">01 / 06</div>
+    <div class="page-counter-badge" id="editorial-page-counter">01 / 07</div>
   </div>
 </header>
