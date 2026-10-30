@@ -5,7 +5,6 @@
   import SignatureLoader from './components/SignatureLoader.svelte';
   import Header from './components/Header.svelte';
   import LeftSpine from './components/LeftSpine.svelte';
-  import WeavingThread from './components/WeavingThread.svelte';
   import SectionSpread from './components/SectionSpread.svelte';
   import SectionIdentity from './components/SectionIdentity.svelte';
   import SectionCad3D from './components/SectionCad3D.svelte';
@@ -37,7 +36,6 @@
 
 <!-- Main Editorial Stage -->
 <main class="main-editorial-stage" id="main-editorial-stage">
-  <WeavingThread />
   <SectionSpread />
   <SectionIdentity />
   <SectionCad3D />

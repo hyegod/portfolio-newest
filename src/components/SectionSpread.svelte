@@ -463,7 +463,7 @@
     <!-- DAKSH GAJJAR HOMAGE: "SCROLL TO FOLLOW THE THREAD" -->
     <div class="thread-synthesis-banner" data-thread-anchor="sec01-bridge" data-thread-bias="center">
       <div class="thread-banner-top">
-        <span class="thread-kicker">↓ SCROLL TO FOLLOW THE STRUCTURAL THREAD</span>
+        <span class="thread-kicker">// DISCIPLINARY SYNTHESIS · INTENT · INTERACTION · SYSTEM</span>
         <span class="thread-sub">CONNECTING HUMAN INTENT, PHYSICAL MECHANICS &amp; DIGITAL SYSTEMS</span>
       </div>
 
