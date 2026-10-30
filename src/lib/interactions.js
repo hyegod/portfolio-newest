@@ -385,6 +385,19 @@ export function initCadCursor() {
   const footerCoords = document.getElementById('footer-live-coords');
   if (!cursor) return;
 
+  const isTouchOrTablet = () => {
+    return (
+      window.innerWidth <= 1024 ||
+      window.matchMedia('(hover: none), (pointer: coarse)').matches ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0
+    );
+  };
+
+  if (isTouchOrTablet()) {
+    cursor.style.display = 'none';
+  }
+
   let mouseX = -100;
   let mouseY = -100;
   let lastTarget = null;
@@ -396,6 +409,13 @@ export function initCadCursor() {
   window.addEventListener('resize', () => {
     winW = window.innerWidth;
     winH = window.innerHeight;
+    if (isTouchOrTablet()) {
+      cursor.style.display = 'none';
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchstart', () => {
+    cursor.style.display = 'none';
   }, { passive: true });
 
   function flushCursor() {
@@ -420,6 +440,11 @@ export function initCadCursor() {
   }
 
   window.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'touch' || isTouchOrTablet()) {
+      cursor.style.display = 'none';
+      return;
+    }
+    cursor.style.display = '';
     mouseX = e.clientX;
     mouseY = e.clientY;
     lastTarget = e.target;

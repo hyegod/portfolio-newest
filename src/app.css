@@ -345,6 +345,16 @@ img {
   letter-spacing: 0.04em;
 }
 
+/* Completely hide custom CAD cursor on touchscreens, mobile, and tablets */
+@media (hover: none), (pointer: coarse), (max-width: 1024px) {
+  .cad-cursor {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+}
+
 /* ==========================================================================
    EDITORIAL FRAME HEADER, SPINE & FOOTER (Exact Stussy Reference Framing)
    ========================================================================== */
