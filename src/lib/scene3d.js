@@ -685,36 +685,260 @@ function whenIdle(cb, timeout = 1500) {
   }
 }
 
+
+/* ------------------------------------------------------------------------
+   PART 3: 3D KINETIC TECTONIC SYNTHESIS CORE (#synthesis-3d-canvas)
+   Scroll-expanded real-time Three.js viewport showcasing the 3 core disciplines:
+   01 INTENT (Civil Space Truss), 02 INTERACTION (Kinetic Ribbon), 03 SYSTEM (Geodesic Matrix).
+   Supports mouse/touch drag orbit, scroll-driven radial expansion & geometry morphing.
+   ------------------------------------------------------------------------ */
+export function initSynthesis3DCore() {
+  const canvas = document.getElementById('synthesis-3d-canvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const container = canvas.parentElement;
+  let width = container.clientWidth || 800;
+  let height = container.clientHeight || 320;
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true
+  });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+  camera.position.set(0, 0, 15);
+
+  const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
+  scene.add(ambLight);
+  const dirLight1 = new THREE.DirectionalLight(0xd4ff00, 1.3);
+  dirLight1.position.set(12, 16, 10);
+  scene.add(dirLight1);
+  const dirLight2 = new THREE.DirectionalLight(0x0055ff, 1.2);
+  dirLight2.position.set(-12, -10, -10);
+  scene.add(dirLight2);
+
+  const coreGroup = new THREE.Group();
+  scene.add(coreGroup);
+
+  // 1. Model INTENT (01 Civil - Space Truss Arch)
+  const groupIntent = new THREE.Group();
+  const trussPts = [];
+  const span = 12;
+  const count = 14;
+  for (let i = 0; i <= count; i++) {
+    const t = i / count;
+    const x = (t - 0.5) * span;
+    const yBot = -2.4;
+    const yTop = yBot + Math.sin(t * Math.PI) * 4.2;
+    if (i < count) {
+      const nextX = ((i + 1) / count - 0.5) * span;
+      trussPts.push(new THREE.Vector3(x, yBot, -1.2), new THREE.Vector3(nextX, yBot, -1.2));
+      trussPts.push(new THREE.Vector3(x, yBot, 1.2), new THREE.Vector3(nextX, yBot, 1.2));
+      trussPts.push(new THREE.Vector3(x, yBot, -1.2), new THREE.Vector3(nextX, yBot, 1.2));
+      const nextYTop = yBot + Math.sin(((i + 1) / count) * Math.PI) * 4.2;
+      trussPts.push(new THREE.Vector3(x, yTop, 0), new THREE.Vector3(nextX, nextYTop, 0));
+      trussPts.push(new THREE.Vector3(x, yBot, -1.2), new THREE.Vector3(x, yTop, 0));
+      trussPts.push(new THREE.Vector3(x, yBot, 1.2), new THREE.Vector3(x, yTop, 0));
+      trussPts.push(new THREE.Vector3(nextX, yBot, -1.2), new THREE.Vector3(x, yTop, 0));
+    }
+  }
+  const geoIntent = new THREE.BufferGeometry().setFromPoints(trussPts);
+  const matIntent = new THREE.LineBasicMaterial({ color: 0xD4FF00, linewidth: 2 });
+  groupIntent.add(new THREE.LineSegments(geoIntent, matIntent));
+
+  const nodeGeo = new THREE.SphereGeometry(0.14, 8, 8);
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0x00B4FF });
+  for (let i = 0; i <= count; i++) {
+    const t = i / count;
+    const x = (t - 0.5) * span;
+    const yBot = -2.4;
+    const yTop = yBot + Math.sin(t * Math.PI) * 4.2;
+    const n1 = new THREE.Mesh(nodeGeo, nodeMat); n1.position.set(x, yBot, -1.2); groupIntent.add(n1);
+    const n2 = new THREE.Mesh(nodeGeo, nodeMat); n2.position.set(x, yBot, 1.2); groupIntent.add(n2);
+    const n3 = new THREE.Mesh(nodeGeo, nodeMat); n3.position.set(x, yTop, 0); groupIntent.add(n3);
+  }
+  coreGroup.add(groupIntent);
+
+  // 2. Model INTERACTION (02 Editorial - Torus Knot Wireframe)
+  const groupInteraction = new THREE.Group();
+  const geoInteraction = new THREE.TorusKnotGeometry(3.6, 1.1, 72, 12, 2, 3);
+  const matInteraction = new THREE.MeshBasicMaterial({ color: 0x0055FF, wireframe: true });
+  const meshInteraction = new THREE.Mesh(geoInteraction, matInteraction);
+  groupInteraction.add(meshInteraction);
+  groupInteraction.visible = false;
+  coreGroup.add(groupInteraction);
+
+  // 3. Model SYSTEM (03 WebGL - Geodesic Icosahedron Cluster)
+  const groupSystem = new THREE.Group();
+  const geoSysOuter = new THREE.IcosahedronGeometry(4.4, 1);
+  const matSysOuter = new THREE.LineSegments(
+    new THREE.WireframeGeometry(geoSysOuter),
+    new THREE.LineBasicMaterial({ color: 0xD4FF00 })
+  );
+  const geoSysInner = new THREE.OctahedronGeometry(2.6, 1);
+  const matSysInner = new THREE.LineSegments(
+    new THREE.WireframeGeometry(geoSysInner),
+    new THREE.LineBasicMaterial({ color: 0xFF2A55 })
+  );
+  groupSystem.add(matSysOuter);
+  groupSystem.add(matSysInner);
+  groupSystem.visible = false;
+  coreGroup.add(groupSystem);
+
+  // Orbit drag state
+  let isDragging = false;
+  let prevX = 0, prevY = 0;
+  let rotX = 0.2, rotY = 0.4;
+  let targetRotX = 0.2, targetRotY = 0.4;
+
+  const onPointerDown = (e) => {
+    isDragging = true;
+    prevX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    prevY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+  };
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    const cx = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+    const cy = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+    const dx = cx - prevX;
+    const dy = cy - prevY;
+    prevX = cx;
+    prevY = cy;
+    targetRotY += dx * 0.008;
+    targetRotX += dy * 0.008;
+  };
+  const onPointerUp = () => { isDragging = false; };
+
+  canvas.addEventListener('mousedown', onPointerDown);
+  window.addEventListener('mousemove', onPointerMove);
+  window.addEventListener('mouseup', onPointerUp);
+  canvas.addEventListener('touchstart', onPointerDown, { passive: true });
+  window.addEventListener('touchmove', onPointerMove, { passive: true });
+  window.addEventListener('touchend', onPointerUp);
+
+  window.switchSynthesis3DStage = (stageKey) => {
+    groupIntent.visible = stageKey === 'intent';
+    groupInteraction.visible = stageKey === 'interaction';
+    groupSystem.visible = stageKey === 'system';
+
+    const stageEl = document.getElementById('synthesis-telemetry-stage');
+    const geoEl = document.getElementById('synthesis-telemetry-geo');
+    if (stageEl) {
+      stageEl.textContent = stageKey === 'intent' ? '01 INTENT' : (stageKey === 'interaction' ? '02 INTERACTION' : '03 SYSTEM');
+    }
+    if (geoEl) {
+      geoEl.textContent = stageKey === 'intent' ? 'SPACE TRUSS' : (stageKey === 'interaction' ? 'KINETIC RIBBON' : 'NEURAL LATTICE');
+    }
+  };
+
+  let targetScale = 1.0;
+  const updateScrollProgress = () => {
+    const rect = container.getBoundingClientRect();
+    const winH = window.innerHeight;
+    const prog = Math.max(0, Math.min(1, (winH - rect.top) / (winH + rect.height * 0.4)));
+    targetScale = 0.85 + prog * 0.35;
+
+    const expandEl = document.getElementById('synthesis-telemetry-expand');
+    if (expandEl) {
+      expandEl.textContent = `${Math.round(prog * 100)}%`;
+    }
+  };
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+
+  let isVisible = true;
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      isVisible = entries.some(e => e.isIntersecting);
+    }, { rootMargin: '200px 0px' });
+    io.observe(container);
+  }
+
+  let currentScale = 1.0;
+  const coordsEl = document.getElementById('synthesis-3d-coords');
+
+  const animate = () => {
+    requestAnimationFrame(animate);
+    if (!isVisible) return;
+
+    if (!isDragging) {
+      targetRotY += 0.006;
+    }
+    rotX += (targetRotX - rotX) * 0.08;
+    rotY += (targetRotY - rotY) * 0.08;
+    currentScale += (targetScale - currentScale) * 0.06;
+
+    coreGroup.rotation.x = rotX;
+    coreGroup.rotation.y = rotY;
+    coreGroup.scale.set(currentScale, currentScale, currentScale);
+
+    if (groupInteraction.visible) {
+      meshInteraction.rotation.z += 0.01;
+    }
+    if (groupSystem.visible) {
+      matSysInner.rotation.x -= 0.015;
+      matSysInner.rotation.y += 0.012;
+    }
+
+    if (coordsEl && Math.random() < 0.1) {
+      const degX = Math.round((rotX * 180 / Math.PI) % 360);
+      const degY = Math.round((rotY * 180 / Math.PI) % 360);
+      coordsEl.textContent = `θ: ${degY}° φ: ${degX}°`;
+    }
+
+    renderer.render(scene, camera);
+  };
+  animate();
+
+  let lastW = container.clientWidth;
+  window.addEventListener('resize', () => {
+    if (container.clientWidth === lastW) return;
+    lastW = container.clientWidth;
+    const w = container.clientWidth || 800;
+    const h = container.clientHeight || 320;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }, { passive: true });
+}
+
 export function bootScene3D() {
   initPrebakedPaperGrain();
 
-  // CAD sandbox — only when the canvas is within ~1 screen of the viewport
-  const cadCanvas = document.getElementById('cad-interactive-canvas');
-  if (!cadCanvas) return;
-
-  let cadStarted = false;
-  const startCad = () => {
-    if (cadStarted) return;
-    cadStarted = true;
+  let threeEngineStarted = false;
+  const start3DEngines = () => {
+    if (threeEngineStarted) return;
+    threeEngineStarted = true;
     loadThree()
-      .then(() => initInteractiveCadSandbox())
-      .catch(() => {
-        cadStarted = false;
+      .then(() => {
+        initSynthesis3DCore();
+        initInteractiveCadSandbox();
+      })
+      .catch((err) => {
+        threeEngineStarted = false;
+        console.warn('Three.js engines deferred:', err);
       });
   };
 
-  if ('IntersectionObserver' in window) {
+  const synthCanvas = document.getElementById('synthesis-3d-canvas');
+  const cadCanvas = document.getElementById('cad-interactive-canvas');
+  const observeTarget = synthCanvas || cadCanvas;
+
+  if (observeTarget && 'IntersectionObserver' in window) {
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           io.disconnect();
-          startCad();
+          start3DEngines();
         }
       },
       { rootMargin: '1200px 0px' }
     );
-    io.observe(cadCanvas);
+    io.observe(observeTarget);
   } else {
-    startCad();
+    start3DEngines();
   }
 }

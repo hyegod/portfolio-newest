@@ -534,6 +534,35 @@ export function initSmoothScrollAndGSAP() {
     );
   }
 
+  // 3D SCROLL-EXPAND CINEMATIC ANIMATIONS
+  // A. Disciplinary Synthesis 3D Chamber Scroll Expand
+  const synthBanner = document.querySelector('.thread-synthesis-banner');
+  if (synthBanner) {
+    gsap.fromTo(
+      synthBanner,
+      {
+        scale: 0.88,
+        rotateX: 14,
+        transformPerspective: 1200,
+        boxShadow: '0 8px 30px rgba(0,0,0,0.1)'
+      },
+      {
+        scale: 1,
+        rotateX: 0,
+        boxShadow: '8px 8px 0 var(--ink-black)',
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: synthBanner,
+          start: 'top 95%',
+          end: 'top 60%',
+          scrub: isTouchOrMobile ? true : 0.35
+        }
+      }
+    );
+  }
+
+
+
   // Badges & Photos for Cards 02 & 03
   gsap.utils.toArray('.collage-card--02 .badge-num-circle, .collage-card--03 .badge-num-circle').forEach((badge) => {
     gsap.fromTo(
@@ -694,28 +723,30 @@ export function initSmoothScrollAndGSAP() {
     }
   }
 
-  // 4. SECTION 03: 3D CAD Lab Wrapper & Telemetry Panel
+  // 4. SECTION 03: 3D CAD Lab Wrapper 3D Scroll Expand & Telemetry Panel
   const cadWrapper = document.querySelector('.cad-3d-lab-wrapper');
   if (cadWrapper) {
     gsap.fromTo(
       cadWrapper,
       {
-        y: 65,
-        scale: 0.93,
-        opacity: 0,
+        y: 40,
+        scale: 0.90,
+        rotateX: 10,
+        transformPerspective: 1200,
+        opacity: 0.85,
         force3D: true
       },
       {
         y: 0,
         scale: 1,
+        rotateX: 0,
         opacity: 1,
-        duration: 1.15,
-        ease: 'power4.out',
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: cadWrapper,
-          start: 'top 82%',
-          toggleActions: 'play none none none',
-          once: true
+          start: 'top 92%',
+          end: 'top 58%',
+          scrub: isTouchOrMobile ? true : 0.35
         }
       }
     );
@@ -1651,341 +1682,8 @@ export function initSignatureIntroLoader() {
 }
 
 export function initScrollStructuralThread() {
-  const stage = document.getElementById('main-editorial-stage') || document.querySelector('.main-editorial-stage');
-  const svg = document.getElementById('content-weaving-thread-svg');
-  const trackPath = document.getElementById('weaving-thread-track');
-  const activePath = document.getElementById('weaving-thread-active');
-  const anchorsGroup = document.getElementById('weaving-thread-anchors');
-  const bullseye = document.getElementById('weaving-thread-bullseye');
-
-  let totalLen = 0;
-  let stageHeightCached = 1000;
-  let lengthLookup = [];
-
-  function getRelBox(el, stageRect) {
-    if (!el) return null;
-    const r = el.getBoundingClientRect();
-    if (r.width === 0 && r.height === 0) return null;
-    return {
-      left: r.left - stageRect.left,
-      right: r.right - stageRect.left,
-      top: r.top - stageRect.top,
-      bottom: r.bottom - stageRect.top,
-      cx: r.left - stageRect.left + r.width * 0.5,
-      cy: r.top - stageRect.top + r.height * 0.5,
-      w: r.width,
-      h: r.height
-    };
-  }
-
-  function buildWeavingThreadPath() {
-    if (!stage || !svg || !trackPath || !activePath) return;
-
-    const stageRect = stage.getBoundingClientRect();
-    const stageW = Math.max(300, stage.clientWidth || stageRect.width);
-    const stageH = Math.max(800, stage.scrollHeight || stageRect.height);
-    stageHeightCached = stageH;
-
-    svg.setAttribute('viewBox', `0 0 ${stageW} ${stageH}`);
-    svg.setAttribute('width', stageW);
-    svg.setAttribute('height', stageH);
-
-    const clampX = (x) => Math.round(Math.max(18, Math.min(stageW - 18, x)));
-    const clampY = (y) => Math.round(Math.max(8, Math.min(stageH - 12, y)));
-
-    const bManifesto = getRelBox(stage.querySelector('[data-thread-anchor="sec01-manifesto"]'), stageRect);
-    const bCard01 = getRelBox(stage.querySelector('[data-thread-anchor="sec01-card01"]'), stageRect);
-    const bCard02 = getRelBox(stage.querySelector('[data-thread-anchor="sec01-card02"]'), stageRect);
-    const bCard03 = getRelBox(stage.querySelector('[data-thread-anchor="sec01-card03"]'), stageRect);
-    const bBridge = getRelBox(stage.querySelector('[data-thread-anchor="sec01-bridge"]'), stageRect);
-
-    const bPillar1 = getRelBox(stage.querySelector('[data-thread-anchor="sec02-pillar01"]'), stageRect);
-    const bPillar2 = getRelBox(stage.querySelector('[data-thread-anchor="sec02-pillar02"]'), stageRect);
-    const bPillar3 = getRelBox(stage.querySelector('[data-thread-anchor="sec02-pillar03"]'), stageRect);
-
-    const bCadSide = getRelBox(stage.querySelector('[data-thread-anchor="sec03-sidebar"]'), stageRect);
-    const bCadView = getRelBox(stage.querySelector('[data-thread-anchor="sec03-viewport"]'), stageRect);
-
-    const bPrj1 = getRelBox(stage.querySelector('[data-thread-anchor="sec04-prj01"]'), stageRect);
-    const bPrj2 = getRelBox(stage.querySelector('[data-thread-anchor="sec04-prj02"]'), stageRect);
-    const bPrj3 = getRelBox(stage.querySelector('[data-thread-anchor="sec04-prj03"]'), stageRect);
-    const bPrj4 = getRelBox(stage.querySelector('[data-thread-anchor="sec04-prj04"]'), stageRect);
-
-    const bPaste = getRelBox(stage.querySelector('[data-thread-anchor="sec05-pasteup"]'), stageRect);
-    const bSpecs = getRelBox(stage.querySelector('[data-thread-anchor="sec05-specs"]'), stageRect);
-
-    const bForm = getRelBox(stage.querySelector('[data-thread-anchor="sec06-form"]'), stageRect);
-    const bStamp = getRelBox(stage.querySelector('[data-thread-anchor="sec06-stamp"]'), stageRect);
-
-    const waypoints = [];
-    const addPt = (x, y, motif) => {
-      waypoints.push({ x: clampX(x), y: clampY(y), motif: motif || 'smooth' });
-    };
-
-    // MOTIF 1: SECTION 01 SPREAD
-    addPt(stageW * 0.72, 10, 'start');
-
-    if (bManifesto && bCard01 && stageW >= 1180) {
-      const gutterX = (bManifesto.right + bCard01.left) * 0.5;
-      addPt(gutterX, bManifesto.top + 80, 'gutter-drop');
-      addPt(bManifesto.left + 20, bManifesto.bottom + 18, 'wide-left');
-    } else if (bManifesto) {
-      addPt(stageW * 0.14, bManifesto.top + 90, 'wide-left');
-      addPt(stageW * 0.86, bManifesto.bottom + 14, 'wide-right');
-    }
-
-    // Mid-Gutter between Card 02 and 03 (Never collides with corners!)
-    if (bCard02 && bCard03 && stageW >= 1180) {
-      const midGutterX = (bCard02.right + bCard03.left) * 0.5;
-      addPt(midGutterX, bCard02.top - 16, 'loop-entry');
-      addPt(midGutterX, bCard02.cy, 'center-thread');
-      addPt(midGutterX, bCard02.bottom + 18, 'center-drop');
-    } else if (bCard02) {
-      addPt(stageW * 0.5, bCard02.bottom + 18, 'center-drop');
-    }
-
-    if (bBridge) {
-      addPt(bBridge.cx, bBridge.top - 14, 'center-pin');
-      addPt(bBridge.left + bBridge.w * 0.18, bBridge.bottom + 26, 'wide-left');
-    }
-
-    // MOTIF 2: SECTION 02 IDENTITY (Three Pillars Gutter Weave)
-    if (bPillar1 && bPillar2 && bPillar3 && stageW >= 1180) {
-      const g1 = (bPillar1.right + bPillar2.left) * 0.5;
-      const g2 = (bPillar2.right + bPillar3.left) * 0.5;
-      addPt(stageW * 0.84, bPillar1.top - 48, 'header-sweep');
-      addPt(g1, bPillar1.top + bPillar1.h * 0.35, 'diagonal');
-      addPt(g2, bPillar2.top + bPillar2.h * 0.72, 'diagonal');
-      addPt(bPillar3.right - 16, bPillar3.bottom + 26, 'wide-right');
-    } else if (bPillar1) {
-      addPt(stageW * 0.85, bPillar1.top - 36, 'wide-right');
-      if (bPillar2) addPt(stageW * 0.15, bPillar2.top - 14, 'wide-left');
-      if (bPillar3) addPt(stageW * 0.85, bPillar3.bottom + 18, 'wide-right');
-    }
-
-    // MOTIF 3: SECTION 03 3D CAD LAB
-    if (bCadSide && bCadView) {
-      addPt(stageW * 0.14, bCadSide.top - 42, 'header-sweep');
-      const seamX = stageW >= 1180 ? bCadSide.right : stageW * 0.86;
-      addPt(seamX, bCadSide.top + bCadSide.h * 0.45, 'vertical-seam');
-      addPt(stageW * 0.78, bCadView.bottom + 28, 'wide-right');
-    }
-
-    // MOTIF 4: SECTION 04 ARCHIVE
-    if (bPrj1) {
-      const sec04MidX = (bPrj2 && stageW >= 1180) ? (bPrj1.right + bPrj2.left) * 0.5 : stageW * 0.5;
-      addPt(stageW * 0.16, bPrj1.top - 32, 'wide-left');
-      addPt(sec04MidX, bPrj1.top + bPrj1.h * 0.48, 'bento-cross');
-      addPt(stageW * 0.88, bPrj1.bottom + 14, 's-inflect');
-    }
-    if (bPrj3) {
-      const sec04MidX2 = (bPrj4 && stageW >= 1180) ? (bPrj3.right + bPrj4.left) * 0.5 : stageW * 0.5;
-      addPt(stageW * 0.12, bPrj3.top + 60, 'wide-left');
-      addPt(sec04MidX2, bPrj3.top + bPrj3.h * 0.62, 'bento-cross');
-      addPt(stageW * 0.84, (bPrj4 ? bPrj4.bottom : bPrj3.bottom) + 26, 'wide-right');
-    }
-
-    // MOTIF 5: SECTION 05 COLLAGE PASTE-UP & SPEC MATRIX
-    if (bPaste && bSpecs) {
-      const g5 = stageW >= 1180 ? (bPaste.right + bSpecs.left) * 0.5 : stageW * 0.18;
-      addPt(stageW * 0.22, bPaste.top - 38, 'header-sweep');
-      addPt(g5, bPaste.top + bPaste.h * 0.52, 'center-thread');
-      addPt(stageW * 0.86, Math.max(bPaste.bottom, bSpecs.bottom) + 26, 'wide-right');
-    }
-
-    // MOTIF 6: SECTION 06 DISPATCH FORM & ISO TITLE BLOCK
-    if (bForm && bStamp) {
-      const g6 = stageW >= 1180 ? bForm.right : stageW * 0.5;
-      addPt(stageW * 0.16, bForm.top - 36, 'header-sweep');
-      addPt(g6, bForm.top + bForm.h * 0.5, 'vertical-seam');
-    }
-
-    addPt(stageW * 0.5, stageH - 14, 'end');
-
-    for (let i = 1; i < waypoints.length; i++) {
-      if (waypoints[i].y <= waypoints[i - 1].y + 28) {
-        waypoints[i].y = waypoints[i - 1].y + 42;
-      }
-    }
-
-    let d = `M ${waypoints[0].x} ${waypoints[0].y}`;
-    for (let i = 0; i < waypoints.length - 1; i++) {
-      const p0 = waypoints[i];
-      const p1 = waypoints[i + 1];
-      const dy = p1.y - p0.y;
-      const dx = p1.x - p0.x;
-
-      let cp1x, cp1y, cp2x, cp2y;
-
-      if (p1.motif === 'bento-cross' || p1.motif === 'diagonal') {
-        cp1x = p0.x + dx * 0.85;
-        cp1y = p0.y + dy * 0.18;
-        cp2x = p1.x - dx * 0.85;
-        cp2y = p0.y + dy * 0.82;
-      } else if (p1.motif === 'header-sweep') {
-        cp1x = p0.x;
-        cp1y = p0.y + dy * 0.65;
-        cp2x = p1.x;
-        cp2y = p0.y + dy * 0.25;
-      } else if (p1.motif === 'vertical-seam' || p1.motif === 'center-thread') {
-        const flair = (i % 2 === 0 ? 1 : -1) * Math.min(75, stageW * 0.06);
-        cp1x = p0.x + flair;
-        cp1y = p0.y + dy * 0.33;
-        cp2x = p1.x - flair;
-        cp2y = p0.y + dy * 0.67;
-      } else {
-        const bow = (i % 2 === 0 ? -1 : 1) * Math.min(140, stageW * 0.12);
-        cp1x = clampX(p0.x + bow);
-        cp1y = p0.y + dy * 0.38;
-        cp2x = clampX(p1.x - bow * 0.6);
-        cp2y = p0.y + dy * 0.68;
-      }
-
-      d += ` C ${Math.round(cp1x)} ${Math.round(cp1y)}, ${Math.round(cp2x)} ${Math.round(cp2y)}, ${p1.x} ${p1.y}`;
-    }
-
-    trackPath.setAttribute('d', d);
-    activePath.setAttribute('d', d);
-
-    if (anchorsGroup) {
-      anchorsGroup.innerHTML = waypoints
-        .slice(1, -1)
-        .map((pt) => `<circle class="thread-anchor-ring" cx="${pt.x}" cy="${pt.y}" r="4" />`)
-        .join('');
-    }
-
-    totalLen = activePath.getTotalLength ? activePath.getTotalLength() : 5000;
-    activePath.style.strokeDasharray = `${totalLen}`;
-
-    lengthLookup = [];
-    if (activePath.getPointAtLength && totalLen > 0) {
-      const SAMPLES = 240;
-      for (let s = 0; s <= SAMPLES; s++) {
-        const len = (s / SAMPLES) * totalLen;
-        const pt = activePath.getPointAtLength(len);
-        lengthLookup.push({ len, x: pt.x, y: pt.y });
-      }
-    }
-
-    cachedWinH = window.innerHeight;
-    cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - cachedWinH);
-    cachedStageTop = stage.offsetTop || 0;
-
-    updateThreadOnScroll();
-  }
-
-  let cachedWinH = window.innerHeight;
-  let cachedMaxScroll = 1000;
-  let cachedStageTop = 0;
-  let threadRafPending = false;
-  let lastBuiltW = 0;
-  let lastBuiltH = 0;
-  let rebuildTimer = null;
-
-  function scheduleThreadRebuild() {
-    if (rebuildTimer) clearTimeout(rebuildTimer);
-    rebuildTimer = setTimeout(() => {
-      rebuildTimer = null;
-      requestAnimationFrame(() => {
-        if (!stage) return;
-        const w = stage.clientWidth || 0;
-        const h = stage.scrollHeight || 0;
-        if (Math.abs(w - lastBuiltW) > 4) {
-          lastBuiltW = w;
-          lastBuiltH = h;
-          buildWeavingThreadPath();
-        }
-      });
-    }, 420);
-  }
-
-  function getLengthForTargetY(targetY) {
-    if (!lengthLookup.length) return 0;
-    if (targetY <= lengthLookup[0].y) return lengthLookup[0];
-    const last = lengthLookup[lengthLookup.length - 1];
-    if (targetY >= last.y) return last;
-
-    let low = 0;
-    let high = lengthLookup.length - 1;
-    while (low <= high) {
-      const mid = (low + high) >> 1;
-      if (lengthLookup[mid].y < targetY) {
-        low = mid + 1;
-      } else {
-        high = mid - 1;
-      }
-    }
-
-    const idx = Math.max(1, low);
-    const p0 = lengthLookup[idx - 1];
-    const p1 = lengthLookup[idx];
-    const spanY = Math.max(0.001, p1.y - p0.y);
-    const t = Math.max(0, Math.min(1, (targetY - p0.y) / spanY));
-
-    return {
-      len: p0.len + (p1.len - p0.len) * t,
-      x: p0.x + (p1.x - p0.x) * t,
-      y: p0.y + (p1.y - p0.y) * t
-    };
-  }
-
-  function updateThreadOnScroll() {
-    threadRafPending = false;
-    if (!activePath || !totalLen || !lengthLookup.length) return;
-
-    const sy = window.scrollY;
-    const scrollRatio = Math.max(0, Math.min(1, sy / cachedMaxScroll));
-
-    const viewportFocusY = sy - cachedStageTop + cachedWinH * (0.48 + 0.50 * scrollRatio);
-    const targetY = Math.max(40, Math.min(stageHeightCached, viewportFocusY));
-
-    const hit = getLengthForTargetY(targetY);
-    activePath.style.strokeDashoffset = `${Math.max(0, totalLen - hit.len)}`;
-
-    if (bullseye) {
-      bullseye.setAttribute('transform', `translate(${hit.x.toFixed(1)}, ${hit.y.toFixed(1)})`);
-    }
-  }
-
-  function onScrollScheduleThread() {
-    if (!threadRafPending) {
-      threadRafPending = true;
-      requestAnimationFrame(updateThreadOnScroll);
-    }
-  }
-
-  function runInitialThreadBuild() {
-    buildWeavingThreadPath();
-    if (stage) {
-      lastBuiltW = stage.clientWidth || 0;
-      lastBuiltH = stage.scrollHeight || 0;
-    }
-  }
-
-  const loaderEl = document.getElementById('signature-intro-loader');
-  if (loaderEl && !loaderEl.classList.contains('is-dismissed')) {
-    window.addEventListener('signature-dismissed', runInitialThreadBuild, { once: true });
-    setTimeout(() => {
-      if (!lastBuiltW) runInitialThreadBuild();
-    }, 5200);
-  } else {
-    runInitialThreadBuild();
-  }
-
-  window.addEventListener('scroll', onScrollScheduleThread, { passive: true });
-  let lastThreadW = typeof window !== 'undefined' ? window.innerWidth : 0;
-  window.addEventListener('resize', () => {
-    if (window.innerWidth === lastThreadW) return;
-    lastThreadW = window.innerWidth;
-    scheduleThreadRebuild();
-  }, { passive: true });
-
-  if (typeof ResizeObserver !== 'undefined' && stage) {
-    const ro = new ResizeObserver(() => scheduleThreadRebuild());
-    ro.observe(stage);
-  }
-
-  // Delegated listeners for stage nodes (01, 02, 03)
+  // Heavy line path SVG completely removed per user request for peak 60fps performance.
+  // Stage nodes (01 INTENT, 02 INTERACTION, 03 SYSTEM) directly drive the 3D Synthesis Core:
   const STAGE_COPY = {
     intent: '<strong>01 // STRUCTURAL INTENT:</strong> Defining the physical &amp; spatial problem with engineering rigor—load paths, equilibrium, and tectonic honesty before a single pixel or line of code is drawn.',
     interaction: '<strong>02 // EDITORIAL INTERACTION:</strong> Translating raw technical telemetry into tactile human experiences—bold Swiss grids, expressive street-zine typography, and responsive motion.',
@@ -2000,6 +1698,9 @@ export function initScrollStructuralThread() {
     stageButtons.forEach((b) => b.classList.toggle('active', b === btn));
     if (readoutEl) {
       readoutEl.innerHTML = STAGE_COPY[key];
+    }
+    if (typeof window.switchSynthesis3DStage === 'function') {
+      window.switchSynthesis3DStage(key);
     }
     return true;
   };

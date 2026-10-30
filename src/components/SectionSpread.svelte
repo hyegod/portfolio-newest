@@ -28,6 +28,9 @@
     if (activeStage === key) return;
     activeStage = key;
     playMechanicalTick(1020, 0.025);
+    if (typeof window.switchSynthesis3DStage === 'function') {
+      window.switchSynthesis3DStage(key);
+    }
   }
 
   let showMoreEssay = false;
@@ -532,6 +535,39 @@
 
       <div class="thread-stage-readout" id="thread-stage-readout">
         {@html stageData[activeStage]}
+      </div>
+
+      <!-- 3D KINETIC TECTONIC CHAMBER (SCROLL-EXPAND & 3D INTERACTIVE CORE) -->
+      <div class="synthesis-3d-stage-wrapper" id="synthesis-3d-stage-wrapper">
+        <div class="synthesis-3d-hud-bar">
+          <div class="hud-left">
+            <span class="hud-status-dot"></span>
+            <span class="hud-mono-text">3D TECTONIC SYNTHESIS // {activeStage.toUpperCase()}</span>
+          </div>
+          <div class="hud-right">
+            <span class="hud-mono-hint">[DRAG 3D ORBIT · SCROLL EXPAND]</span>
+            <span class="hud-coords" id="synthesis-3d-coords">θ: 45° φ: 32°</span>
+          </div>
+        </div>
+
+        <div class="synthesis-canvas-frame">
+          <canvas id="synthesis-3d-canvas"></canvas>
+
+          <div class="synthesis-3d-floating-telemetry">
+            <div class="telemetry-pill">
+              <span class="pill-k">STAGE //</span>
+              <span class="pill-v" id="synthesis-telemetry-stage">01 INTENT</span>
+            </div>
+            <div class="telemetry-pill">
+              <span class="pill-k">GEOMETRY //</span>
+              <span class="pill-v" id="synthesis-telemetry-geo">SPACE TRUSS</span>
+            </div>
+            <div class="telemetry-pill">
+              <span class="pill-k">EXPANSION //</span>
+              <span class="pill-v" id="synthesis-telemetry-expand">100%</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
