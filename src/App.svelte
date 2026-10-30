@@ -19,17 +19,8 @@
   import { bootInteractions } from './lib/interactions.js';
 
   onMount(() => {
+    bootScene3D();
     bootInteractions();
-
-    // Defer 3D WebGL engine until the intro loader is dismissed so GPU is 100% dedicated to loader
-    const onDismissed = () => {
-      bootScene3D();
-    };
-    window.addEventListener('signature-dismissed', onDismissed, { once: true });
-    const loaderEl = document.getElementById('signature-intro-loader');
-    if (!loaderEl || loaderEl.classList.contains('is-dismissed')) {
-      bootScene3D();
-    }
   });
 </script>
 
