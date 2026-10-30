@@ -14,30 +14,131 @@ const COLORS = {
 };
 
 /* ------------------------------------------------------------------------
-   PART 0: PRE-BAKED 128x128 PAPER GRAIN TILE
+   PART 0: TACTILE RAW INDUSTRIAL PAPER GRAIN & FIBER TILE (256x256)
+   Procedurally generates tactile unbleached paper pulp, micro-grain & fibers.
+   Bakes once into a base64 PNG data URL in ~2ms. 0% runtime GPU overhead.
    ------------------------------------------------------------------------ */
 export function initPrebakedPaperGrain() {
   const grainEl = document.querySelector('.paper-grain-overlay');
   if (!grainEl) return;
   try {
+    const size = 256;
     const c = document.createElement('canvas');
-    c.width = 128;
-    c.height = 128;
+    c.width = size;
+    c.height = size;
     const ctx = c.getContext('2d');
-    const img = ctx.createImageData(128, 128);
+
+    // 1. Base mottled paper grain noise
+    const img = ctx.createImageData(size, size);
     const d = img.data;
     for (let i = 0; i < d.length; i += 4) {
-      const v = (Math.random() * 60) | 0;
+      const v = (Math.random() * 55 + 10) | 0;
       d[i] = v;
       d[i + 1] = v;
       d[i + 2] = v;
-      d[i + 3] = (Math.random() * 42) | 0;
+      d[i + 3] = (Math.random() * 38 + 6) | 0;
     }
     ctx.putImageData(img, 0, 0);
+
+    // 2. Procedural raw pulp fibers (random curved/straight unbleached paper fibers)
+    ctx.strokeStyle = 'rgba(15, 15, 20, 0.28)';
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    for (let f = 0; f < 110; f++) {
+      const x = Math.random() * size;
+      const y = Math.random() * size;
+      const len = Math.random() * 6 + 2;
+      const angle = Math.random() * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(angle) * len, y + Math.sin(angle) * len);
+      ctx.stroke();
+    }
+
+    // 3. Wood pulp flecks (organic riso/kraft imperfections)
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.35)';
+    for (let p = 0; p < 45; p++) {
+      const px = Math.random() * size;
+      const py = Math.random() * size;
+      const pr = Math.random() * 1.2 + 0.6;
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
     grainEl.style.backgroundImage = `url(${c.toDataURL('image/png')})`;
   } catch (e) {
     // Fallback if canvas dataURL is restricted
   }
+}
+
+/* ------------------------------------------------------------------------
+   PART 0.5: OPTION 4 CYBER KINETIC WAVE & SEISMIC FREQUENCY MESH
+   Smooth sinusoidal seismic wave synthesis that drifts softly in background.
+   Runs at a light 35fps and only animates when [data-bg-style="wave"].
+   ------------------------------------------------------------------------ */
+let waveAnimFrame = null;
+export function initKineticWaveBackground() {
+  const canvas = document.getElementById('kinetic-wave-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = (canvas.width = window.innerWidth);
+  let height = (canvas.height = window.innerHeight);
+
+  const onResize = () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  };
+  window.addEventListener('resize', onResize, { passive: true });
+
+  let time = 0;
+  const WAVES = [
+    { amp: 38, freq: 0.0018, speed: 0.016, color: 'rgba(0, 56, 255, 0.45)', lineW: 1.8, yRatio: 0.35 },
+    { amp: 55, freq: 0.0012, speed: 0.012, color: 'rgba(212, 255, 0, 0.40)', lineW: 2.0, yRatio: 0.52 },
+    { amp: 44, freq: 0.0022, speed: 0.020, color: 'rgba(0, 180, 255, 0.35)', lineW: 1.4, yRatio: 0.68 },
+    { amp: 62, freq: 0.0009, speed: 0.008, color: 'rgba(255, 42, 85, 0.28)', lineW: 1.2, yRatio: 0.82 }
+  ];
+
+  let lastTime = 0;
+  function render(now) {
+    waveAnimFrame = requestAnimationFrame(render);
+    // Throttle to ~35fps for zero battery impact
+    if (now - lastTime < 28) return;
+    lastTime = now;
+
+    const bgStyle = document.documentElement.getAttribute('data-bg-style');
+    if (bgStyle !== 'wave') {
+      ctx.clearRect(0, 0, width, height);
+      return;
+    }
+
+    ctx.clearRect(0, 0, width, height);
+    time += 1;
+
+    WAVES.forEach((w) => {
+      ctx.beginPath();
+      ctx.strokeStyle = w.color;
+      ctx.lineWidth = w.lineW;
+      const baseY = height * w.yRatio;
+
+      for (let x = 0; x <= width; x += 12) {
+        const y = baseY + Math.sin(x * w.freq + time * w.speed) * w.amp + Math.cos(x * w.freq * 0.5 + time * 0.01) * (w.amp * 0.4);
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      for (let x = 60; x <= width - 60; x += 180) {
+        const y = baseY + Math.sin(x * w.freq + time * w.speed) * w.amp + Math.cos(x * w.freq * 0.5 + time * 0.01) * (w.amp * 0.4);
+        ctx.fillStyle = w.color;
+        ctx.fillRect(x - 2, y - 2, 4, 4);
+      }
+    });
+  }
+
+  render(0);
 }
 
 /* ------------------------------------------------------------------------

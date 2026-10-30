@@ -7,6 +7,7 @@
   import { playMechanicalTick } from '../lib/interactions.js';
 
   let currentTheme = 'editorial';
+  let currentBgMode = 'zine'; // 'zine' (Option 3 default) or 'wave' (Option 4)
   let isOpen = false;
 
   const themes = [
@@ -19,6 +20,12 @@
     e.stopPropagation();
     isOpen = !isOpen;
     playMechanicalTick(980, 0.02);
+  }
+
+    function toggleBgMode() {
+    currentBgMode = currentBgMode === 'zine' ? 'wave' : 'zine';
+    document.documentElement.setAttribute('data-bg-style', currentBgMode);
+    playMechanicalTick(920, 0.025);
   }
 
   function selectTheme(themeId) {
@@ -40,6 +47,9 @@
   onMount(() => {
     const active = document.documentElement.getAttribute('data-theme') || 'editorial';
     currentTheme = active;
+    const activeBg = document.documentElement.getAttribute('data-bg-style') || 'zine';
+    currentBgMode = activeBg;
+    document.documentElement.setAttribute('data-bg-style', currentBgMode);
 
     const closeMenu = (e) => {
       if (!e.target.closest('.custom-theme-dropdown')) {
@@ -116,6 +126,18 @@
         </div>
       {/if}
     </div>
+
+        <!-- Background Style Switcher: Option 3 (ZINE) <-> Option 4 (WAVE) -->
+    <button
+      type="button"
+      class="bg-style-toggle-btn"
+      id="bg-style-toggle-btn"
+      title="Switch Background: [03] Brutalist Zine Paper <-> [04] Cyber Kinetic Wave"
+      on:click={toggleBgMode}
+    >
+      <span class="bg-style-icon">▤ BG:</span>
+      <span class="bg-style-name">{currentBgMode === 'zine' ? '03. ZINE' : '04. WAVE'}</span>
+    </button>
 
     <button type="button" class="xray-toggle-btn" id="xray-toggle-btn" title="Toggle Structural CAD X-Ray Overlays">
       <span>⌖ X-RAY:</span>
