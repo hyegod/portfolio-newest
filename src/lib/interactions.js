@@ -534,32 +534,7 @@ export function initSmoothScrollAndGSAP() {
     );
   }
 
-  // 3D SCROLL-EXPAND CINEMATIC ANIMATIONS
-  // A. Disciplinary Synthesis 3D Chamber Scroll Expand
-  const synthBanner = document.querySelector('.thread-synthesis-banner');
-  if (synthBanner) {
-    gsap.fromTo(
-      synthBanner,
-      {
-        scale: 0.88,
-        rotateX: 14,
-        transformPerspective: 1200,
-        boxShadow: '0 8px 30px rgba(0,0,0,0.1)'
-      },
-      {
-        scale: 1,
-        rotateX: 0,
-        boxShadow: '8px 8px 0 var(--ink-black)',
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: synthBanner,
-          start: 'top 95%',
-          end: 'top 60%',
-          scrub: isTouchOrMobile ? true : 0.35
-        }
-      }
-    );
-  }
+
 
 
 
@@ -602,90 +577,74 @@ export function initSmoothScrollAndGSAP() {
     );
   });
 
-  // 2.5. SYNTHESIS BRIDGE: "Intent · Interaction · System" Thread Banner 3D Entrance
+  // 2.5. SYNTHESIS BRIDGE: 3D SCROLL-EXPAND TECTONIC CHAMBER
   const synthesisBanner = document.querySelector('.thread-synthesis-banner');
   if (synthesisBanner) {
-    const bannerTop = synthesisBanner.querySelector('.thread-banner-top');
+    const canvasFrame = synthesisBanner.querySelector('.synthesis-canvas-frame');
     const stageNodes = synthesisBanner.querySelectorAll('.thread-stage-node');
-    const connectors = synthesisBanner.querySelectorAll('.thread-connector-line');
-    const readout = synthesisBanner.querySelector('.thread-stage-readout');
 
-    const tlBanner = gsap.timeline({
-      scrollTrigger: {
-        trigger: synthesisBanner,
-        start: 'top 88%',
-        toggleActions: 'play none none none',
-        once: true
-      }
-    });
-
-    // 1. Physical 3D plate drop & box-shadow settle
-    tlBanner.fromTo(
+    // Dramatic scrubbed 3D scroll-expand on the banner container
+    gsap.fromTo(
       synthesisBanner,
       {
-        y: 65,
-        scale: 0.93,
-        rotationX: 8,
-        opacity: 0,
-        boxShadow: '0px 0px 0 var(--ink-black)',
-        force3D: true
+        scale: 0.86,
+        rotateX: 16,
+        borderRadius: 22,
+        transformPerspective: 1200,
+        boxShadow: '0 12px 36px rgba(0,0,0,0.18)'
       },
       {
-        y: 0,
         scale: 1,
-        rotationX: 0,
-        opacity: 1,
-        boxShadow: '6px 6px 0 var(--ink-black)',
-        duration: 1.15,
-        ease: 'power4.out'
-      },
-      0
+        rotateX: 0,
+        borderRadius: 0,
+        boxShadow: '8px 8px 0 var(--ink-black)',
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: synthesisBanner,
+          start: 'top 96%',
+          end: 'top 52%',
+          scrub: isTouchOrMobile ? true : 0.35
+        }
+      }
     );
 
-    // 2. Top meta kicker slide down
-    if (bannerTop) {
-      tlBanner.fromTo(
-        bannerTop,
-        { y: -16, opacity: 0, force3D: true },
-        { y: 0, opacity: 1, duration: 0.65, ease: 'power3.out' },
-        0.18
+    // Height expansion of the 3D canvas frame on scroll
+    if (canvasFrame) {
+      gsap.fromTo(
+        canvasFrame,
+        {
+          height: isTouchOrMobile ? 180 : 210
+        },
+        {
+          height: isTouchOrMobile ? 260 : 350,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: synthesisBanner,
+            start: 'top 96%',
+            end: 'top 52%',
+            scrub: isTouchOrMobile ? true : 0.35
+          }
+        }
       );
     }
 
-    // 3. Staggered node buttons spring pop
     if (stageNodes.length) {
-      tlBanner.fromTo(
+      gsap.fromTo(
         stageNodes,
-        { y: 32, scale: 0.90, opacity: 0, force3D: true },
+        { y: 24, opacity: 0 },
         {
           y: 0,
-          scale: 1,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: 'back.out(2.4)'
-        },
-        0.28
-      );
-    }
-
-    // 4. Horizontal connector wires expand
-    if (connectors.length) {
-      tlBanner.fromTo(
-        connectors,
-        { scaleX: 0, opacity: 0, transformOrigin: 'center center', force3D: true },
-        { scaleX: 1, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' },
-        0.42
-      );
-    }
-
-    // 5. Lower readout console slide-up & settle
-    if (readout) {
-      tlBanner.fromTo(
-        readout,
-        { y: 22, opacity: 0, force3D: true },
-        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' },
-        0.52
+          duration: 0.6,
+          stagger: 0.1,
+          ease: 'back.out(2)',
+          scrollTrigger: {
+            trigger: synthesisBanner,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+            once: true
+          }
+        }
       );
     }
   }

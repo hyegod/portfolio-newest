@@ -893,6 +893,17 @@ export function initSynthesis3DCore() {
   };
   animate();
 
+  if (typeof ResizeObserver !== 'undefined' && container) {
+    const ro = new ResizeObserver(() => {
+      const w = container.clientWidth || 800;
+      const h = container.clientHeight || 320;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+    ro.observe(container);
+  }
+
   let lastW = container.clientWidth;
   window.addEventListener('resize', () => {
     if (container.clientWidth === lastW) return;
@@ -923,22 +934,6 @@ export function bootScene3D() {
       });
   };
 
-  const synthCanvas = document.getElementById('synthesis-3d-canvas');
-  const cadCanvas = document.getElementById('cad-interactive-canvas');
-  const observeTarget = synthCanvas || cadCanvas;
-
-  if (observeTarget && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          start3DEngines();
-        }
-      },
-      { rootMargin: '1200px 0px' }
-    );
-    io.observe(observeTarget);
-  } else {
-    start3DEngines();
-  }
+  // Pre-warm Three.js and mount both 3D viewports immediately so they are live when scrolled to
+  start3DEngines();
 }
