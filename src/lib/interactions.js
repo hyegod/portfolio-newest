@@ -1314,8 +1314,63 @@ export function initArchiveFilter() {
 export function initDraggablePasteupBoard() {
   const board = document.getElementById('pasteup-board');
   if (!board) return;
+  const stage = document.getElementById('pasteup-stage') || board;
 
-  let highestZ = 25;
+  let highestZ = 30;
+  let currentScale = 1;
+  let panX = 0;
+  let panY = 0;
+
+  const readout = document.getElementById('pasteup-zoom-readout');
+  const btnZoomIn = document.getElementById('pasteup-zoom-in');
+  const btnZoomOut = document.getElementById('pasteup-zoom-out');
+  const btnZoomReset = document.getElementById('pasteup-zoom-reset');
+
+  function applyTransform() {
+    stage.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+    if (readout) {
+      readout.textContent = `${Math.round(currentScale * 100)}%`;
+    }
+  }
+
+  function setZoom(newScale, focalClientX, focalClientY) {
+    newScale = Math.min(3.0, Math.max(0.4, newScale));
+    const boardRect = board.getBoundingClientRect();
+    const fx = focalClientX !== undefined ? focalClientX - boardRect.left : boardRect.width / 2;
+    const fy = focalClientY !== undefined ? focalClientY - boardRect.top : boardRect.height / 2;
+
+    panX = fx - (fx - panX) * (newScale / currentScale);
+    panY = fy - (fy - panY) * (newScale / currentScale);
+    currentScale = newScale;
+    applyTransform();
+  }
+
+  if (btnZoomIn) {
+    btnZoomIn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playMechanicalTick(1200, 0.03);
+      setZoom(currentScale * 1.25);
+    });
+  }
+
+  if (btnZoomOut) {
+    btnZoomOut.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playMechanicalTick(950, 0.03);
+      setZoom(currentScale * 0.8);
+    });
+  }
+
+  if (btnZoomReset) {
+    btnZoomReset.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playMechanicalTick(1100, 0.04);
+      currentScale = 1;
+      panX = 0;
+      panY = 0;
+      applyTransform();
+    });
+  }
 
   function makeDraggable(el) {
     let isDown = false;
@@ -1324,7 +1379,8 @@ export function initDraggablePasteupBoard() {
     let origLeft = 0;
     let origTop = 0;
 
-    el.addEventListener('pointerdown', (e) => {
+    const onPointerDown = (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
       isDown = true;
       highestZ += 1;
       el.style.zIndex = highestZ;
@@ -1332,24 +1388,149 @@ export function initDraggablePasteupBoard() {
       startY = e.clientY;
       origLeft = el.offsetLeft;
       origTop = el.offsetTop;
-      el.setPointerCapture(e.pointerId);
+      try {
+        el.setPointerCapture(e.pointerId);
+      } catch (_) {}
       playMechanicalTick(740, 0.02);
-    });
+      e.stopPropagation();
+      e.preventDefault();
+    };
 
-    el.addEventListener('pointermove', (e) => {
+    const onPointerMove = (e) => {
       if (!isDown) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
+      e.preventDefault();
+      const dx = (e.clientX - startX) / currentScale;
+      const dy = (e.clientY - startY) / currentScale;
       el.style.left = `${origLeft + dx}px`;
       el.style.top = `${origTop + dy}px`;
-    });
+    };
 
-    el.addEventListener('pointerup', () => {
+    const onPointerUp = (e) => {
+      if (!isDown) return;
       isDown = false;
-    });
+      try {
+        el.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    };
+
+    el.addEventListener('pointerdown', onPointerDown);
+    el.addEventListener('pointermove', onPointerMove);
+    el.addEventListener('pointerup', onPointerUp);
+    el.addEventListener('pointercancel', onPointerUp);
   }
 
-  board.querySelectorAll('.draggable-sticker').forEach(makeDraggable);
+  stage.querySelectorAll('.draggable-sticker').forEach(makeDraggable);
+
+  // Mouse Wheel Zoom on board
+  board.addEventListener('wheel', (e) => {
+    if (e.target.closest('.pasteup-board-toolbar')) return;
+    e.preventDefault();
+    const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+    setZoom(currentScale * zoomFactor, e.clientX, e.clientY);
+  }, { passive: false });
+
+  // 2-Finger Touch Pinch Zoom & Pan on board
+  let lastPinchDist = null;
+  let lastMidX = 0;
+  let lastMidY = 0;
+
+  board.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      lastPinchDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      lastMidX = (t1.clientX + t2.clientX) / 2;
+      lastMidY = (t1.clientY + t2.clientY) / 2;
+    }
+  }, { passive: false });
+
+  board.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && lastPinchDist !== null) {
+      e.preventDefault();
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      const midX = (t1.clientX + t2.clientX) / 2;
+      const midY = (t1.clientY + t2.clientY) / 2;
+
+      const panDx = midX - lastMidX;
+      const panDy = midY - lastMidY;
+
+      if (lastPinchDist > 5 && dist > 5) {
+        const ratio = dist / lastPinchDist;
+        const newScale = Math.min(3.0, Math.max(0.4, currentScale * ratio));
+        const boardRect = board.getBoundingClientRect();
+        const fx = midX - boardRect.left;
+        const fy = midY - boardRect.top;
+
+        panX = fx - (fx - panX) * (newScale / currentScale) + panDx;
+        panY = fy - (fy - panY) * (newScale / currentScale) + panDy;
+        currentScale = newScale;
+      } else {
+        panX += panDx;
+        panY += panDy;
+      }
+
+      lastPinchDist = dist;
+      lastMidX = midX;
+      lastMidY = midY;
+      applyTransform();
+    }
+  }, { passive: false });
+
+  const onTouchEnd = (e) => {
+    if (e.touches.length < 2) {
+      lastPinchDist = null;
+    }
+  };
+  board.addEventListener('touchend', onTouchEnd);
+  board.addEventListener('touchcancel', onTouchEnd);
+
+  // Background Pan (Pointer / Mouse or 1-finger when zoomed)
+  let isBoardPanning = false;
+  let boardPanStartX = 0;
+  let boardPanStartY = 0;
+  let origPanX = 0;
+  let origPanY = 0;
+
+  board.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.draggable-sticker') || e.target.closest('.pasteup-board-toolbar')) return;
+    if (e.pointerType === 'touch') {
+      if (Math.abs(currentScale - 1) > 0.05 || Math.abs(panX) > 10 || Math.abs(panY) > 10) {
+        isBoardPanning = true;
+        boardPanStartX = e.clientX;
+        boardPanStartY = e.clientY;
+        origPanX = panX;
+        origPanY = panY;
+        try { board.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+      return;
+    }
+    isBoardPanning = true;
+    boardPanStartX = e.clientX;
+    boardPanStartY = e.clientY;
+    origPanX = panX;
+    origPanY = panY;
+    try { board.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+
+  board.addEventListener('pointermove', (e) => {
+    if (!isBoardPanning) return;
+    e.preventDefault();
+    panX = origPanX + (e.clientX - boardPanStartX);
+    panY = origPanY + (e.clientY - boardPanStartY);
+    applyTransform();
+  });
+
+  const endBoardPan = (e) => {
+    if (isBoardPanning) {
+      isBoardPanning = false;
+      try { board.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
+  };
+  board.addEventListener('pointerup', endBoardPan);
+  board.addEventListener('pointercancel', endBoardPan);
 
   const spawnBtn = document.getElementById('spawn-sticker-btn');
   const STAMPS = [
@@ -1362,25 +1543,31 @@ export function initDraggablePasteupBoard() {
   let stampIdx = 0;
 
   if (spawnBtn) {
-    spawnBtn.addEventListener('click', () => {
+    spawnBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       playMechanicalTick(1180, 0.04);
       const item = STAMPS[stampIdx % STAMPS.length];
       stampIdx += 1;
 
-      const maxLeft = Math.max(16, (board.clientWidth || 280) - 180);
       const sticker = document.createElement('div');
       sticker.className = 'draggable-sticker torn-tape-sticker';
       sticker.style.background = item.bg;
       sticker.style.color = item.color;
-      sticker.style.left = `${12 + (stampIdx * 43) % maxLeft}px`;
-      sticker.style.top = `${85 + (stampIdx * 53) % 210}px`;
+
+      const boardW = board.clientWidth || 320;
+      const boardH = board.clientHeight || 480;
+      const spawnX = Math.round((boardW / 2 - 80 - panX) / currentScale + ((stampIdx % 5) - 2) * 20);
+      const spawnY = Math.round((boardH / 2 - 40 - panY) / currentScale + ((stampIdx % 5) - 2) * 20);
+
+      sticker.style.left = `${Math.max(16, spawnX)}px`;
+      sticker.style.top = `${Math.max(70, spawnY)}px`;
       sticker.style.transform = `rotate(${(stampIdx % 2 === 0 ? 1 : -1) * (4 + (stampIdx % 8))}deg)`;
       sticker.style.fontFamily = 'var(--font-mono)';
       sticker.style.fontWeight = '800';
       sticker.style.fontSize = '12px';
       sticker.textContent = item.text;
 
-      board.appendChild(sticker);
+      stage.appendChild(sticker);
       makeDraggable(sticker);
     });
   }

@@ -26,44 +26,58 @@
     <!-- Left: Interactive Draggable Paste-Up Wall -->
     <div class="draggable-pasteup-board" id="pasteup-board" data-thread-anchor="sec05-pasteup" data-thread-bias="left">
       <div class="pasteup-board-toolbar">
-        <span class="pasteup-toolbar-pill">DRAGGABLE ARTBOARD // GRAB &amp; REARRANGE STICKERS</span>
+        <div class="pasteup-toolbar-meta">
+          <span class="pasteup-toolbar-pill">DRAGGABLE ARTBOARD</span>
+          <div class="pasteup-zoom-controls" role="group" aria-label="Pasteup Board Zoom">
+            <button type="button" class="pasteup-zoom-btn" id="pasteup-zoom-out" title="Zoom Out" aria-label="Zoom Out">−</button>
+            <span class="pasteup-zoom-readout" id="pasteup-zoom-readout">100%</span>
+            <button type="button" class="pasteup-zoom-btn" id="pasteup-zoom-in" title="Zoom In" aria-label="Zoom In">+</button>
+            <button type="button" class="pasteup-zoom-btn pasteup-zoom-btn--reset" id="pasteup-zoom-reset" title="Reset Zoom" aria-label="Reset Zoom">RESET</button>
+          </div>
+        </div>
         <button type="button" class="inspect-case-btn" id="spawn-sticker-btn" style="pointer-events:auto; background:var(--acid-lime); color:#0D0D10; font-weight:900;">
           + STAMP NEW CUTOUT
         </button>
       </div>
 
-      <!-- Draggable Cutout 1 -->
-      <div class="draggable-sticker badge-num-circle" style="top: 86px; left: 6%;">04</div>
+      <div class="pasteup-canvas-stage" id="pasteup-stage">
+        <!-- Draggable Cutout 1 -->
+        <div class="draggable-sticker badge-num-circle" style="top: 86px; left: 6%;">04</div>
 
-      <!-- Draggable Cutout 2 -->
-      <div class="draggable-sticker torn-tape-sticker" style="top: 88px; left: 32%; background: var(--tape-rose); color: #0D0D10; font-size: 16px; transform: rotate(-7deg);">
-        TECTONIC TRIBE<br /><u>EST. 2021</u>
-      </div>
-
-      <!-- Draggable Cutout 3 -->
-      <div class="draggable-sticker torn-tape-sticker" style="top: 195px; left: 6%; background: var(--electric-blue); color: #FFFFFF; font-family: var(--font-mono); font-size: 11px; font-weight: 800; transform: rotate(3deg);">
-        STRUCTURAL ANALYSIS // SAP2000 + ETABS<br />
-        SEISMIC BASE SHEAR V = Cs · W
-      </div>
-
-      <!-- Draggable Cutout 4 -->
-      <div class="draggable-sticker torn-tape-sticker" style="top: 285px; left: 14%; background: var(--tape-slate); color: #F2EFE9; font-family: var(--font-grotesk); font-size: 11.5px; font-weight: 700; transform: rotate(-4deg);">
-        BUILT FOR THE STREETS.<br />
-        COMPILED FOR THE BROWSER.<br />
-        PRINTED ON 300GSM ARCHIVAL STOCK.
-      </div>
-
-      <!-- Draggable Cutout 5: Barcode -->
-      <div class="draggable-sticker barcode-sticker-box" style="top: 390px; left: 54%; bottom: auto; right: auto;">
-        <div class="barcode-bars">
-          <div class="barcode-laser-line"></div>
+        <!-- Draggable Cutout 2 -->
+        <div class="draggable-sticker torn-tape-sticker" style="top: 88px; left: 32%; background: var(--tape-rose); color: #0D0D10; font-size: 16px; transform: rotate(-7deg);">
+          TECTONIC TRIBE<br /><u>EST. 2021</u>
         </div>
-        <div class="barcode-digits">9 780201 379624</div>
+
+        <!-- Draggable Cutout 3 -->
+        <div class="draggable-sticker torn-tape-sticker" style="top: 195px; left: 6%; background: var(--electric-blue); color: #FFFFFF; font-family: var(--font-mono); font-size: 11px; font-weight: 800; transform: rotate(3deg);">
+          STRUCTURAL ANALYSIS // SAP2000 + ETABS<br />
+          SEISMIC BASE SHEAR V = Cs · W
+        </div>
+
+        <!-- Draggable Cutout 4 -->
+        <div class="draggable-sticker torn-tape-sticker" style="top: 285px; left: 14%; background: var(--tape-slate); color: #F2EFE9; font-family: var(--font-grotesk); font-size: 11.5px; font-weight: 700; transform: rotate(-4deg);">
+          BUILT FOR THE STREETS.<br />
+          COMPILED FOR THE BROWSER.<br />
+          PRINTED ON 300GSM ARCHIVAL STOCK.
+        </div>
+
+        <!-- Draggable Cutout 5: Barcode -->
+        <div class="draggable-sticker barcode-sticker-box" style="top: 390px; left: 54%; bottom: auto; right: auto;">
+          <div class="barcode-bars">
+            <div class="barcode-laser-line"></div>
+          </div>
+          <div class="barcode-digits">9 780201 379624</div>
+        </div>
+
+        <!-- Draggable Cutout 6: Acid Lime Spec Stamp -->
+        <div class="draggable-sticker" style="top: 395px; left: 6%; background: var(--acid-lime); color: #0D0D10; border: 2px solid #0D0D10; padding: 8px 12px; font-family: var(--font-display); font-weight: 800; font-size: 13px; transform: rotate(4deg); box-shadow: 4px 4px 0 #0D0D10;">
+          CIV-ENG × IT × DESIGN
+        </div>
       </div>
 
-      <!-- Draggable Cutout 6: Acid Lime Spec Stamp -->
-      <div class="draggable-sticker" style="top: 395px; left: 6%; background: var(--acid-lime); color: #0D0D10; border: 2px solid #0D0D10; padding: 8px 12px; font-family: var(--font-display); font-weight: 800; font-size: 13px; transform: rotate(4deg); box-shadow: 4px 4px 0 #0D0D10;">
-        CIV-ENG × IT × DESIGN
+      <div class="pasteup-board-hint" aria-hidden="true">
+        PINCH / WHEEL TO ZOOM · DRAG STAMP
       </div>
     </div>
 
