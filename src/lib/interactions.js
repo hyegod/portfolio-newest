@@ -1311,6 +1311,44 @@ export function initArchiveFilter() {
   });
 }
 
+export function initTimelineInteractiveStations() {
+  const navBtns = document.querySelectorAll('.station-jump-btn');
+  const cards = document.querySelectorAll('.timeline-milestone-card');
+  if (!navBtns.length || !cards.length) return;
+
+  navBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      playMechanicalTick(1250, 0.035);
+      navBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const targetCard = cards[idx];
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetCard.classList.add('station-highlight-pulse');
+        setTimeout(() => targetCard.classList.remove('station-highlight-pulse'), 1400);
+      }
+    });
+  });
+
+  if (typeof IntersectionObserver !== 'undefined') {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(cards).indexOf(entry.target);
+          if (idx !== -1) {
+            navBtns.forEach((b, bIdx) => {
+              b.classList.toggle('active', bIdx === idx);
+            });
+          }
+        }
+      });
+    }, { threshold: 0.35 });
+
+    cards.forEach((card) => observer.observe(card));
+  }
+}
+
 export function initDraggablePasteupBoard() {
   const board = document.getElementById('pasteup-board');
   if (!board) return;
@@ -2179,6 +2217,7 @@ export function bootInteractions() {
     initKineticTypePlayground,
     initArchiveFilter,
     initSystemReceiptCards,
+    initTimelineInteractiveStations,
     initDraggablePasteupBoard,
     initModalsAndForm
   ];
