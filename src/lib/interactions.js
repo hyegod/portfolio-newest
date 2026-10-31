@@ -1328,6 +1328,14 @@ export function initDraggablePasteupBoard() {
 
   function applyTransform() {
     stage.style.transform = `translate(${panX}px, ${panY}px) scale(${currentScale})`;
+
+    // Infinite dynamic dot pattern: covers the entire board surface at all times
+    const scaledGrid = 14 * currentScale;
+    const dotRadius = Math.max(0.65, Math.min(1.8, 0.85 * Math.sqrt(currentScale))).toFixed(2);
+    board.style.backgroundImage = `radial-gradient(var(--ink-black) ${dotRadius}px, transparent ${dotRadius}px)`;
+    board.style.backgroundSize = `${scaledGrid}px ${scaledGrid}px`;
+    board.style.backgroundPosition = `${panX}px ${panY}px`;
+
     if (readout) {
       readout.textContent = `${Math.round(currentScale * 100)}%`;
     }
