@@ -111,6 +111,7 @@
 html {
   font-size: 16px;
   scroll-behavior: auto; /* Controlled by Lenis */
+  scroll-padding-top: var(--header-h);
   background-color: var(--bg-paper);
   color: var(--ink-black);
   transition: background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
@@ -2539,6 +2540,17 @@ body.xray-active .cad-xray-layer,
     height: 100%;
     max-height: var(--card01-h, 450px);
   }
+  .spread-top-row.is-expanded {
+    align-items: start !important;
+    align-content: start !important;
+    min-height: 0 !important;
+  }
+  .spread-top-row.is-expanded .editorial-sidebar-essay {
+    height: auto !important;
+    max-height: none !important;
+    min-height: var(--card01-h, 430px) !important;
+    align-self: start !important;
+  }
   .essay-index-tag {
     font-size: 8.5px;
     padding: 2px 6px;
@@ -3677,11 +3689,28 @@ body.xray-active .cad-xray-layer,
 }
 
 /* Card 01 only follows the left card when the manifesto is expanded (otherwise both are equal height and static) */
+.spread-top-row.is-expanded {
+  align-items: start !important;
+  align-content: start !important;
+  min-height: 0 !important;
+}
+
+.spread-top-row.is-expanded > .editorial-sidebar-essay {
+  height: auto !important;
+  max-height: none !important;
+  min-height: var(--card01-h, 450px) !important;
+  align-self: start !important;
+}
+
+.spread-top-row.is-expanded .essay-more-collapse.is-expanded {
+  overflow: visible;
+}
+
 @media (min-width: 768px) {
   .spread-top-row.is-expanded > .collage-card--01 {
     position: sticky;
-    top: calc(var(--header-h) + 22px);
-    align-self: start;
+    top: calc(var(--header-h) + 16px);
+    align-self: start !important;
   }
 }
 

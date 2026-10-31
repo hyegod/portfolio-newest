@@ -108,11 +108,21 @@
 
   function toggleEssayMore() {
     if (moreInnerEl) {
-      expandedInnerH = moreInnerEl.offsetHeight;
+      expandedInnerH = Math.max(moreInnerEl.scrollHeight, moreInnerEl.offsetHeight);
     }
     showMoreEssay = !showMoreEssay;
     manuallyToggled = showMoreEssay;
     playMechanicalTick(1080, 0.025);
+
+    if (showMoreEssay && sidebarEl) {
+      setTimeout(() => {
+        const rect = sidebarEl.getBoundingClientRect();
+        const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 56;
+        if (rect.top < headerH) {
+          sidebarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    }
   }
 
   onMount(() => {
