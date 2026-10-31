@@ -4467,43 +4467,219 @@ body.xray-active .cad-xray-layer,
   opacity: 0.8;
 }
 
-/* 3. Redesigned Station Milestone Cards */
-.timeline-stations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
+/* ==========================================================================
+   3. ARCHITECTURAL ALTERNATING LEFT-RIGHT TIMELINE (KANAN - KIRI)
+   ========================================================================== */
+.timeline-zigzag-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 36px auto 0 auto;
+  padding: 24px 0;
 }
 
-.timeline-station-card {
+/* Central Structural Coordinate Spine */
+.zigzag-center-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spine-vertical-line {
+  width: 2px;
+  flex: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink-black) 0px,
+    var(--ink-black) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+[data-theme="blueprint"] .spine-vertical-line {
+  background: repeating-linear-gradient(
+    to bottom,
+    #00E5FF 0px,
+    #00E5FF 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+[data-theme="cyber"] .spine-vertical-line {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--acid-lime) 0px,
+    var(--acid-lime) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.spine-cap-tag {
+  background: var(--ink-black);
+  color: var(--acid-lime);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  white-space: nowrap;
+  border: 1.5px solid var(--ink-black);
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.spine-cap-bottom {
+  background: var(--bg-paper-alt);
+  color: var(--ink-black);
+}
+
+/* Zigzag Track & Rows */
+.zigzag-milestones-track {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  position: relative;
+  z-index: 2;
+}
+
+.zigzag-milestone-row {
+  display: flex;
+  position: relative;
+  width: 100%;
+  align-items: flex-start;
+}
+
+/* LEFT ROW (Milestones 01, 03, 05) */
+.zigzag-milestone-row.is-left {
+  justify-content: flex-start;
+}
+
+.zigzag-milestone-row.is-left .zigzag-station-card {
+  width: calc(50% - 44px);
+}
+
+.zigzag-milestone-row.is-left .zigzag-branch-arm {
+  position: absolute;
+  top: 32px;
+  left: calc(50% - 44px);
+  width: 44px;
+  height: 2px;
+  background: var(--ink-black);
+  pointer-events: none;
+}
+
+.zigzag-milestone-row.is-left .zigzag-branch-arm .branch-connector-dot {
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--ink-black);
+  border-radius: 50%;
+}
+
+/* RIGHT ROW (Milestones 02, 04) */
+.zigzag-milestone-row.is-right {
+  justify-content: flex-end;
+}
+
+.zigzag-milestone-row.is-right .zigzag-station-card {
+  width: calc(50% - 44px);
+}
+
+.zigzag-milestone-row.is-right .zigzag-branch-arm {
+  position: absolute;
+  top: 32px;
+  right: calc(50% - 44px);
+  width: 44px;
+  height: 2px;
+  background: var(--ink-black);
+  pointer-events: none;
+}
+
+.zigzag-milestone-row.is-right .zigzag-branch-arm .branch-connector-dot {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--ink-black);
+  border-radius: 50%;
+}
+
+/* Center Node Pin Pip */
+.zigzag-node-pin {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-paper);
+  border: 2px solid var(--ink-black);
+  box-shadow: 2px 2px 0 var(--ink-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ink-black);
+  z-index: 5;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.zigzag-milestone-row:hover .zigzag-node-pin,
+.zigzag-milestone-row.station-highlight-pulse .zigzag-node-pin {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: var(--ink-black);
+  box-shadow: 0 0 16px var(--acid-lime);
+  transform: translateX(-50%) scale(1.22);
+}
+
+/* Sleek Compact Milestone Card */
+.zigzag-station-card {
   border: 2px solid var(--ink-black);
   background: var(--bg-paper);
-  box-shadow: 6px 6px 0 var(--ink-black);
+  box-shadow: 5px 5px 0 var(--ink-black);
   position: relative;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
-.timeline-station-card:hover {
+.zigzag-station-card:hover {
   transform: translateY(-4px);
-  box-shadow: 10px 10px 0 var(--ink-black);
+  box-shadow: 9px 9px 0 var(--ink-black);
 }
 
-.timeline-station-card.is-current {
-  border-left: 8px solid var(--acid-lime);
+.zigzag-station-card.is-current {
+  border-top: 5px solid var(--acid-lime);
 }
 
-.timeline-station-card.station-highlight-pulse {
+.zigzag-station-card.station-highlight-pulse {
   animation: station-glow 1.4s ease-out;
 }
 
 @keyframes station-glow {
   0% {
-    outline: 4px solid var(--acid-lime);
+    outline: 3px solid var(--acid-lime);
     box-shadow: 0 0 24px rgba(212, 255, 0, 0.6);
   }
   100% {
     outline: 0px solid transparent;
-    box-shadow: 6px 6px 0 var(--ink-black);
+    box-shadow: 5px 5px 0 var(--ink-black);
   }
 }
 
@@ -4511,92 +4687,123 @@ body.xray-active .cad-xray-layer,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 18px;
+  padding: 10px 14px;
   background: var(--badge-dark-bg);
   color: #F2EFE9;
-  border-bottom: 2px solid var(--ink-black);
+  border-bottom: 1.5px solid var(--ink-black);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
 .station-meta-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .station-code-badge {
   background: #0055FF;
   color: #FFFFFF;
-  padding: 2px 7px;
-  font-size: 9.5px;
+  padding: 2px 6px;
+  font-size: 8.5px;
   letter-spacing: 0.06em;
 }
 
 .station-year-tag {
   color: var(--acid-lime);
   letter-spacing: 0.08em;
+  font-size: 9.5px;
 }
 
 .station-status-pill {
-  font-size: 9.5px;
-  padding: 3px 8px;
+  font-size: 8.5px;
+  padding: 2px 7px;
   border: 1px solid;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-/* 2-Column Split: Schematic + Field Log */
-.station-card-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  align-items: stretch;
-}
-
-.station-card-grid.grid-reversed {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-}
-
-.station-card-grid.grid-reversed .station-schematic-bay {
-  order: 2;
-  border-left: 2px solid var(--ink-black);
-  border-right: none;
-}
-
-.station-card-grid.grid-reversed .station-dossier-bay {
-  order: 1;
-}
-
-.station-schematic-bay {
-  background: #0C0D12;
-  border-right: 2px solid var(--ink-black);
+.zigzag-card-body {
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 240px;
-  position: relative;
-  overflow: hidden;
+  gap: 12px;
+  background: var(--bg-paper);
 }
 
-.milestone-schematic-svg {
+.station-role-title {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink-black);
+}
+
+.station-org-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-text);
+  letter-spacing: 0.04em;
+  margin-top: -4px;
+}
+
+.station-discipline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.station-discipline-chip {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 800;
+  background: var(--bg-paper-alt);
+  border: 1px solid var(--ink-black);
+  padding: 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.station-narrative {
+  font-family: var(--font-grotesk);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-black);
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Compact Vector Blueprint Schematic Strip */
+.zigzag-schematic-strip {
+  background: #0C0D12;
+  border: 1.5px solid var(--ink-black);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.micro-schematic-svg {
   width: 100%;
-  height: 100%;
-  min-height: 200px;
+  height: 110px;
   display: block;
 }
 
 .schematic-caption-bar {
-  padding: 8px 14px;
+  padding: 6px 12px;
   background: rgba(13, 13, 16, 0.94);
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 9px;
   color: #A0A5B5;
 }
 
@@ -4604,98 +4811,48 @@ body.xray-active .cad-xray-layer,
   color: var(--acid-lime);
 }
 
-.station-dossier-bay {
-  padding: 24px 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 16px;
-  background: var(--bg-paper);
-}
-
-.station-role-title {
-  font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 26px);
-  font-weight: 800;
-  line-height: 1.1;
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  margin: 0 0 6px 0;
-  color: var(--ink-black);
-}
-
-.station-org-name {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 800;
-  color: var(--accent-text);
-  letter-spacing: 0.04em;
-  margin-bottom: 12px;
-}
-
-.station-discipline-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-
-.station-discipline-chip {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 800;
-  background: var(--bg-paper-alt);
-  border: 1px solid var(--ink-black);
-  padding: 3px 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.station-narrative {
-  font-family: var(--font-grotesk);
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-black);
-  margin: 0;
-  opacity: 0.92;
-}
-
-.station-deliverables-panel {
+/* Verified Key Deliverables Box */
+.zigzag-deliverables-panel {
   background: var(--bg-paper-alt);
   border: 1.5px solid var(--ink-black);
-  padding: 14px 16px;
+  padding: 10px 14px;
 }
 
-.deliverables-header-row {
+.zigzag-deliv-header {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  color: var(--ink-black);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  margin-bottom: 8px;
-  color: var(--ink-black);
   border-bottom: 1px dashed var(--ink-faint);
-  padding-bottom: 4px;
+  padding-bottom: 3px;
 }
 
-.station-deliverables-list {
+.deliv-ok-badge {
+  color: var(--acid-lime);
+  background: #0D0D10;
+  padding: 1px 4px;
+}
+
+.zigzag-deliverables-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
-.station-deliverables-list li {
+.zigzag-deliverables-list li {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  line-height: 1.4;
+  gap: 6px;
+  line-height: 1.35;
   color: var(--ink-black);
 }
 
@@ -4705,30 +4862,63 @@ body.xray-active .cad-xray-layer,
   flex-shrink: 0;
 }
 
-@media (max-width: 960px) {
+/* Responsive: Tablet & Mobile Single-Sided Spine Flow (< 880px) */
+@media (max-width: 880px) {
+  .zigzag-center-spine {
+    left: 20px;
+    transform: none;
+  }
+  .spine-cap-tag {
+    font-size: 7.5px;
+    padding: 2px 6px;
+  }
+  .zigzag-milestones-track {
+    gap: 36px;
+  }
+  .zigzag-milestone-row.is-left,
+  .zigzag-milestone-row.is-right {
+    justify-content: flex-end;
+    padding-left: 48px;
+  }
+  .zigzag-milestone-row.is-left .zigzag-station-card,
+  .zigzag-milestone-row.is-right .zigzag-station-card {
+    width: 100%;
+  }
+  .zigzag-node-pin {
+    left: 20px;
+    transform: translateX(-50%);
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+  .zigzag-milestone-row:hover .zigzag-node-pin,
+  .zigzag-milestone-row.station-highlight-pulse .zigzag-node-pin {
+    transform: translateX(-50%) scale(1.18);
+  }
+  .zigzag-milestone-row.is-left .zigzag-branch-arm,
+  .zigzag-milestone-row.is-right .zigzag-branch-arm {
+    left: 20px;
+    right: auto;
+    width: 28px;
+    top: 28px;
+  }
+  .zigzag-card-body {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .micro-schematic-svg {
+    height: 95px;
+  }
+  .station-role-title {
+    font-size: 17px;
+  }
+  .station-narrative {
+    font-size: 12.5px;
+  }
   .gantt-row {
     grid-template-columns: 1fr;
     gap: 6px;
-  }
-  .station-card-grid,
-  .station-card-grid.grid-reversed {
-    grid-template-columns: 1fr;
-  }
-  .station-card-grid.grid-reversed .station-schematic-bay {
-    order: 1;
-    border-left: none;
-    border-right: none;
-    border-bottom: 2px solid var(--ink-black);
-  }
-  .station-card-grid .station-schematic-bay {
-    border-right: none;
-    border-bottom: 2px solid var(--ink-black);
-  }
-  .station-card-grid.grid-reversed .station-dossier-bay {
-    order: 2;
-  }
-  .station-dossier-bay {
-    padding: 18px 16px;
   }
   .station-nav-bar {
     overflow-x: auto;

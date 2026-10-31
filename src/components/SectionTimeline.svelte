@@ -1,7 +1,8 @@
 <!--
   SectionTimeline.svelte
   Section 04: Chronological Career & Engineering Trajectory (2017 — 2026)
-  Redesigned Architectural Stratigraphic Stations & Multi-Disciplinary Convergence Matrix.
+  Top: Multidisciplinary Convergence Gantt Matrix (2017–2026) + Station Jump Navigator
+  Bottom: Sleek Architectural Alternating Left-Right Spine Timeline
 -->
 <script>
   const milestones = [
@@ -81,37 +82,37 @@
       statusColor: '#94A3B8',
       statusBg: 'rgba(148, 163, 184, 0.12)',
       disciplines: ['REINFORCED CONCRETE', 'GEOTECHNICAL EQUILIBRIUM', 'AUTOCAD', 'SNI/ACI'],
-      desc: 'Managed structural site operations, geodetic survey inspections, foundation settlement monitoring, and structural shop drawings review for commercial infrastructure projects. Verified structural integrity against building codes and limit states.',
+      desc: 'Managed structural site operations, geodetic survey inspections, foundation settlement monitoring, and structural shop drawings review for commercial infrastructure projects. Verified structural integrity against building code tolerances.',
       deliverables: [
-        'Foundation Settlement & Geotechnical Deformation Monitoring',
-        'Total Station Topographic Survey & Boundary Control',
-        'Structural Reinforcement Steel Detailing & Field QC'
+        'Geodetic Total Station Network Verification (mm-Tolerance)',
+        'Deep Foundation Settlement & Settlement Plate Monitoring',
+        'Site QA/QC & Rebar Placement As-Built Dossiers'
       ],
       schematic: {
         fig: 'FIG 4.0 // TOTAL STATION TRIANGULATION',
-        meta: 'AZ = 124°18\'32" · SETTLEMENT: 4.2mm [OK]',
-        type: 'site'
+        meta: 'Δθ = 124°18\' · BM1–BM3 · σ &lt; 2mm',
+        type: 'survey'
       }
     },
     {
       id: 'station-05',
-      code: 'STA_05 // ACADEMIC FOUNDATION',
+      code: 'STA_05 // THEORETICAL FOUNDATION',
       year: '2017 — 2021',
-      role: 'B.ENG. IN CIVIL & STRUCTURAL ENGINEERING',
-      org: 'FACULTY OF CIVIL & ENVIRONMENTAL ENGINEERING',
-      status: 'DEGREE CONFERRED // HONORS',
-      statusColor: '#FF6B00',
-      statusBg: 'rgba(255, 107, 0, 0.12)',
-      disciplines: ['CONTINUUM MECHANICS', 'STRUCTURAL DYNAMICS', 'MATRIX ANALYSIS', 'FEA'],
-      desc: 'Graduated with honors in Civil Engineering. Rigorous foundation in structural analysis, concrete/steel design, fluid mechanics, and computational calculus. Published undergraduate research on non-linear dynamic responses in steel trusses.',
+      role: 'B.ENG IN CIVIL & STRUCTURAL ENGINEERING',
+      org: 'NATIONAL INSTITUTE OF TECHNOLOGY // FACULTY OF CIVIL ENG',
+      status: 'ACADEMIC // HONORS',
+      statusColor: '#FF9500',
+      statusBg: 'rgba(255, 149, 0, 0.12)',
+      disciplines: ['STRUCTURAL MECHANICS', 'TIMOSHENKO BEAMS', 'MOHR STRESS', 'HYDRAULICS'],
+      desc: 'Graduated with Honors in Civil Engineering. Mastered continuum mechanics, indeterminate structures, reinforced concrete design, and soil mechanics. Completed capstone thesis on computational structural analysis of composite structures.',
       deliverables: [
-        'Bachelor of Engineering Degree (Honors)',
-        'Undergraduate Thesis: Computational Modeling of Dynamic Load Paths',
-        'Mastery of Euler-Bernoulli & Timoshenko Beam Theories'
+        'Bachelor of Engineering (Honors) — Structural Engineering',
+        'Capstone Thesis: Non-Linear Finite Element Analysis of Bridges',
+        'Academic Excellence in Applied Mathematics & Mechanics'
       ],
       schematic: {
-        fig: 'FIG 5.0 // TIMOSHENKO BEAM & MOHR STRESS',
-        meta: 'E = 200 GPa · σ = My/I · HONORS DEGREE',
+        fig: 'FIG 5.0 // CONTINUUM MECHANICS & MOHR STRESS',
+        meta: 'E = 200 GPa · ν = 0.28 · HONORS',
         type: 'academic'
       }
     }
@@ -220,181 +221,56 @@
       </button>
     </nav>
 
-    <!-- 3. Redesigned Station Milestone Cards List -->
-    <div class="timeline-stations-list">
-      {#each milestones as item, i}
-        <article
-          class="timeline-station-card timeline-milestone-card"
-          class:is-current={i === 0}
-          id={item.id}
-          data-station-index={i}
-        >
-          <!-- Top Station Bar -->
-          <div class="station-card-top-bar">
-            <div class="station-meta-left">
-              <span class="station-code-badge">{item.code}</span>
-              <span class="station-year-tag">{item.year}</span>
+    <!-- 3. Alternating Left-Right Spine Timeline (Kanan - Kiri) -->
+    <div class="timeline-zigzag-wrapper">
+      <!-- Central Structural Coordinate Spine Line -->
+      <div class="zigzag-center-spine" aria-hidden="true">
+        <div class="spine-cap-tag spine-cap-top">+0.00 // DATUM 2026</div>
+        <div class="spine-vertical-line"></div>
+        <div class="spine-cap-tag spine-cap-bottom">ORIGIN // 2017</div>
+      </div>
+
+      <div class="zigzag-milestones-track">
+        {#each milestones as item, i}
+          <div
+            class="zigzag-milestone-row"
+            class:is-left={i % 2 === 0}
+            class:is-right={i % 2 === 1}
+          >
+            <!-- Center Node Pin Pip on Spine -->
+            <div class="zigzag-node-pin" aria-hidden="true">
+              <span class="pin-station-num">{String(i + 1).padStart(2, '0')}</span>
             </div>
-            <div
-              class="station-status-pill"
-              style="border-color:{item.statusColor}; color:{item.statusColor}; background:{item.statusBg};"
+
+            <!-- Horizontal Branch Arm Bracket to Card -->
+            <div class="zigzag-branch-arm" aria-hidden="true">
+              <div class="branch-line"></div>
+              <div class="branch-connector-dot"></div>
+            </div>
+
+            <!-- Sleek Compact Milestone Card -->
+            <article
+              class="zigzag-station-card timeline-milestone-card"
+              class:is-current={i === 0}
+              id={item.id}
+              data-station-index={i}
             >
-              {item.status}
-            </div>
-          </div>
-
-          <!-- 2-Column Split Body: Technical Schematic + Field Dossier -->
-          <div class="station-card-grid" class:grid-reversed={i % 2 === 1}>
-
-            <!-- Side A: Technical Schematic Terminal -->
-            <div class="station-schematic-bay">
-              {#if item.schematic.type === 'webgl'}
-                <svg viewBox="0 0 500 240" class="milestone-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-label="Schematic 01 WebGL Core">
-                  <rect width="500" height="240" fill="#0C0D12"/>
-                  <g stroke="rgba(212, 255, 0, 0.12)" stroke-width="1">
-                    <line x1="0" y1="40" x2="500" y2="40"/><line x1="0" y1="80" x2="500" y2="80"/>
-                    <line x1="0" y1="120" x2="500" y2="120"/><line x1="0" y1="160" x2="500" y2="160"/>
-                    <line x1="0" y1="200" x2="500" y2="200"/>
-                    <line x1="60" y1="0" x2="60" y2="240"/><line x1="140" y1="0" x2="140" y2="240"/>
-                    <line x1="220" y1="0" x2="220" y2="240"/><line x1="300" y1="0" x2="300" y2="240"/>
-                    <line x1="380" y1="0" x2="380" y2="240"/><line x1="440" y1="0" x2="440" y2="240"/>
-                  </g>
-                  <g transform="translate(180, 45)">
-                    <line x1="70" y1="70" x2="30" y2="25" stroke="#334155" stroke-width="2" stroke-dasharray="3 3"/>
-                    <line x1="70" y1="70" x2="110" y2="25" stroke="#334155" stroke-width="2" stroke-dasharray="3 3"/>
-                    <circle cx="70" cy="70" r="16" fill="#181822" stroke="#D4FF00" stroke-width="2.5"/>
-                    <circle cx="70" cy="70" r="5" fill="#D4FF00"/>
-                    <line x1="70" y1="70" x2="160" y2="70" stroke="#0055FF" stroke-width="3"/>
-                    <line x1="70" y1="70" x2="-20" y2="70" stroke="#0055FF" stroke-width="3"/>
-                    <line x1="70" y1="70" x2="70" y2="-10" stroke="#D4FF00" stroke-width="3"/>
-                    <line x1="70" y1="70" x2="135" y2="120" stroke="#00E5FF" stroke-width="2.5"/>
-                    <line x1="70" y1="70" x2="5" y2="120" stroke="#00E5FF" stroke-width="2.5"/>
-                    <circle cx="160" cy="70" r="4" fill="#0055FF"/>
-                    <circle cx="-20" cy="70" r="4" fill="#0055FF"/>
-                    <circle cx="70" cy="-10" r="4" fill="#D4FF00"/>
-                    <circle cx="135" cy="120" r="4" fill="#00E5FF"/>
-                    <circle cx="5" cy="120" r="4" fill="#00E5FF"/>
-                    <text x="74" y="24" fill="#FF3355" font-family="JetBrains Mono" font-size="9" font-weight="bold">+Z</text>
-                    <text x="162" y="65" fill="#0055FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">+X</text>
-                    <text x="138" y="132" fill="#00E5FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">+Y</text>
-                  </g>
-                  <path d="M 20 200 Q 80 170 140 200 T 260 200 T 380 200 T 480 200" fill="none" stroke="#D4FF00" stroke-width="2" opacity="0.85"/>
-                  <text x="24" y="28" fill="#D4FF00" font-family="JetBrains Mono" font-size="10" font-weight="bold">// SCHEMATIC 01.1: TECTONIC SHADER &amp; FEM COMPUTE CORE</text>
-                  <rect x="330" y="14" width="145" height="20" fill="rgba(212,255,0,0.12)" stroke="#D4FF00" stroke-width="1"/>
-                  <text x="338" y="28" fill="#D4FF00" font-family="JetBrains Mono" font-size="9" font-weight="bold">WASM · 120 FPS [LIVE]</text>
-                </svg>
-
-              {:else if item.schematic.type === 'bridge'}
-                <svg viewBox="0 0 500 240" class="milestone-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-label="Schematic 02 Parametric Bridge">
-                  <rect width="500" height="240" fill="#080F18"/>
-                  <g stroke="rgba(0, 85, 255, 0.18)" stroke-width="1">
-                    <line x1="0" y1="40" x2="500" y2="40"/><line x1="0" y1="80" x2="500" y2="80"/>
-                    <line x1="0" y1="120" x2="500" y2="120"/><line x1="0" y1="160" x2="500" y2="160"/>
-                    <line x1="0" y1="200" x2="500" y2="200"/>
-                  </g>
-                  <path d="M 40 180 Q 250 40 460 180" fill="none" stroke="#0055FF" stroke-width="3"/>
-                  <line x1="40" y1="180" x2="460" y2="180" stroke="#F2EFE9" stroke-width="2.5"/>
-                  <line x1="90" y1="150" x2="90" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <line x1="140" y1="116" x2="140" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <line x1="190" y1="88" x2="190" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <line x1="250" y1="75" x2="250" y2="180" stroke="#D4FF00" stroke-width="2.5"/>
-                  <line x1="310" y1="88" x2="310" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <line x1="360" y1="116" x2="360" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <line x1="410" y1="150" x2="410" y2="180" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="2 2"/>
-                  <path d="M 40 180 Q 250 225 460 180" fill="rgba(0,85,255,0.12)" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="4 2"/>
-                  <polygon points="30,195 40,180 50,195" fill="#F2EFE9" stroke="#0055FF" stroke-width="1.5"/>
-                  <polygon points="450,195 460,180 470,195" fill="#F2EFE9" stroke="#0055FF" stroke-width="1.5"/>
-                  <text x="24" y="28" fill="#00E5FF" font-family="JetBrains Mono" font-size="10" font-weight="bold">// SCHEMATIC 02.1: 180M TIED-ARCH MOMENT ENVELOPE</text>
-                  <rect x="335" y="14" width="140" height="20" fill="rgba(0,85,255,0.15)" stroke="#0055FF" stroke-width="1"/>
-                  <text x="343" y="28" fill="#00E5FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">SPAN: 180M · FS 2.15</text>
-                  <text x="215" y="215" fill="#D4FF00" font-family="JetBrains Mono" font-size="8.5" font-weight="bold">Mu = 48,200 kNm [MAX]</text>
-                </svg>
-
-              {:else if item.schematic.type === 'lidar'}
-                <svg viewBox="0 0 500 240" class="milestone-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-label="Schematic 03 LiDAR Shaders">
-                  <rect width="500" height="240" fill="#0F0C16"/>
-                  <path d="M 30 180 C 120 150, 200 200, 320 160 S 420 130, 480 150" fill="none" stroke="#A855F7" stroke-width="1.5"/>
-                  <path d="M 30 150 C 130 110, 220 170, 330 130 S 430 100, 480 120" fill="none" stroke="#A855F7" stroke-width="2"/>
-                  <path d="M 40 120 C 140 70, 240 140, 340 100 S 440 70, 470 90" fill="none" stroke="#C084FC" stroke-width="2.5"/>
-                  <path d="M 60 90 C 160 40, 260 110, 350 70 S 420 45, 460 65" fill="none" stroke="#E9D5FF" stroke-width="2"/>
-                  <g fill="#A855F7" opacity="0.65">
-                    <circle cx="90" cy="140" r="2"/><circle cx="150" cy="110" r="2.5"/><circle cx="210" cy="135" r="2"/><circle cx="280" cy="100" r="2.5"/>
-                    <circle cx="340" cy="85" r="2"/><circle cx="400" cy="95" r="2.5"/><circle cx="120" cy="80" r="2"/><circle cx="180" cy="65" r="2.5"/>
-                    <circle cx="250" cy="55" r="2"/><circle cx="320" cy="50" r="2.5"/><circle cx="380" cy="60" r="2"/>
-                  </g>
-                  <line x1="250" y1="15" x2="160" y2="170" stroke="#D4FF00" stroke-width="1.5" stroke-dasharray="3 3"/>
-                  <line x1="250" y1="15" x2="360" y2="155" stroke="#D4FF00" stroke-width="1.5" stroke-dasharray="3 3"/>
-                  <circle cx="250" cy="15" r="4" fill="#D4FF00"/>
-                  <text x="24" y="28" fill="#C084FC" font-family="JetBrains Mono" font-size="10" font-weight="bold">// SCHEMATIC 03.1: GPU POINT-CLOUD &amp; SHADER ISOLINES</text>
-                  <rect x="330" y="14" width="145" height="20" fill="rgba(168,85,247,0.15)" stroke="#A855F7" stroke-width="1"/>
-                  <text x="338" y="28" fill="#E9D5FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">300k PTS/S · RTT 3.2ms</text>
-                </svg>
-
-              {:else if item.schematic.type === 'site'}
-                <svg viewBox="0 0 500 240" class="milestone-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-label="Schematic 04 Site Operations">
-                  <rect width="500" height="240" fill="#0F1115"/>
-                  <g stroke="rgba(100, 116, 139, 0.2)" stroke-width="1">
-                    <line x1="0" y1="50" x2="500" y2="50"/><line x1="0" y1="100" x2="500" y2="100"/>
-                    <line x1="0" y1="150" x2="500" y2="150"/><line x1="0" y1="200" x2="500" y2="200"/>
-                  </g>
-                  <polygon points="100,165 390,140 240,65" fill="rgba(100,116,139,0.12)" stroke="#64748B" stroke-width="2"/>
-                  <line x1="100" y1="165" x2="390" y2="140" stroke="#FF3355" stroke-width="1.5" stroke-dasharray="4 2"/>
-                  <circle cx="100" cy="165" r="7" fill="#1E293B" stroke="#D4FF00" stroke-width="2"/>
-                  <circle cx="100" cy="165" r="2.5" fill="#D4FF00"/>
-                  <text x="75" y="190" fill="#D4FF00" font-family="JetBrains Mono" font-size="9" font-weight="bold">BM_01 (STN)</text>
-                  <circle cx="390" cy="140" r="7" fill="#1E293B" stroke="#00E5FF" stroke-width="2"/>
-                  <circle cx="390" cy="140" r="2.5" fill="#00E5FF"/>
-                  <text x="370" y="165" fill="#00E5FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">P_04 (REF)</text>
-                  <circle cx="240" cy="65" r="6" fill="#1E293B" stroke="#F2EFE9" stroke-width="1.5"/>
-                  <text x="248" y="68" fill="#F2EFE9" font-family="JetBrains Mono" font-size="9">BM_02</text>
-                  <path d="M 125 160 A 30 30 0 0 0 115 145" fill="none" stroke="#D4FF00" stroke-width="1.5"/>
-                  <text x="130" y="148" fill="#D4FF00" font-family="JetBrains Mono" font-size="8.5">θ=124°18'</text>
-                  <text x="24" y="28" fill="#94A3B8" font-family="JetBrains Mono" font-size="10" font-weight="bold">// SCHEMATIC 04.1: GEODETIC TRIANGULATION &amp; FIELD QC</text>
-                  <rect x="330" y="14" width="145" height="20" fill="rgba(100,116,139,0.18)" stroke="#64748B" stroke-width="1"/>
-                  <text x="338" y="28" fill="#F2EFE9" font-family="JetBrains Mono" font-size="9" font-weight="bold">SETTLEMENT: 4.2mm &lt; 25</text>
-                </svg>
-
-              {:else if item.schematic.type === 'academic'}
-                <svg viewBox="0 0 500 240" class="milestone-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-label="Schematic 05 Academic Mechanics">
-                  <rect width="500" height="240" fill="#120D09"/>
-                  <g transform="translate(30, 45)">
-                    <rect x="20" y="75" width="220" height="18" fill="#291F18" stroke="#FF6B00" stroke-width="2"/>
-                    <polygon points="12,112 24,93 36,112" fill="#F2EFE9" stroke="#FF6B00" stroke-width="1.5"/>
-                    <circle cx="230" cy="103" r="8" fill="#F2EFE9" stroke="#FF6B00" stroke-width="1.5"/>
-                    <line x1="130" y1="40" x2="130" y2="73" stroke="#D4FF00" stroke-width="2.5"/>
-                    <text x="135" y="55" fill="#D4FF00" font-family="JetBrains Mono" font-size="9" font-weight="bold">P = 240 kN</text>
-                    <line x1="20" y1="94" x2="240" y2="94" stroke="#FF6B00" stroke-width="1" stroke-dasharray="3 3"/>
-                    <text x="40" y="128" fill="#FF6B00" font-family="JetBrains Mono" font-size="8.5">σ = M·y / I</text>
-                  </g>
-                  <g transform="translate(360, 130)">
-                    <line x1="-75" y1="0" x2="75" y2="0" stroke="#64748B" stroke-width="1.5"/>
-                    <line x1="0" y1="-65" x2="0" y2="65" stroke="#64748B" stroke-width="1.5"/>
-                    <text x="68" y="-4" fill="#64748B" font-family="JetBrains Mono" font-size="8">σ</text>
-                    <text x="4" y="-55" fill="#64748B" font-family="JetBrains Mono" font-size="8">τ</text>
-                    <circle cx="10" cy="0" r="45" fill="rgba(255,107,0,0.12)" stroke="#FF6B00" stroke-width="2"/>
-                    <circle cx="55" cy="0" r="3.5" fill="#D4FF00"/>
-                    <text x="50" y="14" fill="#D4FF00" font-family="JetBrains Mono" font-size="8" font-weight="bold">σ₁</text>
-                    <circle cx="-35" cy="0" r="3.5" fill="#D4FF00"/>
-                    <text x="-40" y="14" fill="#D4FF00" font-family="JetBrains Mono" font-size="8" font-weight="bold">σ₂</text>
-                    <circle cx="10" cy="-45" r="3" fill="#FF6B00"/>
-                    <text x="14" y="-42" fill="#FF6B00" font-family="JetBrains Mono" font-size="8">τ_max</text>
-                  </g>
-                  <text x="24" y="28" fill="#FF6B00" font-family="JetBrains Mono" font-size="10" font-weight="bold">// SCHEMATIC 05.1: CONTINUUM MECHANICS &amp; MOHR STRESS</text>
-                  <rect x="325" y="14" width="150" height="20" fill="rgba(255,107,0,0.15)" stroke="#FF6B00" stroke-width="1"/>
-                  <text x="333" y="28" fill="#F2EFE9" font-family="JetBrains Mono" font-size="9" font-weight="bold">E = 200 GPa · HONORS</text>
-                </svg>
-              {/if}
-
-              <!-- Schematic Caption Footnote -->
-              <div class="schematic-caption-bar">
-                <span>{item.schematic.fig}</span>
-                <strong>{item.schematic.meta}</strong>
+              <!-- Card Top Header Bar -->
+              <div class="station-card-top-bar">
+                <div class="station-meta-left">
+                  <span class="station-code-badge">{item.code}</span>
+                  <span class="station-year-tag">{item.year}</span>
+                </div>
+                <div
+                  class="station-status-pill"
+                  style="border-color:{item.statusColor}; color:{item.statusColor}; background:{item.statusBg};"
+                >
+                  {item.status}
+                </div>
               </div>
-            </div>
 
-            <!-- Side B: Field Log & Deliverables Dossier -->
-            <div class="station-dossier-bay">
-              <div>
+              <!-- Card Body Content -->
+              <div class="zigzag-card-body">
                 <h3 class="station-role-title">{item.role}</h3>
                 <div class="station-org-name">{item.org}</div>
 
@@ -405,27 +281,141 @@
                 </div>
 
                 <p class="station-narrative">{item.desc}</p>
-              </div>
 
-              <div class="station-deliverables-panel">
-                <div class="deliverables-header-row">
-                  <span>// KEY DELIVERABLES &amp; CAPABILITIES</span>
-                  <span>VERIFIED [OK]</span>
+                <!-- Compact Vector Blueprint Schematic Strip -->
+                <div class="zigzag-schematic-strip">
+                  {#if item.schematic.type === 'webgl'}
+                    <svg viewBox="0 0 500 115" class="micro-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <rect width="500" height="115" fill="#0C0D12"/>
+                      <g stroke="rgba(212,255,0,0.18)" stroke-width="0.8">
+                        <line x1="0" y1="28" x2="500" y2="28"/><line x1="0" y1="57" x2="500" y2="57"/><line x1="0" y1="86" x2="500" y2="86"/>
+                        <line x1="80" y1="0" x2="80" y2="115"/><line x1="180" y1="0" x2="180" y2="115"/><line x1="280" y1="0" x2="280" y2="115"/><line x1="380" y1="0" x2="380" y2="115"/>
+                      </g>
+                      <!-- 3D Node Wireframe -->
+                      <g transform="translate(90, 58)">
+                        <circle cx="0" cy="0" r="16" fill="none" stroke="#D4FF00" stroke-width="1.8"/>
+                        <circle cx="0" cy="0" r="4" fill="#D4FF00"/>
+                        <line x1="-36" y1="0" x2="36" y2="0" stroke="#00E5FF" stroke-width="1.5"/>
+                        <line x1="0" y1="-32" x2="0" y2="32" stroke="#00E5FF" stroke-width="1.5"/>
+                        <line x1="-22" y1="-20" x2="22" y2="20" stroke="#FF3355" stroke-width="1.5"/>
+                        <text x="24" y="-12" fill="#D4FF00" font-family="JetBrains Mono" font-size="8.5" font-weight="bold">NODE_01</text>
+                      </g>
+                      <!-- Compute Wave Curve -->
+                      <path d="M 180 58 Q 230 18, 280 58 T 380 58 T 480 58" fill="none" stroke="#00E5FF" stroke-width="2.2"/>
+                      <path d="M 180 58 Q 230 92, 280 58 T 380 58 T 480 58" fill="none" stroke="#D4FF00" stroke-width="1.5" stroke-dasharray="4 3"/>
+                      <text x="290" y="22" fill="#D4FF00" font-family="JetBrains Mono" font-size="9" font-weight="bold">// GLSL SHADER PIPELINE</text>
+                      <text x="365" y="102" fill="#00E5FF" font-family="JetBrains Mono" font-size="8.5">WASM SOLVER: 120 FPS</text>
+                    </svg>
+
+                  {:else if item.schematic.type === 'bridge'}
+                    <svg viewBox="0 0 500 115" class="micro-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <rect width="500" height="115" fill="#0A0E1A"/>
+                      <g stroke="rgba(0,229,255,0.18)" stroke-width="0.8">
+                        <line x1="0" y1="30" x2="500" y2="30"/><line x1="0" y1="60" x2="500" y2="60"/><line x1="0" y1="90" x2="500" y2="90"/>
+                        <line x1="100" y1="0" x2="100" y2="115"/><line x1="250" y1="0" x2="250" y2="115"/><line x1="400" y1="0" x2="400" y2="115"/>
+                      </g>
+                      <!-- Tied-Arch Envelope -->
+                      <path d="M 40 92 Q 250 18 460 92" fill="none" stroke="#00E5FF" stroke-width="2.6"/>
+                      <line x1="40" y1="92" x2="460" y2="92" stroke="#F2EFE9" stroke-width="2"/>
+                      <!-- Hangers -->
+                      <line x1="110" y1="92" x2="110" y2="52" stroke="#D4FF00" stroke-width="1.2"/>
+                      <line x1="180" y1="92" x2="180" y2="28" stroke="#D4FF00" stroke-width="1.2"/>
+                      <line x1="250" y1="92" x2="250" y2="19" stroke="#FF3355" stroke-width="1.8"/>
+                      <line x1="320" y1="92" x2="320" y2="28" stroke="#D4FF00" stroke-width="1.2"/>
+                      <line x1="390" y1="92" x2="390" y2="52" stroke="#D4FF00" stroke-width="1.2"/>
+                      <circle cx="250" cy="19" r="3.5" fill="#FF3355"/>
+                      <text x="50" y="22" fill="#00E5FF" font-family="JetBrains Mono" font-size="9" font-weight="bold">// 180M TIED-ARCH ENVELOPE</text>
+                      <text x="260" y="22" fill="#FF3355" font-family="JetBrains Mono" font-size="8.5" font-weight="bold">Mu = 48,200 kNm</text>
+                    </svg>
+
+                  {:else if item.schematic.type === 'lidar'}
+                    <svg viewBox="0 0 500 115" class="micro-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <rect width="500" height="115" fill="#0D0A14"/>
+                      <g stroke="rgba(192,132,252,0.18)" stroke-width="0.8">
+                        <line x1="0" y1="28" x2="500" y2="28"/><line x1="0" y1="58" x2="500" y2="58"/><line x1="0" y1="88" x2="500" y2="88"/>
+                      </g>
+                      <!-- Contour Isolines -->
+                      <path d="M 30 95 C 120 70, 200 100, 310 82 S 420 50, 480 65" fill="none" stroke="#C084FC" stroke-width="1.6"/>
+                      <path d="M 30 75 C 130 52, 210 80, 320 62 S 410 32, 480 45" fill="none" stroke="#C084FC" stroke-width="2"/>
+                      <path d="M 30 55 C 140 32, 220 60, 330 42 S 400 18, 480 28" fill="none" stroke="#D4FF00" stroke-width="2.2"/>
+                      <circle cx="330" cy="42" r="4" fill="#D4FF00"/>
+                      <text x="40" y="20" fill="#C084FC" font-family="JetBrains Mono" font-size="9" font-weight="bold">// LIDAR 3D POINT-CLOUD</text>
+                      <text x="320" y="104" fill="#D4FF00" font-family="JetBrains Mono" font-size="8.5">RTT: 3.2ms · 300K PTS/S</text>
+                    </svg>
+
+                  {:else if item.schematic.type === 'survey'}
+                    <svg viewBox="0 0 500 115" class="micro-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <rect width="500" height="115" fill="#0D1117"/>
+                      <g stroke="rgba(148,163,184,0.18)" stroke-width="0.8">
+                        <line x1="0" y1="30" x2="500" y2="30"/><line x1="0" y1="60" x2="500" y2="60"/><line x1="0" y1="90" x2="500" y2="90"/>
+                      </g>
+                      <!-- Triangulation Polygons -->
+                      <polygon points="70,88 230,28 350,88" fill="rgba(0,229,255,0.06)" stroke="#00E5FF" stroke-width="1.8"/>
+                      <polygon points="230,28 350,88 440,38" fill="rgba(212,255,0,0.06)" stroke="#D4FF00" stroke-width="1.6" stroke-dasharray="3 3"/>
+                      <circle cx="70" cy="88" r="4" fill="#00E5FF"/>
+                      <text x="42" y="104" fill="#00E5FF" font-family="JetBrains Mono" font-size="8" font-weight="bold">BM_1</text>
+                      <circle cx="230" cy="28" r="4.5" fill="#D4FF00"/>
+                      <text x="218" y="18" fill="#D4FF00" font-family="JetBrains Mono" font-size="8" font-weight="bold">TS_01</text>
+                      <circle cx="350" cy="88" r="4" fill="#00E5FF"/>
+                      <text x="345" y="104" fill="#00E5FF" font-family="JetBrains Mono" font-size="8" font-weight="bold">P_3</text>
+                      <text x="40" y="20" fill="#94A3B8" font-family="JetBrains Mono" font-size="9" font-weight="bold">// GEODETIC TOTAL STATION</text>
+                      <text x="310" y="24" fill="#00E5FF" font-family="JetBrains Mono" font-size="8.5">TOLERANCE &lt; 2.0mm</text>
+                    </svg>
+
+                  {:else if item.schematic.type === 'academic'}
+                    <svg viewBox="0 0 500 115" class="micro-schematic-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                      <rect width="500" height="115" fill="#120D09"/>
+                      <g stroke="rgba(255,149,0,0.18)" stroke-width="0.8">
+                        <line x1="0" y1="30" x2="500" y2="30"/><line x1="0" y1="60" x2="500" y2="60"/><line x1="0" y1="90" x2="500" y2="90"/>
+                      </g>
+                      <!-- Simply Supported Beam -->
+                      <rect x="50" y="58" width="180" height="12" fill="#291F18" stroke="#FF9500" stroke-width="1.6"/>
+                      <polygon points="40,84 50,70 60,84" fill="#F2EFE9" stroke="#FF9500" stroke-width="1.2"/>
+                      <circle cx="220" cy="76" r="6" fill="#F2EFE9" stroke="#FF9500" stroke-width="1.2"/>
+                      <line x1="140" y1="28" x2="140" y2="56" stroke="#D4FF00" stroke-width="2"/>
+                      <text x="145" y="40" fill="#D4FF00" font-family="JetBrains Mono" font-size="8" font-weight="bold">P = 240 kN</text>
+                      <!-- Mohr Circle -->
+                      <g transform="translate(370, 62)">
+                        <line x1="-50" y1="0" x2="50" y2="0" stroke="#64748B" stroke-width="1.2"/>
+                        <line x1="0" y1="-42" x2="0" y2="42" stroke="#64748B" stroke-width="1.2"/>
+                        <circle cx="6" cy="0" r="30" fill="rgba(255,149,0,0.12)" stroke="#FF9500" stroke-width="1.6"/>
+                        <circle cx="36" cy="0" r="2.8" fill="#D4FF00"/>
+                        <text x="32" y="12" fill="#D4FF00" font-family="JetBrains Mono" font-size="7.5" font-weight="bold">σ₁</text>
+                        <circle cx="-24" cy="0" r="2.8" fill="#D4FF00"/>
+                        <text x="-28" y="12" fill="#D4FF00" font-family="JetBrains Mono" font-size="7.5" font-weight="bold">σ₂</text>
+                      </g>
+                      <text x="40" y="20" fill="#FF9500" font-family="JetBrains Mono" font-size="9" font-weight="bold">// CONTINUUM MECHANICS &amp; MOHR STRESS</text>
+                      <text x="270" y="104" fill="#F2EFE9" font-family="JetBrains Mono" font-size="8.5">HONORS // TIMOSHENKO</text>
+                    </svg>
+                  {/if}
+
+                  <!-- Schematic Caption Footnote -->
+                  <div class="schematic-caption-bar">
+                    <span>{item.schematic.fig}</span>
+                    <strong>{item.schematic.meta}</strong>
+                  </div>
                 </div>
-                <ul class="station-deliverables-list">
-                  {#each item.deliverables as d}
-                    <li>
-                      <span class="station-deliv-check">✓</span>
-                      <span>{d}</span>
-                    </li>
-                  {/each}
-                </ul>
-              </div>
-            </div>
 
+                <!-- Verified Key Deliverables Box -->
+                <div class="zigzag-deliverables-panel">
+                  <div class="zigzag-deliv-header">
+                    <span>// VERIFIED CAPABILITIES &amp; DELIVERABLES</span>
+                    <span class="deliv-ok-badge">[OK]</span>
+                  </div>
+                  <ul class="zigzag-deliverables-list">
+                    {#each item.deliverables as d}
+                      <li>
+                        <span class="station-deliv-check">✓</span>
+                        <span>{d}</span>
+                      </li>
+                    {/each}
+                  </ul>
+                </div>
+              </div>
+            </article>
           </div>
-        </article>
-      {/each}
+        {/each}
+      </div>
     </div>
 
   </div>

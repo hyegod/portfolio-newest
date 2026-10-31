@@ -1326,7 +1326,12 @@ export function initTimelineInteractiveStations() {
       if (targetCard) {
         targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         targetCard.classList.add('station-highlight-pulse');
-        setTimeout(() => targetCard.classList.remove('station-highlight-pulse'), 1400);
+        const row = targetCard.closest('.zigzag-milestone-row');
+        if (row) row.classList.add('station-highlight-pulse');
+        setTimeout(() => {
+          targetCard.classList.remove('station-highlight-pulse');
+          if (row) row.classList.remove('station-highlight-pulse');
+        }, 1400);
       }
     });
   });
