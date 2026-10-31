@@ -747,17 +747,16 @@ img {
   display: grid;
   grid-template-columns: 270px 1fr;
   gap: 36px;
-  align-items: center;
+  align-items: start;
   align-content: center;
   min-height: calc(100vh - var(--header-h) - var(--footer-h));
   min-height: calc(100svh - var(--header-h) - var(--footer-h));
-  padding-top: 0;
+  padding-top: 16px;
   margin-bottom: clamp(60px, 8vh, 100px);
 }
 
 /* Left Column Editorial Manifesto (Matches Card 01 Height 1:1 when collapsed, expands independently) */
 .editorial-sidebar-essay {
-  padding-top: 8px;
   position: relative;
   min-height: var(--card01-h, 580px);
   display: flex;
@@ -2487,10 +2486,10 @@ body.xray-active .cad-xray-layer,
   .spread-top-row {
     grid-template-columns: minmax(235px, 32%) 1fr;
     gap: 20px;
-    align-items: center;
+    align-items: start;
     align-content: center;
     min-height: calc(100svh - var(--header-h) - var(--footer-h));
-    padding-top: 0;
+    padding-top: 16px;
     margin-bottom: 36px;
   }
   .spread-bottom-row {
@@ -2544,12 +2543,18 @@ body.xray-active .cad-xray-layer,
     align-items: start !important;
     align-content: start !important;
     min-height: 0 !important;
+    padding-top: 16px !important;
   }
   .spread-top-row.is-expanded .editorial-sidebar-essay {
     height: auto !important;
     max-height: none !important;
     min-height: var(--card01-h, 430px) !important;
     align-self: start !important;
+    margin-top: 0 !important;
+  }
+  .spread-top-row.is-expanded > .collage-card--01 {
+    align-self: start !important;
+    margin-top: 0 !important;
   }
   .essay-index-tag {
     font-size: 8.5px;
@@ -3688,11 +3693,12 @@ body.xray-active .cad-xray-layer,
   z-index: 6;
 }
 
-/* Card 01 only follows the left card when the manifesto is expanded (otherwise both are equal height and static) */
+/* Card 01 and Left Editorial Column Aligned 1:1 at Top */
 .spread-top-row.is-expanded {
   align-items: start !important;
   align-content: start !important;
   min-height: 0 !important;
+  padding-top: 16px !important;
 }
 
 .spread-top-row.is-expanded > .editorial-sidebar-essay {
@@ -3700,6 +3706,12 @@ body.xray-active .cad-xray-layer,
   max-height: none !important;
   min-height: var(--card01-h, 450px) !important;
   align-self: start !important;
+  margin-top: 0 !important;
+}
+
+.spread-top-row.is-expanded > .collage-card--01 {
+  align-self: start !important;
+  margin-top: 0 !important;
 }
 
 .spread-top-row.is-expanded .essay-more-collapse.is-expanded {
