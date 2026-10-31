@@ -107,12 +107,23 @@
           </svg>
         </div>
         <div class="dossier-content">
-          <div>
+          <div class="dossier-col-info">
             <h3 class="dossier-title">AERO-TRUSS // Parametric Bridge Digital Twin</h3>
             <p class="dossier-summary">
               Real-time structural health monitoring &amp; finite-element stress analyzer compiled from Rust to WebAssembly with interactive Three.js orthographic blueprints.
             </p>
-
+            <div class="dossier-tech-tags">
+              <span class="tech-chip">STRUCTURAL FEM</span>
+              <span class="tech-chip">RUST / WASM</span>
+              <span class="tech-chip">THREE.JS</span>
+              <span class="tech-chip">SNI 1725</span>
+            </div>
+            <div class="dossier-footer">
+              <span>YEAR: 2025 // JAKARTA</span>
+              <button type="button" class="inspect-case-btn" data-open-dossier="prj-01">OPEN DOSSIER [+]</button>
+            </div>
+          </div>
+          <div class="dossier-col-telemetry">
             <div class="system-receipt-card system-receipt--tilted-left" id="receipt-prj-01">
               <div class="receipt-header">
                 <span>SPAN BAY 04 // TELEMETRY LEDGER</span>
@@ -170,18 +181,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div class="dossier-tech-tags">
-              <span class="tech-chip">STRUCTURAL FEM</span>
-              <span class="tech-chip">RUST / WASM</span>
-              <span class="tech-chip">THREE.JS</span>
-              <span class="tech-chip">SNI 1725</span>
-            </div>
-            <div class="dossier-footer">
-              <span>YEAR: 2025 // JAKARTA</span>
-              <button type="button" class="inspect-case-btn" data-open-dossier="prj-01">OPEN DOSSIER [+]</button>
-            </div>
+
             <div class="daksh-bleed-title-wrap">
               <div class="daksh-giant-bleed-title">AERO-TRUSS</div>
               <button type="button" class="daksh-circle-view-btn" data-open-dossier="prj-01" title="View Project Dossier">VIEW</button>
@@ -236,12 +236,23 @@
           </svg>
         </div>
         <div class="dossier-content">
-          <div>
+          <div class="dossier-col-info">
             <h3 class="dossier-title">TERRA-GRID // Seismic Telemetry &amp; GIS Command OS</h3>
             <p class="dossier-summary">
               High-contrast editorial command interface streaming live accelerometer waveforms, Peak Ground Acceleration (PGA) contours, and liquefaction risk maps.
             </p>
-
+            <div class="dossier-tech-tags">
+              <span class="tech-chip">TYPESCRIPT</span>
+              <span class="tech-chip">WEBSOCKETS</span>
+              <span class="tech-chip">GEOTECHNICAL</span>
+              <span class="tech-chip">DATA VIZ</span>
+            </div>
+            <div class="dossier-footer">
+              <span>YEAR: 2025 // TOKYO — JKT</span>
+              <button type="button" class="inspect-case-btn" data-open-dossier="prj-02">OPEN DOSSIER [+]</button>
+            </div>
+          </div>
+          <div class="dossier-col-telemetry">
             <div class="system-receipt-card system-receipt--tilted-right">
               <div class="receipt-header">
                 <span>ORCHESTRATOR // SEISMIC PIPELINE</span>
@@ -286,18 +297,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div class="dossier-tech-tags">
-              <span class="tech-chip">TYPESCRIPT</span>
-              <span class="tech-chip">WEBSOCKETS</span>
-              <span class="tech-chip">GEOTECHNICAL</span>
-              <span class="tech-chip">DATA VIZ</span>
-            </div>
-            <div class="dossier-footer">
-              <span>YEAR: 2025 // TOKYO — JKT</span>
-              <button type="button" class="inspect-case-btn" data-open-dossier="prj-02">OPEN DOSSIER [+]</button>
-            </div>
+
             <div class="daksh-bleed-title-wrap">
               <div class="daksh-giant-bleed-title">TERRA-GRID</div>
               <button type="button" class="daksh-circle-view-btn" data-open-dossier="prj-02" title="View Project Dossier">VIEW</button>
@@ -352,12 +352,23 @@
           </svg>
         </div>
         <div class="dossier-content">
-          <div>
+          <div class="dossier-col-info">
             <h3 class="dossier-title">TECTONIC GROTESK // Structural Steel Type Foundry</h3>
             <p class="dossier-summary">
               Experimental variable typeface and editorial specimen book where glyph stems, ink traps, and bezier radii follow AISC Wide-Flange steel beam proportions.
             </p>
-
+            <div class="dossier-tech-tags">
+              <span class="tech-chip">VARIABLE FONT</span>
+              <span class="tech-chip">EDITORIAL PRINT</span>
+              <span class="tech-chip">SWISS GRID</span>
+              <span class="tech-chip">OPENTYPE</span>
+            </div>
+            <div class="dossier-footer">
+              <span>YEAR: 2024 // ZURICH</span>
+              <button type="button" class="inspect-case-btn" data-open-dossier="prj-03">OPEN DOSSIER [+]</button>
+            </div>
+          </div>
+          <div class="dossier-col-telemetry">
             <div class="system-receipt-card system-receipt--tilted-left">
               <div class="receipt-header">
                 <span>AISC PROFILE // WF 300×150</span>
@@ -411,18 +422,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div class="dossier-tech-tags">
-              <span class="tech-chip">VARIABLE FONT</span>
-              <span class="tech-chip">EDITORIAL PRINT</span>
-              <span class="tech-chip">SWISS GRID</span>
-              <span class="tech-chip">OPENTYPE</span>
-            </div>
-            <div class="dossier-footer">
-              <span>YEAR: 2024 // ZURICH</span>
-              <button type="button" class="inspect-case-btn" data-open-dossier="prj-03">OPEN DOSSIER [+]</button>
-            </div>
+
             <div class="daksh-bleed-title-wrap">
               <div class="daksh-giant-bleed-title">TECTONIC</div>
               <button type="button" class="daksh-circle-view-btn" data-open-dossier="prj-03" title="View Project Dossier">VIEW</button>
@@ -480,12 +480,23 @@
           </svg>
         </div>
         <div class="dossier-content">
-          <div>
+          <div class="dossier-col-info">
             <h3 class="dossier-title">HYDRO-SYNTH // Urban Watershed CFD &amp; Cartography</h3>
             <p class="dossier-summary">
               GPU-accelerated shallow-water flood simulation paired with an experimental cartographic zine system for resilient coastal infrastructure planning.
             </p>
-
+            <div class="dossier-tech-tags">
+              <span class="tech-chip">CFD HYDRAULICS</span>
+              <span class="tech-chip">WEBGPU GLSL</span>
+              <span class="tech-chip">CARTOGRAPHY</span>
+              <span class="tech-chip">CIVIC TECH</span>
+            </div>
+            <div class="dossier-footer">
+              <span>YEAR: 2026 // BANDUNG</span>
+              <button type="button" class="inspect-case-btn" data-open-dossier="prj-04">OPEN DOSSIER [+]</button>
+            </div>
+          </div>
+          <div class="dossier-col-telemetry">
             <div class="system-receipt-card system-receipt--tilted-right">
               <div class="receipt-header">
                 <span id="hydro-return-label">BASIN 04 // 100-YR STORM</span>
@@ -539,18 +550,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div class="dossier-tech-tags">
-              <span class="tech-chip">CFD HYDRAULICS</span>
-              <span class="tech-chip">WEBGPU GLSL</span>
-              <span class="tech-chip">CARTOGRAPHY</span>
-              <span class="tech-chip">CIVIC TECH</span>
-            </div>
-            <div class="dossier-footer">
-              <span>YEAR: 2026 // BANDUNG</span>
-              <button type="button" class="inspect-case-btn" data-open-dossier="prj-04">OPEN DOSSIER [+]</button>
-            </div>
+
             <div class="daksh-bleed-title-wrap">
               <div class="daksh-giant-bleed-title">HYDRO-SYNTH</div>
               <button type="button" class="daksh-circle-view-btn" data-open-dossier="prj-04" title="View Project Dossier">VIEW</button>

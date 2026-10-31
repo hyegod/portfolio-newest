@@ -1933,7 +1933,9 @@ body.xray-active .cad-xray-layer,
 .folder-body {
   flex: 1 1 0;
   min-width: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
   background: var(--bg-paper);
   border: 2px solid var(--ink-black);
   border-left: none;
@@ -1954,45 +1956,52 @@ body.xray-active .cad-xray-layer,
   min-width: 620px;
   padding-right: var(--fold-overlap);
   box-sizing: border-box;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   align-items: stretch;
 }
 
 .folder-sheet > .dossier-top-meta {
-  grid-column: 1 / -1;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .folder-sheet > .dossier-visual-preview {
-  grid-column: 1;
-  grid-row: 2;
-  height: auto;
   width: 100%;
-  align-self: start;
-  aspect-ratio: 600 / 270;
-  border-right: 1.5px solid var(--ink-black);
+  height: clamp(230px, 32vh, 320px);
+  position: relative;
+  overflow: hidden;
+  background: #121217;
+  border-bottom: 2px solid var(--ink-black);
+  border-right: none;
+  flex-shrink: 0;
 }
 
 .folder-sheet .dossier-content {
-  display: contents;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  padding: 0;
+  align-items: stretch;
+  flex: 1;
 }
 
-.folder-sheet .dossier-content > div:first-child {
-  grid-column: 2;
-  grid-row: 2 / span 2;
-  padding: 22px;
-  min-width: 0;
-}
-
-.folder-sheet .dossier-content > div:last-child {
-  grid-column: 1;
-  grid-row: 3;
-  padding: 22px;
-  min-width: 0;
-  border-right: 1.5px solid var(--ink-black);
+.folder-sheet .dossier-col-info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px;
+  min-width: 0;
+  border-right: 1.5px solid var(--ink-black);
+}
+
+.folder-sheet .dossier-col-telemetry {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 28px;
+  min-width: 0;
 }
 
 .dossier-top-meta {
@@ -2626,14 +2635,27 @@ body.xray-active .cad-xray-layer,
     width: auto;
     min-width: 0;
     padding-right: 0;
-    grid-template-columns: minmax(0, 1fr);
+    display: flex;
+    flex-direction: column;
   }
-  .folder-sheet > .dossier-visual-preview,
-  .folder-sheet .dossier-content > div:first-child,
-  .folder-sheet .dossier-content > div:last-child {
-    grid-column: 1;
-    grid-row: auto;
+  .folder-sheet > .dossier-visual-preview {
+    width: 100%;
+    height: clamp(200px, 30vh, 260px);
+    border-bottom: 2px solid var(--ink-black);
     border-right: none;
+  }
+  .folder-sheet .dossier-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .folder-sheet .dossier-col-info {
+    border-right: none;
+    border-bottom: 1.5px solid var(--ink-black);
+    padding: 20px 16px;
+  }
+  .folder-sheet .dossier-col-telemetry {
+    padding: 20px 16px;
   }
 }
 
@@ -3020,7 +3042,9 @@ body.xray-active .cad-xray-layer,
     font-size: 17px;
   }
   .folder-sheet .dossier-content > div:first-child,
-  .folder-sheet .dossier-content > div:last-child {
+  .folder-sheet .dossier-content > div:last-child,
+  .folder-sheet .dossier-col-info,
+  .folder-sheet .dossier-col-telemetry {
     padding: 14px 12px;
   }
   .filter-pills {
