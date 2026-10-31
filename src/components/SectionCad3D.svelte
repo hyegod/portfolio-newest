@@ -114,7 +114,7 @@
 
       <div class="cad-hud-bottom">
         <div class="cad-hud-box">
-          <span>INTERACTION: LMB ORBIT // WHEEL ZOOM</span>
+          <span>INTERACTION: DRAG TO ORBIT // PINCH / WHEEL ZOOM</span>
         </div>
         <div class="cad-view-buttons">
           <button type="button" class="cad-cam-btn active" data-cam-view="iso">ISO 3D</button>

@@ -545,7 +545,7 @@
             <span class="hud-mono-text">3D TECTONIC SYNTHESIS // {activeStage.toUpperCase()}</span>
           </div>
           <div class="hud-right">
-            <span class="hud-mono-hint">[DRAG 3D ORBIT · SCROLL EXPAND]</span>
+            <span class="hud-mono-hint">[DRAG ORBIT · PINCH ZOOM · SCROLL EXPAND]</span>
             <span class="hud-coords" id="synthesis-3d-coords">θ: 45° φ: 32°</span>
           </div>
         </div>

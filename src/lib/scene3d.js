@@ -478,14 +478,28 @@ export function initInteractiveCadSandbox() {
 
   rebuildActiveModel();
 
-  canvas.addEventListener('pointerdown', (e) => {
+  // Touch & Mouse 3D Controls (1-Finger Orbit, 2-Finger Pinch Zoom, Wheel Zoom)
+  let prevPinchDist = 0;
+  let isPinching = false;
+
+  const getPinchDist = (e) => {
+    if (e.touches && e.touches.length >= 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      return Math.hypot(dx, dy);
+    }
+    return 0;
+  };
+
+  // 1. Mouse Drag Controls
+  canvas.addEventListener('mousedown', (e) => {
     orbit.isDragging = true;
     orbit.autoRotate = false;
     orbit.prevX = e.clientX;
     orbit.prevY = e.clientY;
   });
 
-  window.addEventListener('pointermove', (e) => {
+  window.addEventListener('mousemove', (e) => {
     if (!orbit.isDragging) return;
     const dx = e.clientX - orbit.prevX;
     const dy = e.clientY - orbit.prevY;
@@ -496,13 +510,69 @@ export function initInteractiveCadSandbox() {
     orbit.targetPhi = Math.max(0.15, Math.min(Math.PI - 0.15, orbit.targetPhi - dy * 0.008));
   });
 
-  window.addEventListener('pointerup', () => {
+  window.addEventListener('mouseup', () => {
     orbit.isDragging = false;
   });
 
+  // 2. Mobile/Tablet Touch Gestures: 1-Finger Orbit & 2-Finger Pinch Zoom
+  canvas.addEventListener('touchstart', (e) => {
+    orbit.autoRotate = false;
+    if (e.touches.length === 1) {
+      orbit.isDragging = true;
+      isPinching = false;
+      orbit.prevX = e.touches[0].clientX;
+      orbit.prevY = e.touches[0].clientY;
+    } else if (e.touches.length >= 2) {
+      orbit.isDragging = false;
+      isPinching = true;
+      prevPinchDist = getPinchDist(e);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1 && orbit.isDragging) {
+      e.preventDefault();
+      const cx = e.touches[0].clientX;
+      const cy = e.touches[0].clientY;
+      const dx = cx - orbit.prevX;
+      const dy = cy - orbit.prevY;
+      orbit.prevX = cx;
+      orbit.prevY = cy;
+
+      orbit.targetTheta -= dx * 0.008;
+      orbit.targetPhi = Math.max(0.15, Math.min(Math.PI - 0.15, orbit.targetPhi - dy * 0.008));
+    } else if (e.touches.length >= 2 && isPinching) {
+      e.preventDefault();
+      const currentDist = getPinchDist(e);
+      if (prevPinchDist > 0 && currentDist > 0) {
+        const delta = currentDist - prevPinchDist;
+        prevPinchDist = currentDist;
+        orbit.targetRadius = Math.max(8, Math.min(48, orbit.targetRadius - delta * 0.08));
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    if (e.touches.length === 0) {
+      orbit.isDragging = false;
+      isPinching = false;
+    } else if (e.touches.length === 1) {
+      orbit.isDragging = true;
+      isPinching = false;
+      orbit.prevX = e.touches[0].clientX;
+      orbit.prevY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  canvas.addEventListener('touchcancel', () => {
+    orbit.isDragging = false;
+    isPinching = false;
+  });
+
+  // 3. Desktop Mouse Wheel Zoom
   canvas.addEventListener('wheel', (e) => {
     e.preventDefault();
-    orbit.targetRadius = Math.max(10, Math.min(42, orbit.targetRadius + e.deltaY * 0.015));
+    orbit.targetRadius = Math.max(8, Math.min(48, orbit.targetRadius + e.deltaY * 0.015));
   }, { passive: false });
 
   document.querySelectorAll('[data-cad-model]').forEach((btn) => {
@@ -789,36 +859,102 @@ export function initSynthesis3DCore() {
   groupSystem.visible = false;
   coreGroup.add(groupSystem);
 
-  // Orbit drag state
+  // Orbit drag & pinch-zoom state
   let isDragging = false;
+  let isPinching = false;
+  let prevPinchDist = 0;
   let prevX = 0, prevY = 0;
   let rotX = 0.2, rotY = 0.4;
   let targetRotX = 0.2, targetRotY = 0.4;
+  let camDist = 15;
+  let targetCamDist = 15;
 
-  const onPointerDown = (e) => {
-    isDragging = true;
-    prevX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    prevY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+  const getSynthPinchDist = (e) => {
+    if (e.touches && e.touches.length >= 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      return Math.hypot(dx, dy);
+    }
+    return 0;
   };
-  const onPointerMove = (e) => {
+
+  // Mouse Drag
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    prevX = e.clientX;
+    prevY = e.clientY;
+  });
+
+  window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
-    const cx = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    const cy = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-    const dx = cx - prevX;
-    const dy = cy - prevY;
-    prevX = cx;
-    prevY = cy;
+    const dx = e.clientX - prevX;
+    const dy = e.clientY - prevY;
+    prevX = e.clientX;
+    prevY = e.clientY;
     targetRotY += dx * 0.008;
     targetRotX += dy * 0.008;
-  };
-  const onPointerUp = () => { isDragging = false; };
+  });
 
-  canvas.addEventListener('mousedown', onPointerDown);
-  window.addEventListener('mousemove', onPointerMove);
-  window.addEventListener('mouseup', onPointerUp);
-  canvas.addEventListener('touchstart', onPointerDown, { passive: true });
-  window.addEventListener('touchmove', onPointerMove, { passive: true });
-  window.addEventListener('touchend', onPointerUp);
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  // Touch 1-Finger Orbit & 2-Finger Pinch Zoom
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      isPinching = false;
+      prevX = e.touches[0].clientX;
+      prevY = e.touches[0].clientY;
+    } else if (e.touches.length >= 2) {
+      isDragging = false;
+      isPinching = true;
+      prevPinchDist = getSynthPinchDist(e);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 1 && isDragging) {
+      e.preventDefault();
+      const cx = e.touches[0].clientX;
+      const cy = e.touches[0].clientY;
+      const dx = cx - prevX;
+      const dy = cy - prevY;
+      prevX = cx;
+      prevY = cy;
+      targetRotY += dx * 0.008;
+      targetRotX += dy * 0.008;
+    } else if (e.touches.length >= 2 && isPinching) {
+      e.preventDefault();
+      const currentDist = getSynthPinchDist(e);
+      if (prevPinchDist > 0 && currentDist > 0) {
+        const delta = currentDist - prevPinchDist;
+        prevPinchDist = currentDist;
+        targetCamDist = Math.max(7, Math.min(28, targetCamDist - delta * 0.05));
+      }
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    if (e.touches.length === 0) {
+      isDragging = false;
+      isPinching = false;
+    } else if (e.touches.length === 1) {
+      isDragging = true;
+      isPinching = false;
+      prevX = e.touches[0].clientX;
+      prevY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  canvas.addEventListener('touchcancel', () => {
+    isDragging = false;
+    isPinching = false;
+  });
+
+  // Desktop Mouse Wheel Zoom
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    targetCamDist = Math.max(7, Math.min(28, targetCamDist + e.deltaY * 0.015));
+  }, { passive: false });
 
   window.switchSynthesis3DStage = (stageKey) => {
     groupIntent.visible = stageKey === 'intent';
@@ -870,6 +1006,9 @@ export function initSynthesis3DCore() {
     rotX += (targetRotX - rotX) * 0.08;
     rotY += (targetRotY - rotY) * 0.08;
     currentScale += (targetScale - currentScale) * 0.06;
+
+    camDist += (targetCamDist - camDist) * 0.1;
+    camera.position.z = camDist;
 
     coreGroup.rotation.x = rotX;
     coreGroup.rotation.y = rotY;
