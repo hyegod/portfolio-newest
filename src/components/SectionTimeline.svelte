@@ -230,28 +230,7 @@
       </div>
     </div>
 
-    <!-- 2. Full-Width 5-Segment Station Switcher Bar (Spans 100% cleanly!) -->
-    <div class="timeline-station-segmented-bar" role="tablist" aria-label="Timeline Station Navigation">
-      {#each milestones as m, idx}
-        <button
-          type="button"
-          class="segmented-station-tab"
-          class:is-active={activeStationIndex === idx}
-          role="tab"
-          aria-selected={activeStationIndex === idx}
-          on:click={() => selectStation(idx)}
-        >
-          <div class="tab-top-row">
-            <span class="tab-index-badge">0{idx + 1}</span>
-            <span class="tab-year-text">{m.shortYear}</span>
-          </div>
-          <div class="tab-role-title">{m.shortRole}</div>
-          <div class="tab-active-indicator"></div>
-        </button>
-      {/each}
-    </div>
-
-    <!-- 3. Dual-Bay Chrono-Station Terminal (Kiri: Stations List | Kanan: Master Dossier & CAD Blueprint) -->
+    <!-- 2. Dual-Bay Chrono-Station Terminal (Kiri: Stations List | Kanan: Master Dossier & CAD Blueprint) -->
     <div class="chrono-console-wrapper">
 
       <!-- LEFT BAY: Chronological Station Flight Log (Continuous Vertical Conduit) -->

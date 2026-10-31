@@ -4423,103 +4423,10 @@ body.xray-active .cad-xray-layer,
   font-weight: 900;
 }
 
-/* 2. Full-Width 5-Segment Station Switcher Bar */
-.timeline-station-segmented-bar {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  background: var(--bg-paper);
-  border: 2px solid var(--ink-black);
-  box-shadow: 5px 5px 0 var(--ink-black);
-  overflow: hidden;
-}
-
-.segmented-station-tab {
-  background: var(--bg-paper);
-  border: none;
-  border-right: 1.5px solid var(--ink-black);
-  padding: 12px 14px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  text-align: left;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-}
-
-.segmented-station-tab:last-child {
-  border-right: none;
-}
-
-.segmented-station-tab:hover {
-  background: var(--bg-paper-alt);
-}
-
-.segmented-station-tab.is-active {
-  background: #0D0D12;
-  color: #FFFFFF;
-}
-
-.tab-top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.tab-index-badge {
-  background: #0055FF;
-  color: #FFFFFF;
-  padding: 1px 5px;
-  font-size: 8.5px;
-}
-
-.segmented-station-tab.is-active .tab-index-badge {
-  background: var(--acid-lime);
-  color: #0D0D10;
-}
-
-.tab-year-text {
-  color: var(--ink-muted);
-  font-size: 9.5px;
-}
-
-.segmented-station-tab.is-active .tab-year-text {
-  color: var(--acid-lime);
-}
-
-.tab-role-title {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  color: var(--ink-black);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.segmented-station-tab.is-active .tab-role-title {
-  color: #FFFFFF;
-}
-
-.tab-active-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: transparent;
-}
-
-.segmented-station-tab.is-active .tab-active-indicator {
-  background: var(--acid-lime);
-}
-
-/* 3. Dual-Bay Chrono-Station Terminal Console (Kiri: Stations List | Kanan: Master Dossier & CAD Blueprint) */
+/* ==========================================================================
+   2. DUAL-BAY CHRONO-STATION TERMINAL CONSOLE
+   (Kiri: Stations Flight Log Conduit | Kanan: Master Dossier & CAD Blueprint)
+   ========================================================================== */
 .chrono-console-wrapper {
   display: grid;
   grid-template-columns: minmax(320px, 1fr) minmax(460px, 1.45fr);
@@ -4969,20 +4876,6 @@ body.xray-active .cad-xray-layer,
 
 /* Mobile & Tablet Responsive (< 920px) */
 @media (max-width: 920px) {
-  .timeline-station-segmented-bar {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .tab-role-title {
-    display: none;
-  }
-  .segmented-station-tab {
-    padding: 8px 6px;
-    align-items: center;
-  }
-  .tab-top-row {
-    flex-direction: column;
-    gap: 2px;
-  }
   .chrono-console-wrapper {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -5000,12 +4893,6 @@ body.xray-active .cad-xray-layer,
 }
 
 @media (max-width: 580px) {
-  .timeline-station-segmented-bar {
-    grid-template-columns: repeat(5, 1fr);
-  }
-  .tab-year-text {
-    font-size: 8px;
-  }
   .active-dossier-headline {
     padding: 14px 16px;
   }
