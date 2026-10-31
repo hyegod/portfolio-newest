@@ -4423,344 +4423,392 @@ body.xray-active .cad-xray-layer,
   font-weight: 900;
 }
 
-/* 2. Station Jump Navigator */
-.station-nav-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  background: var(--badge-dark-bg);
-  padding: 10px 14px;
-  border: 2px solid var(--ink-black);
-  box-shadow: 4px 4px 0 var(--ink-black);
-}
-
-.station-jump-btn {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #A0A5B5;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 800;
-  padding: 6px 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  transition: all 0.2s ease;
-}
-
-.station-jump-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.station-jump-btn.active {
-  background: var(--acid-lime);
-  color: #0D0D10;
-  border-color: var(--acid-lime);
-  box-shadow: 2px 2px 0 #0055FF;
-}
-
-.station-jump-num {
-  font-size: 9px;
-  opacity: 0.8;
-}
-
-/* ==========================================================================
-   3. ARCHITECTURAL ALTERNATING LEFT-RIGHT TIMELINE (KANAN - KIRI)
-   ========================================================================== */
-.timeline-zigzag-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: 36px auto 0 auto;
-  padding: 24px 0;
-}
-
-/* Central Structural Coordinate Spine */
-.zigzag-center-spine {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.spine-vertical-line {
-  width: 2px;
-  flex: 1;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--ink-black) 0px,
-    var(--ink-black) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-
-[data-theme="blueprint"] .spine-vertical-line {
-  background: repeating-linear-gradient(
-    to bottom,
-    #00E5FF 0px,
-    #00E5FF 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-
-[data-theme="cyber"] .spine-vertical-line {
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--acid-lime) 0px,
-    var(--acid-lime) 6px,
-    transparent 6px,
-    transparent 12px
-  );
-}
-
-.spine-cap-tag {
-  background: var(--ink-black);
-  color: var(--acid-lime);
-  font-family: var(--font-mono);
-  font-size: 8.5px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  padding: 4px 10px;
-  white-space: nowrap;
-  border: 1.5px solid var(--ink-black);
-  box-shadow: 2px 2px 0 var(--ink-black);
-}
-
-.spine-cap-bottom {
-  background: var(--bg-paper-alt);
-  color: var(--ink-black);
-}
-
-/* Zigzag Track & Rows */
-.zigzag-milestones-track {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  position: relative;
-  z-index: 2;
-}
-
-.zigzag-milestone-row {
-  display: flex;
-  position: relative;
-  width: 100%;
-  align-items: flex-start;
-}
-
-/* LEFT ROW (Milestones 01, 03, 05) */
-.zigzag-milestone-row.is-left {
-  justify-content: flex-start;
-}
-
-.zigzag-milestone-row.is-left .zigzag-station-card {
-  width: calc(50% - 44px);
-}
-
-.zigzag-milestone-row.is-left .zigzag-branch-arm {
-  position: absolute;
-  top: 32px;
-  left: calc(50% - 44px);
-  width: 44px;
-  height: 2px;
-  background: var(--ink-black);
-  pointer-events: none;
-}
-
-.zigzag-milestone-row.is-left .zigzag-branch-arm .branch-connector-dot {
-  position: absolute;
-  right: -3px;
-  top: -3px;
-  width: 8px;
-  height: 8px;
-  background: var(--ink-black);
-  border-radius: 50%;
-}
-
-/* RIGHT ROW (Milestones 02, 04) */
-.zigzag-milestone-row.is-right {
-  justify-content: flex-end;
-}
-
-.zigzag-milestone-row.is-right .zigzag-station-card {
-  width: calc(50% - 44px);
-}
-
-.zigzag-milestone-row.is-right .zigzag-branch-arm {
-  position: absolute;
-  top: 32px;
-  right: calc(50% - 44px);
-  width: 44px;
-  height: 2px;
-  background: var(--ink-black);
-  pointer-events: none;
-}
-
-.zigzag-milestone-row.is-right .zigzag-branch-arm .branch-connector-dot {
-  position: absolute;
-  left: -3px;
-  top: -3px;
-  width: 8px;
-  height: 8px;
-  background: var(--ink-black);
-  border-radius: 50%;
-}
-
-/* Center Node Pin Pip */
-.zigzag-node-pin {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+/* 2. Full-Width 5-Segment Station Switcher Bar */
+.timeline-station-segmented-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
   background: var(--bg-paper);
   border: 2px solid var(--ink-black);
-  box-shadow: 2px 2px 0 var(--ink-black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--ink-black);
-  z-index: 5;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.zigzag-milestone-row:hover .zigzag-node-pin,
-.zigzag-milestone-row.station-highlight-pulse .zigzag-node-pin {
-  background: var(--acid-lime);
-  color: #0D0D10;
-  border-color: var(--ink-black);
-  box-shadow: 0 0 16px var(--acid-lime);
-  transform: translateX(-50%) scale(1.22);
-}
-
-/* Sleek Compact Milestone Card */
-.zigzag-station-card {
-  border: 2px solid var(--ink-black);
-  background: var(--bg-paper);
   box-shadow: 5px 5px 0 var(--ink-black);
-  position: relative;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
-.zigzag-station-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 9px 9px 0 var(--ink-black);
+.segmented-station-tab {
+  background: var(--bg-paper);
+  border: none;
+  border-right: 1.5px solid var(--ink-black);
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
-.zigzag-station-card.is-current {
-  border-top: 5px solid var(--acid-lime);
+.segmented-station-tab:last-child {
+  border-right: none;
 }
 
-.zigzag-station-card.station-highlight-pulse {
-  animation: station-glow 1.4s ease-out;
+.segmented-station-tab:hover {
+  background: var(--bg-paper-alt);
 }
 
-@keyframes station-glow {
-  0% {
-    outline: 3px solid var(--acid-lime);
-    box-shadow: 0 0 24px rgba(212, 255, 0, 0.6);
-  }
-  100% {
-    outline: 0px solid transparent;
-    box-shadow: 5px 5px 0 var(--ink-black);
-  }
+.segmented-station-tab.is-active {
+  background: #0D0D12;
+  color: #FFFFFF;
 }
 
-.station-card-top-bar {
+.tab-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.tab-index-badge {
+  background: #0055FF;
+  color: #FFFFFF;
+  padding: 1px 5px;
+  font-size: 8.5px;
+}
+
+.segmented-station-tab.is-active .tab-index-badge {
+  background: var(--acid-lime);
+  color: #0D0D10;
+}
+
+.tab-year-text {
+  color: var(--ink-muted);
+  font-size: 9.5px;
+}
+
+.segmented-station-tab.is-active .tab-year-text {
+  color: var(--acid-lime);
+}
+
+.tab-role-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--ink-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.segmented-station-tab.is-active .tab-role-title {
+  color: #FFFFFF;
+}
+
+.tab-active-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+}
+
+.segmented-station-tab.is-active .tab-active-indicator {
+  background: var(--acid-lime);
+}
+
+/* 3. Dual-Bay Chrono-Station Terminal Console (Kiri: Stations List | Kanan: Master Dossier & CAD Blueprint) */
+.chrono-console-wrapper {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(460px, 1.45fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+/* LEFT BAY: Chronological Station Flight Log */
+.chrono-stations-log-bay {
+  border: 2px solid var(--ink-black);
+  background: var(--bg-paper);
+  box-shadow: 5px 5px 0 var(--ink-black);
+  display: flex;
+  flex-direction: column;
+}
+
+.log-bay-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
   background: var(--badge-dark-bg);
-  color: #F2EFE9;
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid var(--ink-black);
+}
+
+.log-index-count {
+  color: var(--acid-lime);
+}
+
+.stations-conduit-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 10px;
+}
+
+.stations-vertical-rail {
+  position: absolute;
+  top: 28px;
+  bottom: 28px;
+  left: 31px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink-black) 0px,
+    var(--ink-black) 5px,
+    transparent 5px,
+    transparent 9px
+  );
+  z-index: 1;
+}
+
+.station-log-capsule {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--bg-paper-alt);
+  border: 1.5px solid var(--ink-black);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.station-log-capsule:hover {
+  background: #FFFFFF;
+  transform: translateX(4px);
+  box-shadow: 3px 3px 0 var(--ink-black);
+}
+
+.station-log-capsule.is-active {
+  background: #0D0D12;
+  color: #FFFFFF;
+  border-color: var(--acid-lime);
+  box-shadow: 4px 4px 0 var(--acid-lime);
+  transform: translateX(6px);
+}
+
+.capsule-node-anchor {
+  flex-shrink: 0;
+}
+
+.node-pip {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--bg-paper);
+  border: 2px solid var(--ink-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--ink-black);
+  transition: all 0.2s ease;
+}
+
+.station-log-capsule.is-active .node-pip {
+  background: var(--acid-lime);
+  color: #0D0D10;
+  border-color: #0D0D10;
+  box-shadow: 0 0 10px var(--acid-lime);
+  transform: scale(1.15);
+}
+
+.capsule-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.capsule-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  gap: 6px;
+}
+
+.capsule-year {
+  color: var(--accent-text);
+  letter-spacing: 0.05em;
+}
+
+.station-log-capsule.is-active .capsule-year {
+  color: var(--acid-lime);
+}
+
+.capsule-status-tag {
+  font-size: 8px;
+  padding: 1px 5px;
+  border: 1px solid;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.capsule-role {
+  font-family: var(--font-grotesk);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--ink-black);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.station-log-capsule.is-active .capsule-role {
+  color: #FFFFFF;
+}
+
+.capsule-org {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.station-log-capsule.is-active .capsule-org {
+  color: #A0A5B5;
+}
+
+.capsule-active-arrow {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 900;
+  color: var(--acid-lime);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.station-log-capsule.is-active .capsule-active-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* RIGHT BAY: Master Station Dossier Inspector */
+.chrono-dossier-inspector-bay {
+  border: 2px solid var(--ink-black);
+  background: var(--bg-paper);
+  box-shadow: 6px 6px 0 var(--ink-black);
+  position: relative;
+  overflow: hidden;
+}
+
+.active-dossier-card {
+  display: flex;
+  flex-direction: column;
+  animation: dossierFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dossierFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.active-dossier-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--badge-dark-bg);
+  color: #FFFFFF;
   border-bottom: 1.5px solid var(--ink-black);
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 800;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
-.station-meta-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.station-code-badge {
+.dossier-code-pill {
   background: #0055FF;
   color: #FFFFFF;
-  padding: 2px 6px;
-  font-size: 8.5px;
-  letter-spacing: 0.06em;
-}
-
-.station-year-tag {
-  color: var(--acid-lime);
-  letter-spacing: 0.08em;
-  font-size: 9.5px;
-}
-
-.station-status-pill {
-  font-size: 8.5px;
   padding: 2px 7px;
-  border: 1px solid;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.08em;
 }
 
-.zigzag-card-body {
-  padding: 18px 20px;
+.dossier-counter-pill {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: #A0A5B5;
+}
+
+.dossier-counter-pill strong {
+  color: var(--acid-lime);
+}
+
+.active-dossier-headline {
+  padding: 18px 22px 14px 22px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  background: var(--bg-paper);
+  gap: 6px;
+  border-bottom: 1px dashed var(--ink-faint);
 }
 
-.station-role-title {
+.active-role-title {
   font-family: var(--font-display);
-  font-size: clamp(17px, 1.8vw, 21px);
+  font-size: clamp(20px, 2.3vw, 27px);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   margin: 0;
   color: var(--ink-black);
 }
 
-.station-org-name {
+.active-org-name {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 800;
   color: var(--accent-text);
   letter-spacing: 0.04em;
-  margin-top: -4px;
 }
 
-.station-discipline-tags {
+.active-discipline-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  margin-top: 4px;
 }
 
-.station-discipline-chip {
+.discipline-pill {
   font-family: var(--font-mono);
   font-size: 8.5px;
   font-weight: 800;
@@ -4771,162 +4819,206 @@ body.xray-active .cad-xray-layer,
   letter-spacing: 0.04em;
 }
 
-.station-narrative {
-  font-family: var(--font-grotesk);
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--ink-black);
-  margin: 0;
-  opacity: 0.9;
-}
-
-/* Compact Vector Blueprint Schematic Strip */
-.zigzag-schematic-strip {
+.active-schematic-terminal {
   background: #0C0D12;
-  border: 1.5px solid var(--ink-black);
+  border-top: 1px solid var(--ink-black);
+  border-bottom: 1.5px solid var(--ink-black);
   position: relative;
   overflow: hidden;
-  box-shadow: 2px 2px 0 var(--ink-black);
 }
 
-.micro-schematic-svg {
+.active-schematic-terminal .micro-schematic-svg {
   width: 100%;
-  height: 110px;
+  height: 125px;
   display: block;
 }
 
-.schematic-caption-bar {
-  padding: 6px 12px;
-  background: rgba(13, 13, 16, 0.94);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+.active-narrative-box {
+  padding: 16px 22px;
+  border-bottom: 1px dashed var(--ink-faint);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: #A0A5B5;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.schematic-caption-bar strong {
-  color: var(--acid-lime);
-}
-
-/* Verified Key Deliverables Box */
-.zigzag-deliverables-panel {
-  background: var(--bg-paper-alt);
-  border: 1.5px solid var(--ink-black);
-  padding: 10px 14px;
-}
-
-.zigzag-deliv-header {
+.narrative-label {
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.08em;
-  margin-bottom: 6px;
+  color: var(--ink-muted);
+}
+
+.narrative-text {
+  font-family: var(--font-grotesk);
+  font-size: 13.5px;
+  line-height: 1.55;
   color: var(--ink-black);
+  margin: 0;
+}
+
+.active-deliverables-panel {
+  padding: 14px 22px;
+  background: var(--bg-paper-alt);
+  border-bottom: 1.5px solid var(--ink-black);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.deliv-header-bar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink-black);
   border-bottom: 1px dashed var(--ink-faint);
-  padding-bottom: 3px;
+  padding-bottom: 4px;
 }
 
 .deliv-ok-badge {
-  color: var(--acid-lime);
   background: #0D0D10;
-  padding: 1px 4px;
+  color: var(--acid-lime);
+  padding: 1px 5px;
+  font-size: 8.5px;
 }
 
-.zigzag-deliverables-list {
+.deliv-checklist {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
-.zigzag-deliverables-list li {
+.deliv-checklist li {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 10.5px;
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  line-height: 1.35;
+  gap: 8px;
+  line-height: 1.4;
   color: var(--ink-black);
 }
 
-.station-deliv-check {
+.deliv-check-mark {
   color: #0055FF;
   font-weight: 900;
   flex-shrink: 0;
 }
 
-/* Responsive: Tablet & Mobile Single-Sided Spine Flow (< 880px) */
-@media (max-width: 880px) {
-  .zigzag-center-spine {
-    left: 20px;
-    transform: none;
+.active-dossier-footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  background: var(--bg-paper);
+}
+
+.dossier-nav-btn {
+  background: var(--bg-paper-alt);
+  border: 1.5px solid var(--ink-black);
+  color: var(--ink-black);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 2px 2px 0 var(--ink-black);
+}
+
+.dossier-nav-btn:hover {
+  background: #0D0D10;
+  color: var(--acid-lime);
+  border-color: #0D0D10;
+}
+
+.footer-station-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.station-dot-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-paper-alt);
+  border: 1.5px solid var(--ink-black);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.station-dot-indicator:hover {
+  background: var(--ink-black);
+}
+
+.station-dot-indicator.is-active {
+  background: var(--acid-lime);
+  border-color: #0D0D10;
+  transform: scale(1.25);
+  box-shadow: 0 0 6px var(--acid-lime);
+}
+
+/* Mobile & Tablet Responsive (< 920px) */
+@media (max-width: 920px) {
+  .timeline-station-segmented-bar {
+    grid-template-columns: repeat(5, 1fr);
   }
-  .spine-cap-tag {
-    font-size: 7.5px;
-    padding: 2px 6px;
+  .tab-role-title {
+    display: none;
   }
-  .zigzag-milestones-track {
-    gap: 36px;
+  .segmented-station-tab {
+    padding: 8px 6px;
+    align-items: center;
   }
-  .zigzag-milestone-row.is-left,
-  .zigzag-milestone-row.is-right {
-    justify-content: flex-end;
-    padding-left: 48px;
+  .tab-top-row {
+    flex-direction: column;
+    gap: 2px;
   }
-  .zigzag-milestone-row.is-left .zigzag-station-card,
-  .zigzag-milestone-row.is-right .zigzag-station-card {
-    width: 100%;
+  .chrono-console-wrapper {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
-  .zigzag-node-pin {
-    left: 20px;
-    transform: translateX(-50%);
-    top: 14px;
-    width: 28px;
-    height: 28px;
-    font-size: 10px;
+  .chrono-stations-log-bay {
+    max-height: 290px;
+    overflow-y: auto;
   }
-  .zigzag-milestone-row:hover .zigzag-node-pin,
-  .zigzag-milestone-row.station-highlight-pulse .zigzag-node-pin {
-    transform: translateX(-50%) scale(1.18);
+  .active-role-title {
+    font-size: 19px;
   }
-  .zigzag-milestone-row.is-left .zigzag-branch-arm,
-  .zigzag-milestone-row.is-right .zigzag-branch-arm {
-    left: 20px;
-    right: auto;
-    width: 28px;
-    top: 28px;
-  }
-  .zigzag-card-body {
-    padding: 14px 16px;
-    gap: 10px;
-  }
-  .micro-schematic-svg {
-    height: 95px;
-  }
-  .station-role-title {
-    font-size: 17px;
-  }
-  .station-narrative {
+  .narrative-text {
     font-size: 12.5px;
   }
-  .gantt-row {
-    grid-template-columns: 1fr;
-    gap: 6px;
+}
+
+@media (max-width: 580px) {
+  .timeline-station-segmented-bar {
+    grid-template-columns: repeat(5, 1fr);
   }
-  .station-nav-bar {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    scrollbar-width: thin;
+  .tab-year-text {
+    font-size: 8px;
   }
-  .station-jump-btn {
-    flex-shrink: 0;
+  .active-dossier-headline {
+    padding: 14px 16px;
+  }
+  .active-narrative-box,
+  .active-deliverables-panel {
+    padding: 12px 16px;
+  }
+  .active-dossier-footer-nav {
+    padding: 10px 12px;
+  }
+  .dossier-nav-btn {
+    font-size: 8.5px;
+    padding: 5px 8px;
   }
 }
 
